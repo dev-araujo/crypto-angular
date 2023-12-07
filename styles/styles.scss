@@ -1,0 +1,24 @@
+@import "primeng/resources/themes/lara-dark-indigo/theme.css";
+@import "primeng/resources/primeng.css";
+@import "./colors.scss";
+
+html,
+body {
+  height: 100%;
+}
+*::selection {
+  background: $orange-300;
+  color: white;
+}
+body {
+  margin: 0;
+  padding: 0;
+  padding: 0;
+  scroll-behavior: smooth;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+a {
+  text-decoration: none;
+  color: $yellow-300;
+}
