@@ -17,15 +17,15 @@ export class HomeComponent {
   responsiveOptions: any[] | any;
 
   ngOnInit(): void {
-    this.getTrending();
+    // this.getTrending();
   }
 
-  getTrending(): void {
-    this.service
-      .getTrendingTop('n5fpnvMGNsOS')
-      .pipe(take(1))
-      .subscribe((res: any) => {
-        console.log(res);
-      });
-  }
+  // getTrending(): void {
+  //   this.service
+  //     .getTrendingTop('n5fpnvMGNsOS')
+  //     .pipe(take(1))
+  //     .subscribe((res: any) => {
+  //       console.log(res);
+  //     });
+  // }
 }

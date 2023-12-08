@@ -1,0 +1,23 @@
+.header {
+  &__logo {
+    display: flex;
+    align-items: center;
+
+    h1 {
+      font-size: 32px;
+      background: #cb60b3;
+      background: linear-gradient(
+        to right,
+        #cb60b3 0%,
+        #c146a1 37%,
+        #d754ff 32%,
+        #db36a4 93%
+      );
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    img {
+      width: 80px;
+    }
+  }
+}
