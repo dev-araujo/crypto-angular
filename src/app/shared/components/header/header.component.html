@@ -9,8 +9,8 @@
             <input pInputText type="text" placeholder="Pesquisar" class="search__input" />
             <span class="search__icon pi pi-search"></span>
         </div>
-        <p-dropdown [options]="currency" [(ngModel)]="fiat" optionLabel="name" [showClear]="true"
-            placeholder="Selecione sua fiat"></p-dropdown>
+        <p-dropdown [options]="currency" [(ngModel)]="fiat" optionLabel="name" pTooltip="Selecione sua fiat"
+            tooltipPosition="bottom"></p-dropdown>
         <p class="header__favorites">Favoritos</p>
         <span pTooltip="Favoritos" class="header__favorites--less420 pi pi-heart" style="font-size: 1.5rem;"></span>
     </section>
