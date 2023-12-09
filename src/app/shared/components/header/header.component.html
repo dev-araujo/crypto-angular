@@ -1,14 +1,17 @@
 <header class="header">
     <section class="header__logo">
         <img src="https://miro.medium.com/v2/resize:fit:1400/1*Klh1l7wkoG6PDPb9A5oCHQ.png" alt="logo: crypto Angular" />
-        <h1>Crypto Angular</h1>
+        <h1 class="header__logo__title">Crypto Angular</h1>
     </section>
 
-
     <section class="header__actions">
-        <p-dropdown [options]="currency" [(ngModel)]="selected" optionLabel="name" [showClear]="true"
+        <div class="search">
+            <input pInputText type="text" placeholder="Pesquisar" class="search__input" />
+            <span class="search__icon pi pi-search"></span>
+        </div>
+        <p-dropdown [options]="currency" [(ngModel)]="fiat" optionLabel="name" [showClear]="true"
             placeholder="Selecione sua fiat"></p-dropdown>
-
-        <p>Favorites</p>
+        <p class="header__favorites">Favoritos</p>
+        <span pTooltip="Favoritos" class="header__favorites--less420 pi pi-heart" style="font-size: 1.5rem;"></span>
     </section>
 </header>

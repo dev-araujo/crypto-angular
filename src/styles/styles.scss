@@ -1,10 +1,16 @@
 @import "./colors.scss";
-@import "primeng/resources/themes/lara-light-teal/theme.css";
+@import "primeng/resources/themes/lara-light-purple/theme.css";
 @import "primeng/resources/primeng.css";
+@import "primeicons/primeicons.css";
 
 html,
 body {
   height: 100%;
+}
+
+*::selection {
+  background: $selection-100;
+  color: $pink-100;
 }
 
 body {
