@@ -4,8 +4,8 @@
 
 // default colors
 $white: #ffffff !default;
-$black: #14161a !default;
-
+$black: #020814d7 !default;
+//
 // gray
 $gray-600: #5c5b5b !default;
 $gray-500: #333333 !default;
@@ -22,6 +22,7 @@ $green-350: #00f56f !default;
 $green-300: #4ae892 !default;
 $green-200: #a5f3c8 !default;
 $green-100: #edfdf4 !default;
+$green-50: rgba(34, 174, 192, 0.082) !default;
 
 // blue
 $blue-600: #102956 !default;
