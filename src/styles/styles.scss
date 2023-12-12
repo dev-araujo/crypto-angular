@@ -1,5 +1,5 @@
 @import "./colors.scss";
-@import "primeng/resources/themes/lara-light-purple/theme.css";
+@import "primeng/resources/themes/lara-light-teal/theme.css";
 @import "primeng/resources/primeng.css";
 @import "primeicons/primeicons.css";
 
@@ -9,8 +9,7 @@ body {
 }
 
 *::selection {
-  background: $selection-100;
-  color: $pink-100;
+  background: rgba(86, 160, 114, 0.089);
 }
 
 body {
