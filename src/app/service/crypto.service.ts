@@ -11,7 +11,7 @@ export class CryptoService {
 
   constructor(private http: HttpClient) {}
 
-  getTrendingTop(currency: string): Observable<any> {
+  getTrendingTop(currency: string, offset: number = 0): Observable<any> {
     const options = {
       headers: {
         'Content-Type': 'application/json',
@@ -21,7 +21,7 @@ export class CryptoService {
 
     // n5fpnvMGNsOS = BRL
     // 'yhjMzLPhuIDl' usd
-    const endpoint = `${this.baseUrl}coins?referenceCurrencyUuid=${currency}&orderBy=price&limit=6`;
+    const endpoint = `${this.baseUrl}coins?referenceCurrencyUuid=${currency}&orderBy=price&limit=100&offset=${offset}`;
     return this.http.get<any>(endpoint, options);
   }
 }
