@@ -3,37 +3,50 @@ import { CryptoService } from '../../../service/crypto.service';
 import { take } from 'rxjs';
 import { TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
-
+import { PaginatorModule } from 'primeng/paginator';
+interface PageEvent {
+  first: number;
+  rows: number;
+  page: number;
+  pageCount: number;
+}
 @Component({
   selector: 'app-table',
   standalone: true,
-  imports: [TableModule, ButtonModule],
+  imports: [TableModule, ButtonModule, PaginatorModule],
   templateUrl: './table.component.html',
   styleUrl: './table.component.scss',
 })
 export class TableComponent {
   coinList: any;
-  offset: number = 0;
+  start: number = 0;
+  rows: number = 10;
+  fiat = 'n5fpnvMGNsOS';
   constructor(private service: CryptoService) {}
 
   ngOnInit(): void {
-    this.getTrending();
+    this.getTrending(this.fiat, this.start);
+    this.getFiat();
   }
 
-  getTrending(offset?: number): void {
+  getFiat(): void {
+    this.service.fiat$.subscribe((res: string) => {
+      this.getTrending(res, this.start);
+    });
+  }
+
+  getTrending(fiat: string, offset: number): void {
     this.service
-      .getTrendingTop('n5fpnvMGNsOS', offset)
+      .getTrendingTop(fiat, offset)
       .pipe(take(1))
       .subscribe((res: any) => {
-        console.log(res);
         this.coinList = res.data.coins;
       });
   }
 
-  getPage(e: any) {
-    if (e.first === 90) {
-      this.getTrending(100);
-    }
-    console.log(e);
+  onPageChange(event: any) {
+    this.start = event.first;
+    this.rows = event.rows;
+    this.getTrending(this.fiat, this.start);
   }
 }

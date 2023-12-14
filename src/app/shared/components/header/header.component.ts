@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { DropdownModule } from 'primeng/dropdown';
 import { InputTextModule } from 'primeng/inputtext';
 import { TooltipModule } from 'primeng/tooltip';
+import { CryptoService } from '../../../service/crypto.service';
 
 @Component({
   selector: 'app-header',
@@ -14,8 +15,14 @@ import { TooltipModule } from 'primeng/tooltip';
 })
 export class HeaderComponent {
   currency = [
-    { name: 'USD', code: 'USD' },
-    { name: 'BRL', code: 'BRL' },
+    { name: 'USD', code: 'yhjMzLPhuIDl' },
+    { name: 'BRL', code: 'n5fpnvMGNsOS' },
   ];
   fiat = this.currency[1];
+
+  constructor(private service: CryptoService) {}
+
+  getFiat(event: any): void {
+    this.service.sharedFiat(event.code);
+  }
 }

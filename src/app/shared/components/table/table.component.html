@@ -1,22 +1,33 @@
-<div class="card">
-    <p-table [value]="coinList" [paginator]="false" [rows]="10" [showCurrentPageReport]="true"
-        [tableStyle]="{ 'min-width': '50rem' }" [rowsPerPageOptions]="[6, 12, 24]" (onPage)="getPage($event)">
+<div class="table">
+    <p-table [value]="coinList" [paginator]="false" [showCurrentPageReport]="true"
+        [tableStyle]="{ 'min-width': '50rem' }">
         <ng-template pTemplate="header">
             <tr>
-                <th style="width:25%">Name</th>
-                <th style="width:25%">Country</th>
-                <th style="width:25%">Company</th>
-                <th style="width:25%">Representative</th>
+                <th style="width:25%">Cripto</th>
+                <th style="width:25%">Preço</th>
+                <th style="width:25%">24h</th>
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-coin>
-            <tr>
-                <td>{{ coin.name }}</td>
-                <td>{{ coin['24hVolume'] }}</td>
-                <td>{{ coin.btcPrice }}</td>
-                <td>{{ coin.marketCap }}</td>
+            <tr class="table__rows">
+                <td>
+                    <section class="table__rows__coin">
+                        <span class="pi pi-heart"></span>
+                        <img [src]="coin?.iconUrl+'?size=30x30'" [srcset]="coin?.iconUrl+'?size=30x30 1x,'" />
+                        <div class="table__rows__coin__text">
+                            <h4>{{ coin.name }}</h4>
+                            <p>{{ coin.symbol }}</p>
+                        </div>
+                    </section>
+                </td>
+                <td>{{ coin.price }}</td>
+                <td>{{ coin.change}}</td>
             </tr>
         </ng-template>
 
     </p-table>
+    <div>
+        <p-paginator (onPageChange)="onPageChange($event)" [first]="start" [rows]="rows" [totalRecords]="5000"
+            [rowsPerPageOptions]="[10, 20, 30]"></p-paginator>
+    </div>
 </div>

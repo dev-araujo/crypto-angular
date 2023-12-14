@@ -1,0 +1,20 @@
+.table {
+  &__rows {
+    &__coin {
+      width: 330px;
+      display: flex;
+      align-items: center;
+
+      img {
+        width: 26px;
+        height: 26px;
+        margin-left: 1rem;
+      }
+
+      &__text {
+        margin-left: 1rem;
+        line-height: 6px;
+      }
+    }
+  }
+}

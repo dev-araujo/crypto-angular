@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { ACCESSTOKEN } from '../../../config/config';
 
 @Injectable({
@@ -11,6 +11,13 @@ export class CryptoService {
 
   constructor(private http: HttpClient) {}
 
+  private fiatSubject = new BehaviorSubject<string>('n5fpnvMGNsOS');
+  fiat$ = this.fiatSubject.asObservable();
+
+  sharedFiat(changeFiat: any) {
+    this.fiatSubject.next(changeFiat);
+  }
+
   getTrendingTop(currency: string, offset: number = 0): Observable<any> {
     const options = {
       headers: {
@@ -18,10 +25,7 @@ export class CryptoService {
         'x-access-token': ACCESSTOKEN,
       },
     };
-
-    // n5fpnvMGNsOS = BRL
-    // 'yhjMzLPhuIDl' usd
-    const endpoint = `${this.baseUrl}coins?referenceCurrencyUuid=${currency}&orderBy=price&limit=100&offset=${offset}`;
+    const endpoint = `${this.baseUrl}coins?referenceCurrencyUuid=${currency}&orderBy=price&limit=10&offset=${offset}`;
     return this.http.get<any>(endpoint, options);
   }
 }
