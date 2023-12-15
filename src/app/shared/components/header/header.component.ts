@@ -4,7 +4,9 @@ import { FormsModule } from '@angular/forms';
 import { DropdownModule } from 'primeng/dropdown';
 import { InputTextModule } from 'primeng/inputtext';
 import { TooltipModule } from 'primeng/tooltip';
+
 import { CryptoService } from '../../../service/crypto.service';
+import { Currency } from '../../../models/shared.interface';
 
 @Component({
   selector: 'app-header',
@@ -22,7 +24,7 @@ export class HeaderComponent {
 
   constructor(private service: CryptoService) {}
 
-  getFiat(event: any): void {
-    this.service.sharedFiat(event.code);
+  getFiat(event: Currency): void {
+    this.service.sharedFiat(event);
   }
 }

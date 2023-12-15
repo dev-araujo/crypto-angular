@@ -20,8 +20,8 @@
                         </div>
                     </section>
                 </td>
-                <td>{{ coin.price }}</td>
-                <td>{{ coin.change}}</td>
+                <td>{{ coin.price | currency : currencySymbol }}</td>
+                <td [ngStyle]="percentageStyle.getChangeCellStyle(coin.change)">{{coin.change| percent}}</td>
             </tr>
         </ng-template>
 

@@ -1,27 +1,38 @@
 import { Component } from '@angular/core';
-import { CryptoService } from '../../../service/crypto.service';
 import { take } from 'rxjs';
+import { CurrencyPipe, NgClass, NgStyle, PercentPipe } from '@angular/common';
+
 import { TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
-import { PaginatorModule } from 'primeng/paginator';
-interface PageEvent {
-  first: number;
-  rows: number;
-  page: number;
-  pageCount: number;
-}
+import { PaginatorModule, PaginatorState } from 'primeng/paginator';
+
+import { CoinList, Currency } from '../../../models/shared.interface';
+import { CryptoService } from '../../../service/crypto.service';
+import { PercentageHelper } from './utils/percentageHelper';
+
 @Component({
   selector: 'app-table',
   standalone: true,
-  imports: [TableModule, ButtonModule, PaginatorModule],
+  imports: [
+    NgStyle,
+    NgClass,
+    TableModule,
+    ButtonModule,
+    PaginatorModule,
+    CurrencyPipe,
+    PercentPipe,
+  ],
   templateUrl: './table.component.html',
   styleUrl: './table.component.scss',
 })
 export class TableComponent {
-  coinList: any;
-  start: number = 0;
-  rows: number = 10;
+  coinList: CoinList | any;
+  start = 0 as any;
+  rows = 10 as any;
   fiat = 'n5fpnvMGNsOS';
+  currencySymbol = 'R$';
+  percentageStyle = PercentageHelper;
+
   constructor(private service: CryptoService) {}
 
   ngOnInit(): void {
@@ -30,8 +41,9 @@ export class TableComponent {
   }
 
   getFiat(): void {
-    this.service.fiat$.subscribe((res: string) => {
-      this.getTrending(res, this.start);
+    this.service.fiat$.subscribe((fiat: Currency) => {
+      this.currencySymbol !== 'BRL' ? '$' : 'R$';
+      this.getTrending(fiat.code, this.start);
     });
   }
 
@@ -39,12 +51,13 @@ export class TableComponent {
     this.service
       .getTrendingTop(fiat, offset)
       .pipe(take(1))
-      .subscribe((res: any) => {
+      .subscribe((res: CoinList) => {
         this.coinList = res.data.coins;
       });
   }
 
-  onPageChange(event: any) {
+  onPageChange(event: PaginatorState): void {
+    console.log(event);
     this.start = event.first;
     this.rows = event.rows;
     this.getTrending(this.fiat, this.start);
