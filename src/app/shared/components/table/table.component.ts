@@ -61,7 +61,6 @@ export class TableComponent {
   }
 
   onPageChange(event: PaginatorState): void {
-    console.log(event);
     this.start = event.first;
     this.rows = event.rows;
     this.getTrending(this.fiat, this.start);
