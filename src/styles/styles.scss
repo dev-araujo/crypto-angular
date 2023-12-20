@@ -19,6 +19,7 @@ body {
   scroll-behavior: smooth;
   font-family: Roboto, "Helvetica Neue", sans-serif;
   color: $black;
+  overflow-x: hidden;
 }
 
 a {
