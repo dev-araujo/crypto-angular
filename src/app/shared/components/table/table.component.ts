@@ -42,9 +42,13 @@ export class TableComponent {
 
   getFiat(): void {
     this.service.fiat$.subscribe((fiat: Currency) => {
-      this.currencySymbol !== 'BRL' ? '$' : 'R$';
       this.getTrending(fiat.code, this.start);
+      this.changeCurrencySymbol(fiat.name);
     });
+  }
+
+  changeCurrencySymbol(fiat: string): void {
+    this.currencySymbol = fiat !== 'BRL' ? '$' : 'R$';
   }
 
   getTrending(fiat: string, offset: number): void {
