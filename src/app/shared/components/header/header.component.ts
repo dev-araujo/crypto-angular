@@ -21,10 +21,23 @@ export class HeaderComponent {
     { name: 'BRL', code: 'n5fpnvMGNsOS' },
   ];
   fiat = this.currency[1];
+  find = '';
 
   constructor(private service: CryptoService) {}
 
   getFiat(event: Currency): void {
     this.service.sharedFiat(event);
+  }
+
+  search(): void {
+    if (this.find !== '') {
+      this.service.sharedSearch(this.find);
+    }
+  }
+
+  clear(): void {
+    if (this.find === '') {
+      this.service.sharedSearch(this.find);
+    }
   }
 }

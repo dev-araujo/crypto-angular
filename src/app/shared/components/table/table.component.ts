@@ -1,6 +1,12 @@
 import { Component } from '@angular/core';
 import { take } from 'rxjs';
-import { CurrencyPipe, NgClass, NgStyle, PercentPipe } from '@angular/common';
+import {
+  CurrencyPipe,
+  NgClass,
+  NgIf,
+  NgStyle,
+  PercentPipe,
+} from '@angular/common';
 
 import { TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
@@ -16,6 +22,7 @@ import { PercentageHelper } from './utils/percentageHelper';
   imports: [
     NgStyle,
     NgClass,
+    NgIf,
     TableModule,
     ButtonModule,
     PaginatorModule,
@@ -31,6 +38,7 @@ export class TableComponent {
   rows = 10 as any;
   fiat = 'n5fpnvMGNsOS';
   currencySymbol = 'R$';
+  searching: string = '';
   percentageStyle = PercentageHelper;
 
   constructor(private service: CryptoService) {}
@@ -38,12 +46,26 @@ export class TableComponent {
   ngOnInit(): void {
     this.getTrending(this.fiat, this.start);
     this.getFiat();
+    this.getSearch();
   }
 
   getFiat(): void {
     this.service.fiat$.subscribe((fiat: Currency) => {
-      this.getTrending(fiat.code, this.start);
+      this.fiat = fiat.code;
+      this.getTrending(this.fiat, this.start, this.rows, this.searching);
       this.changeCurrencySymbol(fiat.name);
+    });
+  }
+
+  getSearch(): void {
+    this.service.searching$.subscribe((searching: string) => {
+      this.searching = searching;
+
+      if (searching !== '') {
+        this.getTrending(this.fiat, 0, 10, this.searching);
+      } else {
+        this.getTrending(this.fiat, this.start);
+      }
     });
   }
 
@@ -51,9 +73,9 @@ export class TableComponent {
     this.currencySymbol = fiat !== 'BRL' ? '$' : 'R$';
   }
 
-  getTrending(fiat: string, offset: number): void {
+  getTrending(fiat: string, offset: number, rows = 10, find = ''): void {
     this.service
-      .getTrendingTop(fiat, offset)
+      .getTrendingTop(fiat, offset, rows, find)
       .pipe(take(1))
       .subscribe((res: CoinList) => {
         this.coinList = res.data.coins;
@@ -63,6 +85,6 @@ export class TableComponent {
   onPageChange(event: PaginatorState): void {
     this.start = event.first;
     this.rows = event.rows;
-    this.getTrending(this.fiat, this.start);
+    this.getTrending(this.fiat, this.start, this.rows, this.searching);
   }
 }

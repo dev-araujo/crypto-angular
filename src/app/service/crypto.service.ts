@@ -22,8 +22,10 @@ export class CryptoService {
   private readonly baseUrl = 'https://api.coinranking.com/v2/';
   private currentAccessToken = ACCESSTOKEN;
   private fiatSubject = new BehaviorSubject<Currency>({ name: '', code: '' });
+  private searchingSubject = new BehaviorSubject<string>('');
 
   fiat$ = this.fiatSubject.asObservable();
+  searching$ = this.searchingSubject.asObservable();
 
   constructor(private http: HttpClient) {}
 
@@ -31,9 +33,15 @@ export class CryptoService {
     this.fiatSubject.next(changeFiat);
   }
 
+  sharedSearch(find: string) {
+    this.searchingSubject.next(find);
+  }
+
   getTrendingTop(
     currency: string,
-    offset: number = 0
+    offset: number = 0,
+    rows = 10,
+    search = ''
   ): Observable<CoinList | any> {
     const options = {
       headers: {
@@ -41,7 +49,8 @@ export class CryptoService {
         'x-access-token': this.currentAccessToken,
       },
     };
-    const endpoint = `${this.baseUrl}coins?referenceCurrencyUuid=${currency}&orderBy=price&limit=10&offset=${offset}`;
+    const endpoint = `${this.baseUrl}coins?referenceCurrencyUuid=${currency}&orderBy=price&limit=${rows}&offset=${offset}&search=${search}`;
+
     return this.http.get<CoinList | any>(endpoint, options).pipe(
       catchError((error) => {
         if (error instanceof HttpErrorResponse && error.status === 429) {
