@@ -40,6 +40,12 @@
 
     @media (max-width: 600px) {
       width: 100vw;
+      padding-right: 1rem;
+      padding-left: 1rem;
+    }
+    @media (max-width: 375px) {
+      padding-right: 8px;
+      padding-left: 8px;
     }
   }
 
