@@ -7,11 +7,18 @@ import { TooltipModule } from 'primeng/tooltip';
 
 import { CryptoService } from '../../../service/crypto.service';
 import { Currency } from '../../../models/shared.interface';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [DropdownModule, InputTextModule, TooltipModule, FormsModule],
+  imports: [
+    DropdownModule,
+    InputTextModule,
+    TooltipModule,
+    FormsModule,
+    RouterLink,
+  ],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',
 })
