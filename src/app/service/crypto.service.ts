@@ -63,14 +63,18 @@ export class CryptoService {
     );
   }
 
-  getCoinHistory(uuid: string, period: string = '24h'): any {
+  getCoinHistory(
+    uuid: string,
+    period: string = '24h',
+    currency = 'n5fpnvMGNsOS'
+  ): any {
     const options = {
       headers: {
         'Content-Type': 'application/json',
         'x-access-token': this.currentAccessToken,
       },
     };
-    const endpoint = `${this.baseUrl}coin/${uuid}/history?timePeriod=${period}`;
+    const endpoint = `${this.baseUrl}coin/${uuid}/history?timePeriod=${period}&referenceCurrencyUuid=${currency}`;
 
     return this.http.get<any>(endpoint, options).pipe(
       catchError((error) => {

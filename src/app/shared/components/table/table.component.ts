@@ -15,6 +15,7 @@ import { PaginatorModule, PaginatorState } from 'primeng/paginator';
 import { CoinList, Currency } from '../../../models/shared.interface';
 import { CryptoService } from '../../../service/crypto.service';
 import { PercentageHelper } from './utils/percentageHelper';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-table',
@@ -28,6 +29,7 @@ import { PercentageHelper } from './utils/percentageHelper';
     PaginatorModule,
     CurrencyPipe,
     PercentPipe,
+    RouterLink,
   ],
   templateUrl: './table.component.html',
   styleUrl: './table.component.scss',
