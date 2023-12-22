@@ -62,4 +62,25 @@ export class CryptoService {
       })
     );
   }
+
+  getCoinHistory(uuid: string, period: string = '24h'): any {
+    const options = {
+      headers: {
+        'Content-Type': 'application/json',
+        'x-access-token': this.currentAccessToken,
+      },
+    };
+    const endpoint = `${this.baseUrl}coin/${uuid}/history?timePeriod=${period}`;
+
+    return this.http.get<any>(endpoint, options).pipe(
+      catchError((error) => {
+        if (error instanceof HttpErrorResponse && error.status === 429) {
+          this.currentAccessToken = ACCESSTOKENBACKUP;
+          options.headers['x-access-token'] = this.currentAccessToken;
+          return this.http.get<any>(endpoint, options);
+        }
+        return throwError(error);
+      })
+    );
+  }
 }
