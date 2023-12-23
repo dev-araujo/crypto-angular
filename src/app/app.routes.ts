@@ -4,5 +4,5 @@ import { ChartComponent } from './views/chart/chart.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
-  { path: 'charts/:id', component: ChartComponent },
+  { path: 'charts/:id/:coin', component: ChartComponent },
 ];
