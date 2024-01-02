@@ -6,8 +6,8 @@
 
     <section class="header__actions">
         <form class="search">
-            <input pInputText type="text" (keyup)="clear()" (keyup.enter)="search()" placeholder="Pesquisar" name="find"
-                [(ngModel)]="find" class="search__input" />
+            <input [disabled]="chartPage" pInputText type="text" (keyup)="clear()" (keyup.enter)="search()"
+                placeholder="Pesquisar" name="find" [(ngModel)]="find" class="search__input" />
             <span class="search__icon pi pi-search" type="submit" (click)="search()"></span>
         </form>
         <p-dropdown (ngModelChange)="getFiat($event)" [options]="currency" [(ngModel)]="fiat" optionLabel="name"

@@ -15,7 +15,7 @@
                         <span class="pi pi-heart"></span>
                         <img [src]="coin?.iconUrl+'?size=30x30'" [srcset]="coin?.iconUrl+'?size=30x30 1x,'"
                             [routerLink]="['charts',coin.uuid]" />
-                        <div class="table__rows__coin__text" [routerLink]="['charts',coin.uuid, coin.name]">
+                        <div class="table__rows__coin__text" [routerLink]="['charts',coin.symbol, coin.name]">
                             <h4>{{ coin.name }}</h4>
                             <p>{{ coin.symbol }}</p>
                         </div>

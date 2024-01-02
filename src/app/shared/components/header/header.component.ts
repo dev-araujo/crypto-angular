@@ -7,7 +7,7 @@ import { TooltipModule } from 'primeng/tooltip';
 
 import { CryptoService } from '../../../service/crypto.service';
 import { Currency } from '../../../models/shared.interface';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-header',
@@ -18,6 +18,7 @@ import { RouterLink } from '@angular/router';
     TooltipModule,
     FormsModule,
     RouterLink,
+    RouterModule,
   ],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',
@@ -29,8 +30,11 @@ export class HeaderComponent {
   ];
   fiat = this.currency[1];
   find = '';
+  chartPage = false;
 
-  constructor(private service: CryptoService) {}
+  constructor(private router: Router, private service: CryptoService) {
+    this.chartPage = this.router.url.includes('charts');
+  }
 
   getFiat(event: Currency): void {
     this.service.sharedFiat(event);

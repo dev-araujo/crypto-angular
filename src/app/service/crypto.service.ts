@@ -12,7 +12,11 @@ import {
   throwError,
 } from 'rxjs';
 
-import { ACCESSTOKEN, ACCESSTOKENBACKUP } from '../../../config/config';
+import {
+  ACCESSTOKEN,
+  ACCESSTOKENBACKUP,
+  HISTORICALAPI,
+} from '../../../config/config';
 import { CoinList, Currency } from '../models/shared.interface';
 
 @Injectable({
@@ -20,6 +24,8 @@ import { CoinList, Currency } from '../models/shared.interface';
 })
 export class CryptoService {
   private readonly baseUrl = 'https://api.coinranking.com/v2/';
+  private readonly hitoricalBaseUrl =
+    'https://min-api.cryptocompare.com/data/v2/';
   private currentAccessToken = ACCESSTOKEN;
   private fiatSubject = new BehaviorSubject<Currency>({ name: '', code: '' });
   private searchingSubject = new BehaviorSubject<string>('');
@@ -51,40 +57,22 @@ export class CryptoService {
     };
     const endpoint = `${this.baseUrl}coins?referenceCurrencyUuid=${currency}&orderBy=price&limit=${rows}&offset=${offset}&search=${search}`;
 
-    return this.http.get<CoinList | any>(endpoint, options).pipe(
-      catchError((error) => {
-        if (error instanceof HttpErrorResponse && error.status === 429) {
-          this.currentAccessToken = ACCESSTOKENBACKUP;
-          options.headers['x-access-token'] = this.currentAccessToken;
-          return this.http.get<CoinList | any>(endpoint, options);
-        }
-        return throwError(error);
-      })
-    );
+    return this.http.get<CoinList | any>(endpoint, options);
+    // .pipe(
+    //   catchError((error) => {
+    //     if (error instanceof HttpErrorResponse && error.status === 429) {
+    //       this.currentAccessToken = ACCESSTOKENBACKUP;
+    //       options.headers['x-access-token'] = this.currentAccessToken;
+    //       return this.http.get<CoinList | any>(endpoint, options);
+    //     }
+    //     return throwError(error);
+    //   })
+    // );
   }
 
-  getCoinHistory(
-    uuid: string,
-    period: string = '24h',
-    currency = 'n5fpnvMGNsOS'
-  ): any {
-    const options = {
-      headers: {
-        'Content-Type': 'application/json',
-        'x-access-token': this.currentAccessToken,
-      },
-    };
-    const endpoint = `${this.baseUrl}coin/${uuid}/history?timePeriod=${period}&referenceCurrencyUuid=${currency}`;
+  getCoinHistory(coin: string, period: string = 'day', currency = 'BRL'): any {
+    const endpoint = `${this.hitoricalBaseUrl}histo${period}?fsym=${coin}&tsym=${currency}&limit=500&api_key=${this.hitoricalBaseUrl}`;
 
-    return this.http.get<any>(endpoint, options).pipe(
-      catchError((error) => {
-        if (error instanceof HttpErrorResponse && error.status === 429) {
-          this.currentAccessToken = ACCESSTOKENBACKUP;
-          options.headers['x-access-token'] = this.currentAccessToken;
-          return this.http.get<any>(endpoint, options);
-        }
-        return throwError(error);
-      })
-    );
+    return this.http.get<any>(endpoint);
   }
 }

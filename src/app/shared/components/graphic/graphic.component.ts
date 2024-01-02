@@ -1,6 +1,14 @@
 import { NgIf } from '@angular/common';
 import { Component } from '@angular/core';
 import Chart from 'chart.js/auto';
+import {
+  LinearScale,
+  PointElement,
+  LineElement,
+  Tooltip,
+  Filler,
+  TimeScale,
+} from 'chart.js';
 import { Router, RouterModule } from '@angular/router';
 import { CryptoService } from '../../../service/crypto.service';
 import { Currency } from '../../../models/shared.interface';
@@ -17,20 +25,6 @@ export class GraphicComponent {
   id: string = '';
   coin: string = '';
   title = 'ng-chart';
-  oneDayLabels = [
-    '08:00',
-    '10:00',
-    '12:00',
-    '14:00',
-    '16:00',
-    '18:00',
-    '20:00',
-    '22:00',
-    '00:00',
-    '02:00',
-    '04:00',
-    '06:00',
-  ];
 
   constructor(private router: Router, private service: CryptoService) {
     const url = this.router.url.split('/');
@@ -48,22 +42,23 @@ export class GraphicComponent {
 
   getFiat(): void {
     this.service.fiat$.subscribe((fiat: Currency) => {
-      this.getChart(fiat.code);
+      console.log(fiat);
+      this.getChart(fiat.name);
     });
   }
 
   getChart(fiat?: string): void {
     this.destroyChart();
-
-    this.service.getCoinHistory(this.id, '24h', fiat).subscribe((res: any) => {
+    console.log(fiat);
+    this.service.getCoinHistory(this.id, 'day', fiat).subscribe((res: any) => {
       this.chart = new Chart('canvas', {
         type: 'line',
         data: {
-          labels: this.oneDayLabels,
+          labels: this.generateTimeIntervals(res.Data?.Data),
           datasets: [
             {
-              data: res.data.history.map((res: { price: string }) => {
-                return parseFloat(res.price).toFixed(2);
+              data: res.Data.Data.map((obj: { high: string }) => {
+                return parseFloat(obj.high).toFixed(2);
               }),
               borderWidth: 1,
               borderColor: '#2f8542',
@@ -101,5 +96,34 @@ export class GraphicComponent {
     if (this.chart instanceof Chart) {
       this.chart.destroy();
     }
+  }
+
+  generateTimeIntervals(array: any[]): string[] {
+    const uniqueTimes: Set<string> = new Set();
+
+    array.forEach((obj) => {
+      const date = new Date(obj.time * 1000);
+      date.toLocaleString('en-US', { timeZone: 'America/Sao_Paulo' });
+
+      const hours = date.getHours().toString().padStart(2, '0');
+      const minutes = date.getMinutes().toString().padStart(2, '0');
+      const formattedTime = `${hours}:${minutes}`;
+
+      uniqueTimes.add(formattedTime);
+    });
+
+    for (let hour = 0; hour < 24; hour++) {
+      for (let minute = 0; minute < 60; minute += 15) {
+        const paddedHour = hour.toString().padStart(2, '0');
+        const paddedMinute = minute.toString().padStart(2, '0');
+        const fullTime = `${paddedHour}:${paddedMinute}`;
+
+        uniqueTimes.add(fullTime);
+      }
+    }
+
+    const uniqueTimesArray: string[] = Array.from(uniqueTimes).sort();
+    console.log(uniqueTimesArray);
+    return uniqueTimesArray;
   }
 }
