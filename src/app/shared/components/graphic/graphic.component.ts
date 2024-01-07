@@ -54,11 +54,19 @@ export class GraphicComponent {
       this.chart = new Chart('canvas', {
         type: 'line',
         data: {
-          labels: this.generateTimeIntervals(res.Data?.Data),
+          labels: res.Data?.Data.map((res: any) => {
+            const date = new Date(res.time);
+            date.toLocaleString('en-US', {
+              timeZone: 'America/Sao_Paulo',
+            });
+            const hours = date.getHours().toString().padStart(2, '0');
+            const minutes = date.getMinutes().toString().padStart(2, '0');
+            return hours + ':' + minutes;
+          }),
           datasets: [
             {
-              data: res.Data.Data.map((obj: { high: string }) => {
-                return parseFloat(obj.high).toFixed(2);
+              data: res.Data.Data.map((obj: { close: string }) => {
+                return parseFloat(obj.close);
               }),
               borderWidth: 1,
               borderColor: '#2f8542',
