@@ -53,6 +53,7 @@ export class GraphicComponent {
     this.service.getCoinHistory(this.id, 'day', fiat).subscribe((res: any) => {
       this.chart = new Chart('canvas', {
         type: 'line',
+
         data: {
           labels: res.Data?.Data.map((res: any) => {
             const date = new Date(res.time);
@@ -63,6 +64,7 @@ export class GraphicComponent {
             const minutes = date.getMinutes().toString().padStart(2, '0');
             return hours + ':' + minutes;
           }),
+
           datasets: [
             {
               data: res.Data.Data.map((obj: { close: string }) => {
@@ -73,6 +75,7 @@ export class GraphicComponent {
 
               fill: true,
               backgroundColor: '#a5f3c859',
+              pointStyle: false,
             },
           ],
         },
@@ -81,6 +84,9 @@ export class GraphicComponent {
           plugins: {
             legend: {
               display: false,
+              labels: {
+                usePointStyle: false,
+              },
             },
           },
           scales: {
