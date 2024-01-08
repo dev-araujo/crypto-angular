@@ -33,16 +33,16 @@ export class GraphicComponent {
     this.coin = decodeURIComponent(url[url.length - 1]);
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.getFiat();
+  }
 
   ngAfterViewInit(): void {
     this.getChart();
-    this.getFiat();
   }
 
   getFiat(): void {
     this.service.fiat$.subscribe((fiat: Currency) => {
-      console.log(fiat);
       this.getChart(fiat.name);
     });
   }
@@ -104,34 +104,5 @@ export class GraphicComponent {
     if (this.chart instanceof Chart) {
       this.chart.destroy();
     }
-  }
-
-  generateTimeIntervals(array: any[]): string[] {
-    const uniqueTimes: Set<string> = new Set();
-
-    array.forEach((obj) => {
-      const date = new Date(obj.time * 1000);
-      date.toLocaleString('en-US', { timeZone: 'America/Sao_Paulo' });
-
-      const hours = date.getHours().toString().padStart(2, '0');
-      const minutes = date.getMinutes().toString().padStart(2, '0');
-      const formattedTime = `${hours}:${minutes}`;
-
-      uniqueTimes.add(formattedTime);
-    });
-
-    for (let hour = 0; hour < 24; hour++) {
-      for (let minute = 0; minute < 60; minute += 15) {
-        const paddedHour = hour.toString().padStart(2, '0');
-        const paddedMinute = minute.toString().padStart(2, '0');
-        const fullTime = `${paddedHour}:${paddedMinute}`;
-
-        uniqueTimes.add(fullTime);
-      }
-    }
-
-    const uniqueTimesArray: string[] = Array.from(uniqueTimes).sort();
-    console.log(uniqueTimesArray);
-    return uniqueTimesArray;
   }
 }
