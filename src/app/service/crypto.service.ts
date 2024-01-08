@@ -57,17 +57,16 @@ export class CryptoService {
     };
     const endpoint = `${this.baseUrl}coins?referenceCurrencyUuid=${currency}&orderBy=price&limit=${rows}&offset=${offset}&search=${search}`;
 
-    return this.http.get<CoinList | any>(endpoint, options);
-    // .pipe(
-    //   catchError((error) => {
-    //     if (error instanceof HttpErrorResponse && error.status === 429) {
-    //       this.currentAccessToken = ACCESSTOKENBACKUP;
-    //       options.headers['x-access-token'] = this.currentAccessToken;
-    //       return this.http.get<CoinList | any>(endpoint, options);
-    //     }
-    //     return throwError(error);
-    //   })
-    // );
+    return this.http.get<CoinList | any>(endpoint, options).pipe(
+      catchError((error) => {
+        if (error instanceof HttpErrorResponse && error.status === 429) {
+          this.currentAccessToken = ACCESSTOKENBACKUP;
+          options.headers['x-access-token'] = this.currentAccessToken;
+          return this.http.get<CoinList | any>(endpoint, options);
+        }
+        return throwError(error);
+      })
+    );
   }
 
   getCoinHistory(coin: string, period: string = 'day', currency = 'BRL'): any {
