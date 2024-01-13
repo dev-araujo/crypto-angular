@@ -1,0 +1,14 @@
+.chartWrapper {
+  position: relative;
+  width: 100%;
+}
+
+.chartAreaWrapper {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.chartContainer {
+  width: 1500px; /* Largura fixa do contêiner do gráfico */
+  height: 620px;
+}

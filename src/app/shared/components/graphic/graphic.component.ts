@@ -48,10 +48,20 @@ export class GraphicComponent {
   }
 
   getChart(fiat?: string): void {
-    this.destroyChart();
-    console.log(fiat);
+    const chartContainer: any = document.getElementById('chartContainer');
+    const canvas = document.createElement('canvas');
+    chartContainer.innerHTML = ''; // Limpa o conteúdo anterior
+    chartContainer.appendChild(canvas);
+
+    const context = canvas.getContext('2d');
+
+    if (!context) {
+      console.error('Unable to get 2D context for canvas');
+      return;
+    }
+
     this.service.getCoinHistory(this.id, 'day', fiat).subscribe((res: any) => {
-      this.chart = new Chart('canvas', {
+      this.chart = new Chart(context, {
         type: 'line',
 
         data: {
@@ -62,6 +72,7 @@ export class GraphicComponent {
             });
             const hours = date.getHours().toString().padStart(2, '0');
             const minutes = date.getMinutes().toString().padStart(2, '0');
+
             return hours + ':' + minutes;
           }),
 
@@ -81,6 +92,8 @@ export class GraphicComponent {
         },
 
         options: {
+          maintainAspectRatio: false,
+          responsive: true,
           plugins: {
             legend: {
               display: false,
@@ -106,9 +119,11 @@ export class GraphicComponent {
     });
   }
 
-  destroyChart(): void {
-    if (this.chart instanceof Chart) {
-      this.chart.destroy();
-    }
-  }
+  // async destroyChart(): Promise<void> {
+  //   console.log(this.chart);
+  //   if (this.chart) {
+  //     await this.chart.destroy();
+  //     this.chart = null;
+  //   }
+  // }
 }

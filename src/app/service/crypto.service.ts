@@ -70,7 +70,7 @@ export class CryptoService {
   }
 
   getCoinHistory(coin: string, period: string = 'day', currency = 'BRL'): any {
-    const endpoint = `${this.hitoricalBaseUrl}histo${period}?fsym=${coin}&tsym=${currency}&limit=500&api_key=${this.hitoricalBaseUrl}`;
+    const endpoint = `${this.hitoricalBaseUrl}histo${period}?fsym=${coin}&tsym=${currency}&limit=200&api_key=${this.hitoricalBaseUrl}&aggregate=2& aggregatePredictableTimePeriods=false`;
 
     return this.http.get<any>(endpoint);
   }
