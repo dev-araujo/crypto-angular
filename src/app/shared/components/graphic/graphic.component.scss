@@ -1,3 +1,8 @@
+.graphic {
+  width: 100vw;
+  padding: 1rem;
+}
+
 .chartWrapper {
   position: relative;
   width: 100%;
@@ -6,9 +11,14 @@
 .chartAreaWrapper {
   width: 100%;
   overflow-x: auto;
+
+  @media (min-width: 400px) {
+    display: flex;
+    justify-content: center;
+  }
 }
 
 .chartContainer {
-  width: 1500px; /* Largura fixa do contêiner do gráfico */
+  width: 1500px;
   height: 620px;
 }
