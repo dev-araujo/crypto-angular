@@ -24,8 +24,7 @@ import { CoinList, Currency } from '../models/shared.interface';
 })
 export class CryptoService {
   private readonly baseUrl = 'https://api.coinranking.com/v2/';
-  private readonly hitoricalBaseUrl =
-    'https://min-api.cryptocompare.com/data/v2/';
+  private readonly hitoricalBaseUrl = 'https://min-api.cryptocompare.com/';
   private currentAccessToken = ACCESSTOKEN;
   private fiatSubject = new BehaviorSubject<Currency>({ name: '', code: '' });
   private searchingSubject = new BehaviorSubject<string>('');
@@ -41,6 +40,12 @@ export class CryptoService {
 
   sharedSearch(find: string) {
     this.searchingSubject.next(find);
+  }
+
+  getSymbol(symbol: string): any {
+    const endpoint = `https://data-api.cryptocompare.com/asset/v1/data/by/symbol?asset_symbol=${symbol}&api_key=${HISTORICALAPI}`;
+
+    return this.http.get<any>(endpoint);
   }
 
   getTrendingTop(
@@ -70,7 +75,7 @@ export class CryptoService {
   }
 
   getCoinHistory(coin: string, period: string = 'day', currency = 'BRL'): any {
-    const endpoint = `${this.hitoricalBaseUrl}histo${period}?fsym=${coin}&tsym=${currency}&limit=200&api_key=${this.hitoricalBaseUrl}&aggregate=2& aggregatePredictableTimePeriods=false`;
+    const endpoint = `${this.hitoricalBaseUrl}data/v2/histo${period}?fsym=${coin}&tsym=${currency}&limit=200&aggregate=2&aggregatePredictableTimePeriods=false&api_key=${HISTORICALAPI}`;
 
     return this.http.get<any>(endpoint);
   }

@@ -24,17 +24,25 @@ export class GraphicComponent {
   chart: any = [];
   id: string = '';
   coin: string = '';
-  title = 'ng-chart';
+  image: any;
 
   constructor(private router: Router, private service: CryptoService) {
     const url = this.router.url.split('/');
 
     this.id = url[url.length - 2];
+    this.getImage();
     this.coin = decodeURIComponent(url[url.length - 1]);
   }
 
   ngOnInit() {
     this.getFiat();
+  }
+
+  getImage(): void {
+    this.service.getSymbol(this.id).subscribe(async (res: any) => {
+      this.image = await res?.Data.LOGO_URL;
+      console.log(this.image);
+    });
   }
 
   ngAfterViewInit(): void {
