@@ -16,6 +16,7 @@ import { CoinList, Currency } from '../../../models/shared.interface';
 import { CryptoService } from '../../../service/crypto.service';
 import { PercentageHelper } from './utils/percentageHelper';
 import { RouterLink } from '@angular/router';
+import { changeCurrencySymbol } from './utils/currencyViewHelper';
 
 @Component({
   selector: 'app-table',
@@ -55,7 +56,7 @@ export class TableComponent {
     this.service.fiat$.subscribe((fiat: Currency) => {
       this.fiat = fiat.code;
       this.getTrending(this.fiat, this.start, this.rows, this.searching);
-      this.changeCurrencySymbol(fiat.name);
+      this.currencySymbol = changeCurrencySymbol(fiat.name);
     });
   }
 
@@ -69,10 +70,6 @@ export class TableComponent {
         this.getTrending(this.fiat, this.start);
       }
     });
-  }
-
-  changeCurrencySymbol(fiat: string): void {
-    this.currencySymbol = fiat !== 'BRL' ? '$' : 'R$';
   }
 
   getTrending(fiat: string, offset: number, rows = 10, find = ''): void {
