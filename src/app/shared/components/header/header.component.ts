@@ -30,11 +30,8 @@ export class HeaderComponent {
   ];
   fiat = this.currency[1];
   find = '';
-  chartPage = false;
 
-  constructor(private router: Router, private service: CryptoService) {
-    this.chartPage = this.router.url.includes('charts');
-  }
+  constructor(private router: Router, private service: CryptoService) {}
 
   getFiat(event: Currency): void {
     this.service.sharedFiat(event);
