@@ -3,11 +3,12 @@ import { CommonModule } from '@angular/common';
 import { CryptoService } from '../../service/crypto.service';
 import { take } from 'rxjs';
 import { TableComponent } from '../../shared/components/table/table.component';
+import { BannerComponent } from '../../shared/components/banner/banner.component';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, TableComponent],
+  imports: [CommonModule, TableComponent, BannerComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
 })

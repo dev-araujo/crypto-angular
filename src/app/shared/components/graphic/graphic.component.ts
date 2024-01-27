@@ -25,7 +25,7 @@ import { StyleClassModule } from 'primeng/styleclass';
 export class GraphicComponent {
   chart: any = [];
   id: string = '';
-  coin: string = '';
+  coin: string | any = null;
   image: any;
 
   constructor(private router: Router, private service: CryptoService) {
