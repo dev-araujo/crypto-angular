@@ -39,3 +39,24 @@
   width: 1500px;
   height: 620px;
 }
+
+:host ::ng-deep .new-spinner .p-progress-spinner-circle {
+  animation: custom-spinner 8s ease-in-out infinite;
+}
+
+@keyframes custom-spinner {
+  100%,
+  0% {
+    stroke: #008744;
+  }
+  40% {
+    stroke: #04994f;
+  }
+  66% {
+    stroke: #01582d;
+  }
+  80%,
+  90% {
+    stroke: #014e28;
+  }
+}

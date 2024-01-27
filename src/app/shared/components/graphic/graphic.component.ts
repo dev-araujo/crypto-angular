@@ -12,11 +12,13 @@ import {
 import { Router, RouterModule } from '@angular/router';
 import { CryptoService } from '../../../service/crypto.service';
 import { Currency } from '../../../models/shared.interface';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { StyleClassModule } from 'primeng/styleclass';
 
 @Component({
   selector: 'app-graphic',
   standalone: true,
-  imports: [NgIf, RouterModule],
+  imports: [NgIf, RouterModule, ProgressSpinnerModule, StyleClassModule],
   templateUrl: './graphic.component.html',
   styleUrl: './graphic.component.scss',
 })
