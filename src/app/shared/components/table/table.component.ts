@@ -78,7 +78,14 @@ export class TableComponent {
       .pipe(take(1))
       .subscribe((res: CoinList) => {
         this.coinList = res.data.coins;
+        this.coinList.forEach((res: any) => {
+          res.isFavorite = false;
+        });
       });
+  }
+
+  toggleFavorite(coin: any): void {
+    coin.isFavorite = !coin.isFavorite;
   }
 
   onPageChange(event: PaginatorState): void {
