@@ -12,8 +12,6 @@
             <tr class="table__rows">
                 <td>
                     <section class="table__rows__coin">
-                        <span (click)="toggleFavorite(coin)"
-                            [ngClass]="coin.isFavorite ? 'pi pi-heart-fill' : 'pi pi-heart'" class="pi pi-heart"></span>
                         <img [src]="coin?.iconUrl+'?size=30x30'" [srcset]="coin?.iconUrl+'?size=30x30 1x,'"
                             [routerLink]="['charts',coin.uuid]" />
                         <div class="table__rows__coin__text" [routerLink]="['charts',coin.symbol, coin.name]">

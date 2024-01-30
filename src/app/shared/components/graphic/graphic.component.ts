@@ -129,11 +129,11 @@ export class GraphicComponent {
     });
   }
 
-  // async destroyChart(): Promise<void> {
-  //   console.log(this.chart);
-  //   if (this.chart) {
-  //     await this.chart.destroy();
-  //     this.chart = null;
-  //   }
-  // }
+  async destroyChart(): Promise<void> {
+    console.log(this.chart);
+    if (this.chart) {
+      await this.chart.destroy();
+      this.chart = null;
+    }
+  }
 }

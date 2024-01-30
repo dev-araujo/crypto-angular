@@ -37,7 +37,7 @@
   &__actions {
     width: 40rem;
     @include centralizeV;
-    justify-content: space-around;
+    justify-content: end;
 
     @media (max-width: 600px) {
       width: 100vw;
@@ -61,6 +61,7 @@
       font-size: 14px;
       width: 200px;
       box-sizing: border-box;
+      margin-right: 1rem;
     }
 
     &__icon {
@@ -70,19 +71,7 @@
       transform: translateY(-50%);
       color: $gray-400;
       cursor: pointer;
+      margin-right: 1rem;
     }
-  }
-
-  &__favorites {
-    font-size: 18px;
-    @media (max-width: 420px) {
-      display: none;
-    }
-  }
-  &__favorites--less420 {
-    @media (min-width: 420px) {
-      display: none;
-    }
-    cursor: pointer;
   }
 }

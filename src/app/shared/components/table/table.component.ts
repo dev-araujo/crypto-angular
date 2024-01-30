@@ -84,10 +84,6 @@ export class TableComponent {
       });
   }
 
-  toggleFavorite(coin: any): void {
-    coin.isFavorite = !coin.isFavorite;
-  }
-
   onPageChange(event: PaginatorState): void {
     this.start = event.first;
     this.rows = event.rows;
