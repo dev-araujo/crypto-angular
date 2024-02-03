@@ -1,32 +1,34 @@
 import { NgIf } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import Chart from 'chart.js/auto';
-import {
-  LinearScale,
-  PointElement,
-  LineElement,
-  Tooltip,
-  Filler,
-  TimeScale,
-} from 'chart.js';
 import { Router, RouterModule } from '@angular/router';
 import { CryptoService } from '../../../service/crypto.service';
 import { Currency } from '../../../models/shared.interface';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { StyleClassModule } from 'primeng/styleclass';
+import { NoGraphicComponent } from '../no-graphic/no-graphic.component';
 
 @Component({
   selector: 'app-graphic',
   standalone: true,
-  imports: [NgIf, RouterModule, ProgressSpinnerModule, StyleClassModule],
+  imports: [
+    NgIf,
+    RouterModule,
+    ProgressSpinnerModule,
+    StyleClassModule,
+    NoGraphicComponent,
+  ],
   templateUrl: './graphic.component.html',
   styleUrl: './graphic.component.scss',
 })
 export class GraphicComponent {
+  @ViewChild('chartContainer') chartContainer!: ElementRef;
+
   chart: any = [];
   id: string = '';
   coin: string | any = null;
   image: any;
+  hasChart = true;
 
   constructor(private router: Router, private service: CryptoService) {
     const url = this.router.url.split('/');
@@ -58,10 +60,14 @@ export class GraphicComponent {
   }
 
   getChart(fiat?: string): void {
-    const chartContainer: any = document.getElementById('chartContainer');
+    if (!this.chartContainer) {
+      console.error('Unable to find chartContainer element');
+      return;
+    }
+
+    this.chartContainer.nativeElement.innerHTML = ''; // Limpa o conteúdo anterior
     const canvas = document.createElement('canvas');
-    chartContainer.innerHTML = ''; // Limpa o conteúdo anterior
-    chartContainer.appendChild(canvas);
+    this.chartContainer.nativeElement.appendChild(canvas);
 
     const context = canvas.getContext('2d');
 
@@ -70,67 +76,70 @@ export class GraphicComponent {
       return;
     }
 
-    this.service.getCoinHistory(this.id, 'day', fiat).subscribe((res: any) => {
-      this.chart = new Chart(context, {
-        type: 'line',
+    this.service
+      .getCoinHistory(this.id, 'day', fiat)
+      .subscribe(async (res: any) => {
+        console.log(res.Response);
+        this.hasChart = res.Response !== 'Error';
+        this.chart = new Chart(context, {
+          type: 'line',
 
-        data: {
-          labels: res.Data?.Data.map((res: any) => {
-            const date = new Date(res.time);
-            date.toLocaleString('en-US', {
-              timeZone: 'America/Sao_Paulo',
-            });
-            const hours = date.getHours().toString().padStart(2, '0');
-            const minutes = date.getMinutes().toString().padStart(2, '0');
+          data: {
+            labels: res.Data?.Data.map((res: any) => {
+              const date = new Date(res.time);
+              date.toLocaleString('en-US', {
+                timeZone: 'America/Sao_Paulo',
+              });
+              const hours = date.getHours().toString().padStart(2, '0');
+              const minutes = date.getMinutes().toString().padStart(2, '0');
 
-            return hours + ':' + minutes;
-          }),
+              return hours + ':' + minutes;
+            }),
 
-          datasets: [
-            {
-              data: res.Data.Data.map((obj: { close: string }) => {
-                return parseFloat(obj.close);
-              }),
-              borderWidth: 1,
-              borderColor: '#2f8542',
+            datasets: [
+              {
+                data: res.Data.Data.map((obj: { close: string }) => {
+                  return parseFloat(obj.close);
+                }),
+                borderWidth: 1,
+                borderColor: '#2f8542',
 
-              fill: true,
-              backgroundColor: '#a5f3c859',
-              pointStyle: false,
+                fill: true,
+                backgroundColor: '#a5f3c859',
+                pointStyle: false,
+              },
+            ],
+          },
+
+          options: {
+            maintainAspectRatio: false,
+            responsive: true,
+            plugins: {
+              legend: {
+                display: false,
+                labels: {
+                  usePointStyle: false,
+                },
+              },
             },
-          ],
-        },
-
-        options: {
-          maintainAspectRatio: false,
-          responsive: true,
-          plugins: {
-            legend: {
-              display: false,
-              labels: {
-                usePointStyle: false,
+            scales: {
+              x: {
+                grid: {
+                  display: false,
+                },
+              },
+              y: {
+                grid: {
+                  display: false,
+                },
               },
             },
           },
-          scales: {
-            x: {
-              grid: {
-                display: false,
-              },
-            },
-            y: {
-              grid: {
-                display: false,
-              },
-            },
-          },
-        },
+        });
       });
-    });
   }
 
   async destroyChart(): Promise<void> {
-    console.log(this.chart);
     if (this.chart) {
       await this.chart.destroy();
       this.chart = null;

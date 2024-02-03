@@ -7,9 +7,10 @@
 
     </header>
 
-    <div class="chartWrapper">
+    <div class="chartWrapper" *ngIf="hasChart">
         <div class="chartAreaWrapper">
-            <div id="chartContainer" class="chartContainer"></div>
+            <div #chartContainer class="chartContainer"></div>
         </div>
     </div>
 </section>
+<app-no-graphic *ngIf="!hasChart"></app-no-graphic>
