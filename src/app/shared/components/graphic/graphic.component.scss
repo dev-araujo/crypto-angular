@@ -11,6 +11,10 @@
       font-size: 35px;
       letter-spacing: 1px;
       font-family: "EB Garamond", serif;
+
+      @media (max-width: 600px) {
+        font-size: 22px;
+      }
     }
 
     img {
