@@ -26,8 +26,11 @@
         </ng-template>
 
     </p-table>
-    <div *ngIf="searching === ''">
+    @if (searching === ''){
+    <div>
         <p-paginator (onPageChange)="onPageChange($event)" [first]="start" [rows]="rows" [totalRecords]="5000"
             [rowsPerPageOptions]="[10, 20, 30]"></p-paginator>
     </div>
+    }
+
 </div>
