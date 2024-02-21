@@ -3,7 +3,11 @@ import { Component, ElementRef, ViewChild } from '@angular/core';
 import Chart from 'chart.js/auto';
 import { Router, RouterModule } from '@angular/router';
 import { CryptoService } from '../../../service/crypto.service';
-import { Currency } from '../../../models/shared.interface';
+import {
+  Currency,
+  HistoricalData,
+  HistoricalObj,
+} from '../../../models/shared.interface';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { StyleClassModule } from 'primeng/styleclass';
 import { NoGraphicComponent } from '../no-graphic/no-graphic.component';
@@ -27,7 +31,7 @@ export class GraphicComponent {
   chart: any = [];
   id: string = '';
   coin: string | any = null;
-  image: any;
+  image: any = null;
   hasChart = true;
 
   constructor(private router: Router, private service: CryptoService) {
@@ -38,14 +42,13 @@ export class GraphicComponent {
     this.coin = decodeURIComponent(url[url.length - 1]);
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.getFiat();
   }
 
   getImage(): void {
-    this.service.getSymbol(this.id).subscribe(async (res: any) => {
-      this.image = await res?.Data.LOGO_URL;
-      console.log(this.image);
+    this.service.getSymbol(this.id).subscribe(async (res: string) => {
+      this.image = await res;
     });
   }
 
@@ -78,14 +81,13 @@ export class GraphicComponent {
 
     this.service
       .getCoinHistory(this.id, 'day', fiat)
-      .subscribe(async (res: any) => {
-        console.log(res.Response);
-        this.hasChart = res.Response !== 'Error';
+      .subscribe(async (res: HistoricalData) => {
+        this.hasChart = res.response !== 'Error';
         this.chart = new Chart(context, {
           type: 'line',
 
           data: {
-            labels: res.Data?.Data.map((res: any) => {
+            labels: res.data.map((res: any) => {
               const date = new Date(res.time);
               date.toLocaleString('en-US', {
                 timeZone: 'America/Sao_Paulo',
@@ -98,7 +100,7 @@ export class GraphicComponent {
 
             datasets: [
               {
-                data: res.Data.Data.map((obj: { close: string }) => {
+                data: res.data.map((obj: { close: number | any }) => {
                   return parseFloat(obj.close);
                 }),
                 borderWidth: 1,
