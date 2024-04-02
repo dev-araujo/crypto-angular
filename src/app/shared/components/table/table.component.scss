@@ -1,4 +1,7 @@
 .table {
+  animation: fadeInAnimation ease 3s;
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
   &__rows {
     &__coin {
       width: 330px;
@@ -26,5 +29,14 @@
         cursor: pointer;
       }
     }
+  }
+}
+@keyframes fadeInAnimation {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
   }
 }

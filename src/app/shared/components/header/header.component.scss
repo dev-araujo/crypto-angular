@@ -2,6 +2,10 @@
 @import "../../../../styles/colors.scss";
 
 .header {
+  animation: fadeInAnimation ease 2s;
+  animation-iteration-count: 1;
+  animation-fill-mode: backwards;
+
   height: 8rem;
   padding: 2rem;
   @include centralizeV;
@@ -71,5 +75,15 @@
       cursor: pointer;
       margin-right: 1rem;
     }
+  }
+}
+
+@keyframes fadeInAnimation {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
   }
 }

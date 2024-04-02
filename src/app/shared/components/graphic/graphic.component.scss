@@ -2,6 +2,10 @@
   width: 100vw;
   padding: 1rem;
 
+  animation: fadeInAnimation ease 2s;
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
+
   header {
     display: flex;
     align-items: center;
@@ -62,5 +66,14 @@
   80%,
   90% {
     stroke: #014e28;
+  }
+}
+@keyframes fadeInAnimation {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
   }
 }
