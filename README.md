@@ -23,8 +23,8 @@
 - **Angular +2**
 
 ### Consumindo as APIs:
-- [Coinranking](https://api.coinranking.com/v2/)
-- [CryptoCompare](https://www.cryptocompare.com/)
+- [Coinranking](https://developers.coinranking.com/api)
+- [CryptoCompare](https://min-api.cryptocompare.com/)
 
 <details><summary> <h2>Instruções para rodar local</h2></summary>
 
@@ -33,6 +33,21 @@ Por ser um projeto realizado com **Angular**, há a necessidade do **NodeJS**. C
 No terminal, clone o projeto:
 ```
 git clone 
+```
+
+Crie um diretório na raiz chamado config com um arquivo ts chamado config
+```
+/config > config.ts
+```
+
+Crie as chaves na  [CryptoCompare](https://min-api.cryptocompare.com/) e na [Coinranking](https://developers.coinranking.com/api) e as defina no **config.ts**:
+
+```typeScript
+
+export const ACCESSTOKEN = "SUA-CHAVE-CRYPTOCOMPARE"
+export const ACCESSTOKENBACKUP ="SUA-CHAVE-CRYPTOCOMPARE"
+export const HISTORICALAPI = "SUA-CHAVE-COINRANKING"
+
 ```
 
 
@@ -54,6 +69,22 @@ No terminal, clone o projeto:
 ```
 git clone 
 ```
+
+Crie um diretório na raiz chamado config com um arquivo ts chamado config
+```
+/config > config.ts
+```
+
+Crie as chaves na  [CryptoCompare](https://min-api.cryptocompare.com/) e na [Coinranking](https://developers.coinranking.com/api) e as defina no **config.ts**:
+
+```typeScript
+
+export const ACCESSTOKEN = "SUA-CHAVE-CRYPTOCOMPARE"
+export const ACCESSTOKENBACKUP ="SUA-CHAVE-CRYPTOCOMPARE"
+export const HISTORICALAPI = "SUA-CHAVE-COINRANKING"
+
+```
+
 
 Crie a imagem :
 ```
