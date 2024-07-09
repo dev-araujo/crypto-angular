@@ -1,13 +1,20 @@
 import { NgIf } from '@angular/common';
-import { Component, ElementRef, ViewChild } from '@angular/core';
-import Chart from 'chart.js/auto';
+import {
+  Component,
+  ElementRef,
+  ViewChild,
+  AfterViewInit,
+  OnInit,
+} from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
+import { ChartService } from '../service/chart.service';
 import { CryptoService } from '../../../../service/general/crypto.service';
 import { StateService } from '../../../../service/state/state.service';
 import { Currency, HistoricalData } from '../../../../models/shared.model';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { StyleClassModule } from 'primeng/styleclass';
 import { NoGraphicComponent } from '../../no-graphic/no-graphic.component';
+import Chart from 'chart.js/auto';
 
 @Component({
   selector: 'app-graphic',
@@ -20,41 +27,41 @@ import { NoGraphicComponent } from '../../no-graphic/no-graphic.component';
     NoGraphicComponent,
   ],
   templateUrl: './graphic.component.html',
-  styleUrl: './graphic.component.scss',
+  styleUrls: ['./graphic.component.scss'],
 })
-export class GraphicComponent {
+export class GraphicComponent implements OnInit, AfterViewInit {
   @ViewChild('chartContainer') chartContainer!: ElementRef;
 
-  chart: any = [];
+  chart: Chart | null = null;
   id: string = '';
-  coin: string | any = null;
-  image: any = null;
+  coin: string | null = null;
+  image: string | null = null;
   hasChart = true;
 
   constructor(
     private router: Router,
     private cryptoService: CryptoService,
-    private stateService: StateService
+    private stateService: StateService,
+    private chartService: ChartService
   ) {
-    const url = this.router.url.split('/');
-
-    this.id = url[url.length - 2];
-    this.getImage();
-    this.coin = decodeURIComponent(url[url.length - 1]);
+    const urlSegments = this.router.url.split('/');
+    this.id = urlSegments[urlSegments.length - 2];
+    this.coin = decodeURIComponent(urlSegments[urlSegments.length - 1]);
   }
 
   ngOnInit(): void {
     this.getFiat();
   }
 
-  getImage(): void {
-    this.cryptoService.getSymbol(this.id).subscribe(async (res: string) => {
-      this.image = await res;
-    });
+  ngAfterViewInit(): void {
+    this.getImage();
+    this.getChart();
   }
 
-  ngAfterViewInit(): void {
-    this.getChart();
+  getImage(): void {
+    this.cryptoService.getSymbol(this.id).subscribe((res: string) => {
+      this.image = res;
+    });
   }
 
   getFiat(): void {
@@ -69,82 +76,48 @@ export class GraphicComponent {
       return;
     }
 
-    this.chartContainer.nativeElement.innerHTML = ''; // Limpa o conteúdo anterior
-    const canvas = document.createElement('canvas');
-    this.chartContainer.nativeElement.appendChild(canvas);
-
-    const context = canvas.getContext('2d');
-
-    if (!context) {
-      console.error('Unable to get 2D context for canvas');
-      return;
-    }
-
     this.cryptoService
       .getCoinHistory(this.id, 'day', fiat)
-      .subscribe(async (res: HistoricalData) => {
+      .subscribe((res: HistoricalData) => {
         this.hasChart = res.response !== 'Error';
-        this.chart = new Chart(context, {
-          type: 'line',
 
-          data: {
-            labels: res.data.map((res: any) => {
-              const date = new Date(res.time);
-              date.toLocaleString('en-US', {
-                timeZone: 'America/Sao_Paulo',
-              });
-              const hours = date.getHours().toString().padStart(2, '0');
-              const minutes = date.getMinutes().toString().padStart(2, '0');
+        if (this.hasChart && this.chartContainer) {
+          this.destroyChart();
+          const canvas = document.createElement('canvas');
+          this.chartContainer.nativeElement.appendChild(canvas);
+          const context = canvas.getContext('2d');
 
-              return hours + ':' + minutes;
-            }),
-
-            datasets: [
-              {
-                data: res.data.map((obj: { close: number | any }) => {
-                  return parseFloat(obj.close);
-                }),
-                borderWidth: 1,
-                borderColor: '#2f8542',
-
-                fill: true,
-                backgroundColor: '#a5f3c859',
-                pointStyle: false,
-              },
-            ],
-          },
-
-          options: {
-            maintainAspectRatio: false,
-            responsive: true,
-            plugins: {
-              legend: {
-                display: false,
-                labels: {
-                  usePointStyle: false,
+          if (context) {
+            const data = {
+              labels: res.data.map((dataPoint) => {
+                const date = new Date(dataPoint.time);
+                return `${date.getHours().toString().padStart(2, '0')}:${date
+                  .getMinutes()
+                  .toString()
+                  .padStart(2, '0')}`;
+              }),
+              datasets: [
+                {
+                  data: res.data.map((obj) => parseFloat(obj.close)),
+                  borderWidth: 1,
+                  borderColor: '#2f8542',
+                  fill: true,
+                  backgroundColor: '#a5f3c859',
+                  pointStyle: false,
                 },
-              },
-            },
-            scales: {
-              x: {
-                grid: {
-                  display: false,
-                },
-              },
-              y: {
-                grid: {
-                  display: false,
-                },
-              },
-            },
-          },
-        });
+              ],
+            };
+            this.chart = this.chartService.createChart(context, data);
+          } else {
+            console.error('Unable to get 2D context for canvas');
+          }
+        }
       });
   }
 
-  async destroyChart(): Promise<void> {
+  destroyChart(): void {
     if (this.chart) {
-      await this.chart.destroy();
+      this.chartService.destroyChart(this.chart);
       this.chart = null;
     }
   }
