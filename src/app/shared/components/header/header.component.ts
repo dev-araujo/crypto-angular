@@ -24,7 +24,7 @@ import { StateService } from '../../../service/state/state.service';
   styleUrl: './header.component.scss',
 })
 export class HeaderComponent {
-  currency = [
+  readonly currency = [
     { name: 'USD', code: 'yhjMzLPhuIDl' },
     { name: 'BRL', code: 'n5fpnvMGNsOS' },
   ];

@@ -13,7 +13,7 @@ import { ChartService } from '../service/chart.service';
 import { Currency, HistoricalData } from '../../../../models/shared.model';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { StyleClassModule } from 'primeng/styleclass';
-import { NoGraphicComponent } from '../../no-graphic/no-graphic.component';
+import { NoGraphicComponent } from '../../../layout/no-graphic/no-graphic.component';
 import Chart from 'chart.js/auto';
 
 @Component({
