@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { GraphicComponent } from '../../shared/components/graphic/graphic.component';
+import { GraphicComponent } from '../../shared/components/graphic/container/graphic.component';
 import { BannerComponent } from '../../shared/components/banner/banner.component';
 
 @Component({
