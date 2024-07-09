@@ -5,11 +5,11 @@ import {
   ViewChild,
   AfterViewInit,
   OnInit,
+  AfterViewChecked,
+  ChangeDetectorRef,
 } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { ChartService } from '../service/chart.service';
-import { CryptoService } from '../../../../service/general/crypto.service';
-import { StateService } from '../../../../service/state/state.service';
 import { Currency, HistoricalData } from '../../../../models/shared.model';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { StyleClassModule } from 'primeng/styleclass';
@@ -29,7 +29,9 @@ import Chart from 'chart.js/auto';
   templateUrl: './graphic.component.html',
   styleUrls: ['./graphic.component.scss'],
 })
-export class GraphicComponent implements OnInit, AfterViewInit {
+export class GraphicComponent
+  implements OnInit, AfterViewInit, AfterViewChecked
+{
   @ViewChild('chartContainer') chartContainer!: ElementRef;
 
   chart: Chart | null = null;
@@ -37,12 +39,12 @@ export class GraphicComponent implements OnInit, AfterViewInit {
   coin: string | null = null;
   image: string | null = null;
   hasChart = true;
+  fiat: string = '';
 
   constructor(
     private router: Router,
-    private cryptoService: CryptoService,
-    private stateService: StateService,
-    private chartService: ChartService
+    private chartService: ChartService,
+    private cdr: ChangeDetectorRef
   ) {
     const urlSegments = this.router.url.split('/');
     this.id = urlSegments[urlSegments.length - 2];
@@ -55,28 +57,39 @@ export class GraphicComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit(): void {
     this.getImage();
-    this.getChart();
+  }
+
+  ngAfterViewChecked(): void {
+    this.cdr.detectChanges();
   }
 
   getImage(): void {
-    this.cryptoService.getSymbol(this.id).subscribe((res: string) => {
+    this.chartService.getSymbol(this.id).subscribe((res: string) => {
       this.image = res;
+      setTimeout(() => {
+        this.cdr.detectChanges();
+        this.getChart();
+      }, 0);
     });
   }
 
   getFiat(): void {
-    this.stateService.fiat$.subscribe((fiat: Currency) => {
-      this.getChart(fiat.name);
+    this.chartService.getFiat().subscribe((fiat: Currency) => {
+      this.fiat = fiat.name;
+      setTimeout(() => {
+        this.cdr.detectChanges();
+        this.getChart(this.fiat);
+      }, 0);
     });
   }
 
-  getChart(fiat?: string): void {
+  getChart(fiat = this.fiat): void {
     if (!this.chartContainer) {
       console.error('Unable to find chartContainer element');
       return;
     }
 
-    this.cryptoService
+    this.chartService
       .getCoinHistory(this.id, 'day', fiat)
       .subscribe((res: HistoricalData) => {
         this.hasChart = res.response !== 'Error';
@@ -111,6 +124,9 @@ export class GraphicComponent implements OnInit, AfterViewInit {
           } else {
             console.error('Unable to get 2D context for canvas');
           }
+        } else {
+          console.warn('No data available to create chart.');
+          this.hasChart = false;
         }
       });
   }
