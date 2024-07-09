@@ -12,7 +12,7 @@ import { TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
 import { PaginatorModule, PaginatorState } from 'primeng/paginator';
 
-import { CoinList, Currency } from '../../../models/shared.interface';
+import { CoinList, Currency } from '../../../models/shared.model';
 import { CryptoService } from '../../../service/general/crypto.service';
 import { PercentageHelper } from './utils/percentageHelper';
 import { RouterLink } from '@angular/router';

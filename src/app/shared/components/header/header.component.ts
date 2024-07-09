@@ -5,7 +5,7 @@ import { DropdownModule } from 'primeng/dropdown';
 import { InputTextModule } from 'primeng/inputtext';
 import { TooltipModule } from 'primeng/tooltip';
 
-import { Currency } from '../../../models/shared.interface';
+import { Currency } from '../../../models/shared.model';
 import { Router, RouterLink, RouterModule } from '@angular/router';
 import { StateService } from '../../../service/state/state.service';
 

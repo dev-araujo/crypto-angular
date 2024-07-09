@@ -4,11 +4,7 @@ import Chart from 'chart.js/auto';
 import { Router, RouterModule } from '@angular/router';
 import { CryptoService } from '../../../service/general/crypto.service';
 import { StateService } from '../../../service/state/state.service';
-import {
-  Currency,
-  HistoricalData,
-  HistoricalObj,
-} from '../../../models/shared.interface';
+import { Currency, HistoricalData } from '../../../models/shared.model';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { StyleClassModule } from 'primeng/styleclass';
 import { NoGraphicComponent } from '../no-graphic/no-graphic.component';

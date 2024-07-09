@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { Currency } from '../../models/shared.interface';
+import { Currency } from '../../models/shared.model';
 
 @Injectable({
   providedIn: 'root',

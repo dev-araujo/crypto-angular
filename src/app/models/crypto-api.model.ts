@@ -1,5 +1,6 @@
+// crypto-api.model.ts
 import { Observable } from 'rxjs';
-import { CoinList, HistoricalData } from './shared.interface';
+import { CoinList, HistoricalData } from './shared.model';
 
 export interface ICryptoApiService {
   getTrendingTop(

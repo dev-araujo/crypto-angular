@@ -1,9 +1,10 @@
+// shared.model.ts
 export interface Currency {
   name: string;
   code: string;
 }
 
-// api return
+// API return interfaces
 export interface CoinList {
   status: string;
   data: Data;
@@ -40,12 +41,12 @@ export interface Coin {
   '24hVolume': string;
 }
 
-// historicalBaseUrl
-
+// Historical data interfaces
 export interface HistoricalData {
   response: string;
   data: HistoricalObj[];
 }
+
 export interface HistoricalObj {
   time: number;
   high: number;
