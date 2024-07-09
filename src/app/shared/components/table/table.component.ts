@@ -13,10 +13,11 @@ import { ButtonModule } from 'primeng/button';
 import { PaginatorModule, PaginatorState } from 'primeng/paginator';
 
 import { CoinList, Currency } from '../../../models/shared.interface';
-import { CryptoService } from '../../../service/crypto.service';
+import { CryptoService } from '../../../service/general/crypto.service';
 import { PercentageHelper } from './utils/percentageHelper';
 import { RouterLink } from '@angular/router';
 import { changeCurrencySymbol } from './utils/currencyViewHelper';
+import { StateService } from '../../../service/state/state.service';
 
 @Component({
   selector: 'app-table',
@@ -44,7 +45,10 @@ export class TableComponent {
   searching: string = '';
   percentageStyle = PercentageHelper;
 
-  constructor(private service: CryptoService) {}
+  constructor(
+    private service: CryptoService,
+    private stateService: StateService
+  ) {}
 
   ngOnInit(): void {
     this.getTrending(this.fiat, this.start);
@@ -53,7 +57,7 @@ export class TableComponent {
   }
 
   getFiat(): void {
-    this.service.fiat$.subscribe((fiat: Currency) => {
+    this.stateService.fiat$.subscribe((fiat: Currency) => {
       this.fiat = fiat.code;
       this.getTrending(this.fiat, this.start, this.rows, this.searching);
       this.currencySymbol = changeCurrencySymbol(fiat.name);
@@ -61,7 +65,7 @@ export class TableComponent {
   }
 
   getSearch(): void {
-    this.service.searching$.subscribe((searching: string) => {
+    this.stateService.searching$.subscribe((searching: string) => {
       this.searching = searching;
 
       if (searching !== '') {

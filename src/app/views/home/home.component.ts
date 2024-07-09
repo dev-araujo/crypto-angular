@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { CryptoService } from '../../service/crypto.service';
-import { take } from 'rxjs';
+import { CryptoService } from '../../service/general/crypto.service';
 import { TableComponent } from '../../shared/components/table/table.component';
 import { BannerComponent } from '../../shared/components/banner/banner.component';
 

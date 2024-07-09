@@ -2,7 +2,8 @@ import { NgIf } from '@angular/common';
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import Chart from 'chart.js/auto';
 import { Router, RouterModule } from '@angular/router';
-import { CryptoService } from '../../../service/crypto.service';
+import { CryptoService } from '../../../service/general/crypto.service';
+import { StateService } from '../../../service/state/state.service';
 import {
   Currency,
   HistoricalData,
@@ -34,7 +35,11 @@ export class GraphicComponent {
   image: any = null;
   hasChart = true;
 
-  constructor(private router: Router, private service: CryptoService) {
+  constructor(
+    private router: Router,
+    private cryptoService: CryptoService,
+    private stateService: StateService
+  ) {
     const url = this.router.url.split('/');
 
     this.id = url[url.length - 2];
@@ -47,7 +52,7 @@ export class GraphicComponent {
   }
 
   getImage(): void {
-    this.service.getSymbol(this.id).subscribe(async (res: string) => {
+    this.cryptoService.getSymbol(this.id).subscribe(async (res: string) => {
       this.image = await res;
     });
   }
@@ -57,7 +62,7 @@ export class GraphicComponent {
   }
 
   getFiat(): void {
-    this.service.fiat$.subscribe((fiat: Currency) => {
+    this.stateService.fiat$.subscribe((fiat: Currency) => {
       this.getChart(fiat.name);
     });
   }
@@ -79,7 +84,7 @@ export class GraphicComponent {
       return;
     }
 
-    this.service
+    this.cryptoService
       .getCoinHistory(this.id, 'day', fiat)
       .subscribe(async (res: HistoricalData) => {
         this.hasChart = res.response !== 'Error';

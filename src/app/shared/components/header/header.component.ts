@@ -5,9 +5,9 @@ import { DropdownModule } from 'primeng/dropdown';
 import { InputTextModule } from 'primeng/inputtext';
 import { TooltipModule } from 'primeng/tooltip';
 
-import { CryptoService } from '../../../service/crypto.service';
 import { Currency } from '../../../models/shared.interface';
 import { Router, RouterLink, RouterModule } from '@angular/router';
+import { StateService } from '../../../service/state/state.service';
 
 @Component({
   selector: 'app-header',
@@ -31,21 +31,21 @@ export class HeaderComponent {
   fiat = this.currency[1];
   find = '';
 
-  constructor(private router: Router, private service: CryptoService) {}
+  constructor(private router: Router, private stateService: StateService) {}
 
   getFiat(event: Currency): void {
-    this.service.sharedFiat(event);
+    this.stateService.sharedFiat(event);
   }
 
   search(): void {
     if (this.find !== '') {
-      this.service.sharedSearch(this.find);
+      this.stateService.sharedSearch(this.find);
     }
   }
 
   clear(): void {
     if (this.find === '') {
-      this.service.sharedSearch(this.find);
+      this.stateService.sharedSearch(this.find);
     }
   }
 }
