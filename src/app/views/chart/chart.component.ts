@@ -7,7 +7,7 @@ import { BannerComponent } from '../../shared/components/banner/banner.component
   selector: 'app-chart',
   standalone: true,
   imports: [CommonModule, GraphicComponent, BannerComponent],
-  templateUrl: './chart.component.html',
+  template: `<app-graphic></app-graphic>`,
   styleUrl: './chart.component.scss',
 })
 export class ChartComponent {}

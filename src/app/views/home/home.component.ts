@@ -8,7 +8,10 @@ import { BannerComponent } from '../../shared/components/banner/banner.component
   selector: 'app-home',
   standalone: true,
   imports: [CommonModule, TableComponent, BannerComponent],
-  templateUrl: './home.component.html',
+  template: `<app-banner></app-banner>
+    <div class="home">
+      <app-table></app-table>
+    </div>`,
   styleUrl: './home.component.scss',
 })
 export class HomeComponent {

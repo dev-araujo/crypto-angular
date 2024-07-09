@@ -8,7 +8,10 @@ import { BannerComponent } from './shared/components/banner/banner.component';
   selector: 'app-root',
   standalone: true,
   imports: [CommonModule, RouterOutlet, HeaderComponent, BannerComponent],
-  templateUrl: './app.component.html',
+  template: `<main class="container">
+    <app-header></app-header>
+    <router-outlet></router-outlet>
+  </main>`,
   styleUrl: './app.component.scss',
 })
 export class AppComponent {
