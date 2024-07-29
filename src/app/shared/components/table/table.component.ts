@@ -69,7 +69,7 @@ export class TableComponent {
 
   getDetails(coin: any) {
     this.toggleViewDetails = !this.toggleViewDetails;
-    this.emitDetails.emit(this.toggleViewDetails);
+    this.emitDetails.emit({ toggle: this.toggleViewDetails, info: coin });
   }
 
   getFiat(): void {

@@ -1,4 +1,11 @@
-import { Component, Input, output } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  inject,
+  Input,
+  output,
+  SimpleChanges,
+} from '@angular/core';
 import { SidebarModule } from 'primeng/sidebar';
 
 @Component({
@@ -10,6 +17,14 @@ import { SidebarModule } from 'primeng/sidebar';
 })
 export class SidebarDetailsComponent {
   @Input() isVisible = false;
+  @Input() info: any;
+  private cdr = inject(ChangeDetectorRef);
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['info']) {
+      this.cdr.detectChanges();
+    }
+  }
   close = output<boolean>();
 
   hidden() {

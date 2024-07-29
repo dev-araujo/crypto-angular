@@ -19,6 +19,7 @@ import { SidebarDetailsComponent } from '../../shared/components/sidebar-details
       <app-sidebar-details
         [isVisible]="isVisible"
         (close)="close($event)"
+        [info]="info"
       ></app-sidebar-details>
       <app-table (emitDetails)="open($event)" [hidden]="isVisible"></app-table>
     </div>`,
@@ -26,10 +27,12 @@ import { SidebarDetailsComponent } from '../../shared/components/sidebar-details
 })
 export class HomeComponent {
   isVisible = false;
+  info: any;
   ngOnInit(): void {}
 
   open(event: any) {
-    this.isVisible = event;
+    this.isVisible = event?.toggle;
+    this.info = event?.info;
   }
 
   close(event: boolean) {
