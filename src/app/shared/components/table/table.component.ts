@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input, output, Output, SimpleChanges } from '@angular/core';
 import { take } from 'rxjs';
 import {
   CurrencyPipe,
@@ -37,6 +37,11 @@ import { StateService } from '../../../service/state/state.service';
   styleUrl: './table.component.scss',
 })
 export class TableComponent {
+  toggleViewDetails = false;
+  emitDetails = output<any>();
+
+  @Input() hidden = false;
+
   coinList: CoinList | any;
   start = 0 as any;
   rows = 10 as any;
@@ -50,10 +55,21 @@ export class TableComponent {
     private stateService: StateService
   ) {}
 
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['hidden']) {
+      this.toggleViewDetails = false;
+    }
+  }
+
   ngOnInit(): void {
     this.getTrending(this.fiat, this.start);
     this.getFiat();
     this.getSearch();
+  }
+
+  getDetails(coin: any) {
+    this.toggleViewDetails = !this.toggleViewDetails;
+    this.emitDetails.emit(this.toggleViewDetails);
   }
 
   getFiat(): void {

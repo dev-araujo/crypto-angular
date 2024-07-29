@@ -3,25 +3,32 @@
         [tableStyle]="{ 'min-width': '50rem' }">
         <ng-template pTemplate="header">
             <tr>
-                <th style="width:25%">Cripto</th>
-                <th style="width:25%">Preço</th>
-                <th style="width:25%">24h</th>
+                <th style="width:20%">Cripto</th>
+                <th style="width:20%">Preço</th>
+                <th style="width:20%">24h</th>
+                <th style="width:20%">Ação</th>
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-coin>
             <tr class="table__rows">
                 <td>
-                    <section class="table__rows__coin">
-                        <img [src]="coin?.iconUrl+'?size=30x30'" [srcset]="coin?.iconUrl+'?size=30x30 1x,'"
-                            [routerLink]="['charts',coin.uuid]" />
-                        <div class="table__rows__coin__text" [routerLink]="['charts',coin.symbol, coin.name]">
+                    <section class="table__rows__coin" [routerLink]="['charts',coin.symbol, coin.name]">
+                        <img [src]="coin?.iconUrl+'?size=30x30'" [srcset]="coin?.iconUrl+'?size=30x30 1x,'" />
+                        <div class="table__rows__coin__text">
                             <h4>{{ coin.name }}</h4>
                             <p>{{ coin.symbol }}</p>
                         </div>
                     </section>
                 </td>
                 <td>{{ coin.price | currency : currencySymbol }}</td>
-                <td [ngStyle]="percentageStyle.getChangeCellStyle(coin.change)">{{coin.change| percent}}</td>
+                <td [ngStyle]="percentageStyle.getChangeCellStyle(coin.change)">
+                    <i [class]="coin.change?.startsWith('-') ?  'pi pi-arrow-down-right':'pi pi-arrow-up-right'"></i>
+
+                    <span>{{coin.change| percent}}</span>
+                </td>
+                <td class="table__rows__details">
+                    <p (click)="getDetails(coin)">Detalhes</p>
+                </td>
             </tr>
         </ng-template>
 

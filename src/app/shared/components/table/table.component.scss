@@ -29,6 +29,18 @@
         cursor: pointer;
       }
     }
+
+    &__details {
+      p {
+        width: fit-content;
+        padding: 6px;
+        border-radius: 12px;
+        color: #2f8542;
+        font-weight: 600;
+        background: rgba(45, 160, 141, 0.137);
+        cursor: pointer;
+      }
+    }
   }
 }
 @keyframes fadeInAnimation {

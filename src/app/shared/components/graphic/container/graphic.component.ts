@@ -117,6 +117,7 @@ export class GraphicComponent
                   fill: true,
                   backgroundColor: '#a5f3c859',
                   pointStyle: false,
+                  tension: 0.8,
                 },
               ],
             };
