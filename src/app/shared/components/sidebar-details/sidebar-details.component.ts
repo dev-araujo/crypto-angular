@@ -18,6 +18,8 @@ import { SidebarModule } from 'primeng/sidebar';
 export class SidebarDetailsComponent {
   @Input() isVisible = false;
   @Input() info: any;
+  close = output<boolean>();
+
   private cdr = inject(ChangeDetectorRef);
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -25,7 +27,6 @@ export class SidebarDetailsComponent {
       this.cdr.detectChanges();
     }
   }
-  close = output<boolean>();
 
   hidden() {
     this.close.emit(true);
