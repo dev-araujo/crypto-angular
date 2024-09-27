@@ -6,7 +6,7 @@
 
 #### Um projeto para listar informações sobre crypto.
 
-- O resultado pode ser conferido :arrow_right: [**AQUI**](cryptocurrency-delta-ten.vercel.app/)
+- O resultado pode ser conferido :arrow_right: [**AQUI**](https://cryptocurrency-delta-ten.vercel.app/)
 
 <h1 align="center">
 
