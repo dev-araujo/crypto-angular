@@ -1,17 +1,19 @@
 import {
   ChangeDetectorRef,
   Component,
-  inject,
   Input,
-  output,
   SimpleChanges,
+  inject,
+  output,
 } from '@angular/core';
+
+import { CurrencyPipe } from '@angular/common';
 import { SidebarModule } from 'primeng/sidebar';
 
 @Component({
   selector: 'app-sidebar-details',
   standalone: true,
-  imports: [SidebarModule],
+  imports: [SidebarModule, CurrencyPipe],
   templateUrl: './sidebar-details.component.html',
   styleUrl: './sidebar-details.component.scss',
 })
@@ -24,6 +26,7 @@ export class SidebarDetailsComponent {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['info']) {
+      console.log(this.info);
       this.cdr.detectChanges();
     }
   }

@@ -1,5 +1,34 @@
 <p-sidebar class="info-sidebar" [(visible)]="isVisible" position="right" (onHide)="hidden()">
-    <h3 class="info-sidebar__title">{{ info?.name }} <img [src]="info?.iconUrl" /></h3>
+  <h3 class="info-sidebar__title">{{ info?.name }} <img [src]="info?.iconUrl" /></h3>
+
+  <section>
+    <div>
+      <span>Símbolo:</span><span>{{info?.symbol}}</span>
+    </div>
+    <div>
+      <span>Valor de mercado:</span><span>{{info?.marketCap| currency : 'R$'}}</span>
+    </div>
+    <div>
+      <span>Preço:</span><span>{{info?.price| currency : 'R$'}}</span>
+    </div>
+
+
+    <div>
+      <span>Mudança (24h):</span><span>{{info?.change| currency : 'R$'}}</span>
+    </div>
+    <div>
+      <span>Posição:</span><span>{{info?.rank}}</span>
+    </div>
+    <div>
+      <span>Baixo volume:</span><span>{{info?.lowVolume}}</span>
+    </div>
+    <div>
+      <span>Volume (24h):</span><span>{{info?.['24hVolume']| currency : 'R$'}}</span>
+    </div>
+    <div>
+      <span>Preço em Bitcoin:</span><span>{{info?.btcPrice| currency : 'R$'}}</span>
+    </div>
+  </section>
 
 
 
