@@ -1,5 +1,5 @@
-import { Component, Input, output, Output, SimpleChanges } from '@angular/core';
-import { take } from 'rxjs';
+import { CoinList, Currency } from '../../../models/shared.model';
+import { Component, Input, Output, SimpleChanges, output } from '@angular/core';
 import {
   CurrencyPipe,
   NgClass,
@@ -7,17 +7,16 @@ import {
   NgStyle,
   PercentPipe,
 } from '@angular/common';
-
-import { TableModule } from 'primeng/table';
-import { ButtonModule } from 'primeng/button';
 import { PaginatorModule, PaginatorState } from 'primeng/paginator';
 
-import { CoinList, Currency } from '../../../models/shared.model';
+import { ButtonModule } from 'primeng/button';
 import { CryptoService } from '../../../service/general/crypto.service';
-import { PercentageHelper } from './utils/percentageHelper';
+import { PercentageHelper } from '../utils/percentageHelper';
 import { RouterLink } from '@angular/router';
-import { changeCurrencySymbol } from './utils/currencyViewHelper';
 import { StateService } from '../../../service/state/state.service';
+import { TableModule } from 'primeng/table';
+import { changeCurrencySymbol } from '../utils/currencyViewHelper';
+import { take } from 'rxjs';
 
 @Component({
   selector: 'app-table',
@@ -67,9 +66,13 @@ export class TableComponent {
     this.getSearch();
   }
 
-  getDetails(coin: any) {
+  getDetails(coin: any, currencySymbol: string) {
     this.toggleViewDetails = !this.toggleViewDetails;
-    this.emitDetails.emit({ toggle: this.toggleViewDetails, info: coin });
+    this.emitDetails.emit({
+      toggle: this.toggleViewDetails,
+      info: coin,
+      signal: currencySymbol,
+    });
   }
 
   getFiat(): void {

@@ -8,7 +8,23 @@
     font-size: 42px;
   }
 
-  h3 {
+  section {
+    height: 32%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    div {
+      .symbol {
+        filter: brightness(0.9);
+      }
+      .label {
+        font-weight: 600;
+      }
+
+      .content {
+        margin-left: 1rem;
+      }
+    }
   }
 
   img {

@@ -3,30 +3,40 @@
 
   <section>
     <div>
-      <span>Símbolo:</span><span>{{info?.symbol}}</span>
+      <span class="label">Símbolo:</span><span class="content symbol"
+        [ngStyle]="{'color': info?.color}">{{info?.symbol}}</span>
     </div>
     <div>
-      <span>Valor de mercado:</span><span>{{info?.marketCap| currency : 'R$'}}</span>
+      <span class="label">Valor de mercado:</span><span class="content">{{info?.marketCap| currency :
+        signal}}</span>
     </div>
     <div>
-      <span>Preço:</span><span>{{info?.price| currency : 'R$'}}</span>
+      <span class="label">Preço:</span><span class="content">{{info?.price| currency : signal}}</span>
     </div>
 
 
     <div>
-      <span>Mudança (24h):</span><span>{{info?.change| currency : 'R$'}}</span>
+      <span class="label">Mudança (24h):</span>
+
+      <span class="content" [ngStyle]="percentageStyle.getChangeCellStyle(info?.change)">
+        <i [class]="info?.change?.startsWith('-') ?  'pi pi-arrow-down-right':'pi pi-arrow-up-right'"></i>
+        {{info?.change| percent}}
+      </span>
+
     </div>
     <div>
-      <span>Posição:</span><span>{{info?.rank}}</span>
+      <span class="label">Posição:</span><span class="content">{{info?.rank}}</span>
     </div>
     <div>
-      <span>Baixo volume:</span><span>{{info?.lowVolume}}</span>
+      <span class="label">Baixo volume:</span><span class="content">{{info?.lowVolume ? '😭 Sim':'🤑 Não'}}</span>
     </div>
     <div>
-      <span>Volume (24h):</span><span>{{info?.['24hVolume']| currency : 'R$'}}</span>
+      <span class="label">Volume (24h):</span><span class="content">{{info?.['24hVolume']| currency :
+        signal}}</span>
     </div>
     <div>
-      <span>Preço em Bitcoin:</span><span>{{info?.btcPrice| currency : 'R$'}}</span>
+      <span class="label">Preço em Bitcoin:</span><span class="content">{{info?.btcPrice| currency :
+        signal}}</span>
     </div>
   </section>
 
