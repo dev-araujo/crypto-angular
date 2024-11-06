@@ -43,6 +43,10 @@
     @include centralizeV;
     justify-content: end;
 
+    .connection {
+      margin-left: 1rem;
+    }
+
     @media (max-width: 600px) {
       width: 100vw;
       justify-content: center;
