@@ -1,22 +1,38 @@
 # Crypto-Angular
   <img  src="https://img.shields.io/static/v1?label=license&message=MIT&color=5965E0&labelColor=121214" alt="License">
 
+  
+> Em construção
+
 
 ## 💻 Projeto
 
 #### Um projeto para listar informações sobre crypto.
 
-> Em construção
+## Resultado
 
 - O resultado pode ser conferido :arrow_right: [**AQUI**](https://crypto-angular.vercel.app/)
-
 <h1 align="center">
 
- ![image](https://github.com/dev-araujo/cryptocurrency/assets/97068163/7a451b8e-9f68-47e2-93df-fe39da4a8887)
+![image](https://github.com/user-attachments/assets/9c148fe5-742c-4e80-939b-8fd6d9fd3dcb)
 
-![image](https://github.com/dev-araujo/cryptocurrency/assets/97068163/34a71bf4-97a4-449b-919b-6c71b0907241)
+![image](https://github.com/user-attachments/assets/3dece736-22ca-46d7-bd38-02b8cd85abcc)
+
 
 </h1>
+
+
+## Processo
+
+- [x] Exibir listagem dos tokens correntes
+- [x] Exibir gráficos dos tokens de acordo com a cotação
+
+ 🏃 Exibir detalhes à respeito de cada token **(parcialmente feito)**
+- [x] Possibilidade de alternar entre o valor da cotação em dolar e em real brasileiro
+- [x] Possibilidade de conexão com a metamask
+- [ ] Uma vez conectado com a metamask possibilitar a criação de uma 'lista de favoritos' onde se pode conferir a cotação e detalhes mais facilmente dos tokens favoritados
+
+
 
 
 ## Feito com 🔨
