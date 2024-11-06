@@ -1,9 +1,10 @@
+import { Currency, HistoricalData } from '../../../../models/shared.model';
+
+import Chart from 'chart.js/auto';
+import { CryptoService } from '../../../../service/general/crypto.service';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { CryptoService } from '../../../../service/general/crypto.service';
 import { StateService } from '../../../../service/state/state.service';
-import { Currency, HistoricalData } from '../../../../models/shared.model';
-import Chart from 'chart.js/auto';
 
 @Injectable({
   providedIn: 'root',
@@ -38,6 +39,14 @@ export class ChartService {
         maintainAspectRatio: false,
         responsive: true,
         plugins: {
+          tooltip: {
+            callbacks: {
+              label: (context: any) => {
+                let label = context.parsed.y || '';
+                return label;
+              },
+            },
+          },
           legend: {
             display: false,
             labels: {
