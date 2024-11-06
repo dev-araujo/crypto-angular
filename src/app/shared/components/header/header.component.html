@@ -1,17 +1,32 @@
 <header class="header">
-    <section class="header__logo" routerLink="/">
-        <img src="../../../../assets/logo.png" alt="logo: crypto Angular" />
-        <h1 class="header__logo__title">Cripto Angular</h1>
-    </section>
+  <section class="header__logo" routerLink="/">
+    <img src="../../../../assets/logo.png" alt="logo: crypto Angular" />
+    <h1 class="header__logo__title">Cripto Angular</h1>
+  </section>
 
-    <section class="header__actions">
-        <form class="search">
-            <input pInputText type="text" (keyup)="clear()" (keyup.enter)="search()" placeholder="Pesquisar" name="find"
-                [(ngModel)]="find" class="search__input" />
-            <span class="search__icon pi pi-search" type="submit" (click)="search()"></span>
-        </form>
-        <p-dropdown (ngModelChange)="getFiat($event)" [options]="currency" [(ngModel)]="fiat" optionLabel="name"
-            pTooltip="Selecione sua fiat" tooltipPosition="bottom"></p-dropdown>
+  <section class="header__actions">
+    <form class="search">
+      <input pInputText type="text" (keyup)="clear()" (keyup.enter)="search()" placeholder="Pesquisar" name="find"
+        [(ngModel)]="find" class="search__input" />
+      <span class="search__icon pi pi-search" type="submit" (click)="search()"></span>
+    </form>
 
-    </section>
+    <p-dropdown (ngModelChange)="getFiat($event)" [options]="currency" [(ngModel)]="fiat" optionLabel="name"
+      pTooltip="Selecione sua fiat" tooltipPosition="bottom"></p-dropdown>
+
+    <div class="connection">
+      @if (!account){
+      <p *ngIf="">Você não está conectado</p>
+      <p-button (click)="connect()">Conecte-se</p-button>
+      }@else{
+      <p-button (click)="disconnect()" *ngIf="account">Desconectar</p-button>
+      }
+
+
+    </div>
+
+  </section>
 </header>
+
+
+<!-- <p-button label="Search" icon="pi pi-check" [loading]="loading" (onClick)="load()" /> -->
