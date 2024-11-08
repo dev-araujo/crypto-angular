@@ -1,14 +1,15 @@
-import { Injectable } from '@angular/core';
+import {
+  ACCESSTOKEN,
+  ACCESSTOKENBACKUP,
+  HISTORICALAPI,
+} from '../../../../config/config';
+import { CoinList, HistoricalData } from '../../models/shared.model';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
-import { CoinList, HistoricalData } from '../../models/shared.model';
-import {
-  HISTORICALAPI,
-  ACCESSTOKEN,
-  ACCESSTOKENBACKUP,
-} from '../../../../config/config';
+
 import { ICryptoApiService } from '../../models/crypto-api.model';
+import { Injectable } from '@angular/core';
 
 @Injectable({
   providedIn: 'root',
@@ -55,6 +56,18 @@ export class CryptoService implements ICryptoApiService {
     return this.http
       .get<any>(endpoint)
       .pipe(map((res: { Data: { LOGO_URL: string } }) => res.Data.LOGO_URL));
+  }
+
+  getDetails(uuid: string): Observable<any> {
+    const options = {
+      headers: {
+        'Content-Type': 'application/json',
+        'x-access-token': this.currentAccessToken,
+      },
+    };
+    const endpoint = `${this.baseUrl}coin/${uuid}`;
+
+    return this.http.get<any>(endpoint, options);
   }
 
   getCoinHistory(

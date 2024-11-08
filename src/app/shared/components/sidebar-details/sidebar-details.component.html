@@ -1,42 +1,63 @@
 <p-sidebar class="info-sidebar" [(visible)]="isVisible" position="right" (onHide)="hidden()">
-  <h3 class="info-sidebar__title">{{ info?.name }} <img [src]="info?.iconUrl" /></h3>
+  <h3 class="info-sidebar__title">{{ coinDetails?.name }} <img [src]="coinDetails?.iconUrl" /></h3>
 
   <section>
     <div>
       <span class="label">Símbolo:</span><span class="content symbol"
-        [ngStyle]="{'color': info?.color}">{{info?.symbol}}</span>
+        [ngStyle]="{'color': coinDetails?.color}">{{coinDetails?.symbol}}</span>
     </div>
+
     <div>
-      <span class="label">Valor de mercado:</span><span class="content">{{info?.marketCap| currency :
+      <span class="label">Site oficial:</span>
+      <a class="content" target="_blank" rel="noopener noreferrer" [href]="coinDetails?.websiteUrl"
+        class="content">{{coinDetails?.websiteUrl}}</a>
+    </div>
+
+
+    <div>
+      <span class="label">Valor de mercado:</span><span class="content">{{coinDetails?.marketCap| currency :
         signal}}</span>
     </div>
     <div>
-      <span class="label">Preço:</span><span class="content">{{info?.price| currency : signal}}</span>
+      <span class="label">Preço:</span><span class="content">{{coinDetails?.price| currency : signal}}</span>
     </div>
 
 
     <div>
       <span class="label">Mudança (24h):</span>
 
-      <span class="content" [ngStyle]="percentageStyle.getChangeCellStyle(info?.change)">
-        <i [class]="info?.change?.startsWith('-') ?  'pi pi-arrow-down-right':'pi pi-arrow-up-right'"></i>
-        {{info?.change| percent}}
+      <span class="content" [ngStyle]="percentageStyle.getChangeCellStyle(coinDetails?.change)">
+        <i [class]="coinDetails?.change?.startsWith('-') ?  'pi pi-arrow-down-right':'pi pi-arrow-up-right'"></i>
+        {{coinDetails?.change| percent}}
       </span>
 
     </div>
     <div>
-      <span class="label">Posição:</span><span class="content">{{info?.rank}}</span>
+      <span class="label">Posição:</span><span class="content">{{coinDetails?.rank}}</span>
     </div>
     <div>
-      <span class="label">Baixo volume:</span><span class="content">{{info?.lowVolume ? '😭 Sim':'🤑 Não'}}</span>
+      <span class="label">Baixo volume:</span><span class="content">{{coinDetails?.lowVolume ? '😭 Sim':'🤑
+        Não'}}</span>
     </div>
     <div>
-      <span class="label">Volume (24h):</span><span class="content">{{info?.['24hVolume']| currency :
+      <span class="label">Volume (24h):</span><span class="content">{{coinDetails?.['24hVolume']| currency :
         signal}}</span>
     </div>
     <div>
-      <span class="label">Preço em Bitcoin:</span><span class="content">{{info?.btcPrice| currency :
+      <span class="label">Preço em Bitcoin:</span><span class="content">{{coinDetails?.btcPrice| currency :
         signal}}</span>
+    </div>
+
+    <div>
+      <span class="label">Links:</span>
+
+      @for (link of coinDetails?.links; track link.name ) {
+      <div>
+        <a class="content" target="_blank" rel="noopener noreferrer" [href]="link?.url"
+          class="content">{{link?.url}}</a>
+      </div>
+      }
+
     </div>
   </section>
 

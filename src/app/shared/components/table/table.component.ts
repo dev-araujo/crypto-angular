@@ -70,7 +70,7 @@ export class TableComponent {
     this.toggleViewDetails = !this.toggleViewDetails;
     this.emitDetails.emit({
       toggle: this.toggleViewDetails,
-      info: coin,
+      uuid: coin?.uuid,
       signal: currencySymbol,
     });
   }

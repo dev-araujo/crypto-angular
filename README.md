@@ -1,9 +1,8 @@
 # Crypto-Angular
+
   <img  src="https://img.shields.io/static/v1?label=license&message=MIT&color=5965E0&labelColor=121214" alt="License">
 
-  
 > Em construção
-
 
 ## 💻 Projeto
 
@@ -18,27 +17,25 @@
 
 ![image](https://github.com/user-attachments/assets/3dece736-22ca-46d7-bd38-02b8cd85abcc)
 
-
 </h1>
-
 
 ## Processo
 
 - [x] Exibir listagem dos tokens correntes
 - [x] Exibir gráficos dos tokens de acordo com a cotação
-
- 🏃 Exibir detalhes à respeito de cada token **(parcialmente feito)**
+- [x] Exibir detalhes à respeito de cada token
 - [x] Possibilidade de alternar entre o valor da cotação em dolar e em real brasileiro
 - [x] Possibilidade de conexão com a metamask
 - [ ] Uma vez conectado com a metamask possibilitar a criação de uma 'lista de favoritos' onde se pode conferir a cotação e detalhes mais facilmente dos tokens favoritados
-
-
-
+- [ ] layout para celular
+- [ ] Refazer layout da tela de detalhes
 
 ## Feito com 🔨
+
 - **Angular +2**
 
 ### Consumindo as APIs:
+
 - [Coinranking](https://developers.coinranking.com/api)
 - [CryptoCompare](https://min-api.cryptocompare.com/)
 
@@ -47,16 +44,18 @@
 Por ser um projeto realizado com **Angular**, há a necessidade do **NodeJS**. Com ele instalado basta seguir os seguintes passos.
 
 No terminal, clone o projeto:
+
 ```
-git clone 
+git clone
 ```
 
 Crie um diretório na raiz chamado config com um arquivo ts chamado config
+
 ```
 /config > config.ts
 ```
 
-Crie as chaves na  [CryptoCompare](https://min-api.cryptocompare.com/) e na [Coinranking](https://developers.coinranking.com/api) e as defina no **config.ts**:
+Crie as chaves na [CryptoCompare](https://min-api.cryptocompare.com/) e na [Coinranking](https://developers.coinranking.com/api) e as defina no **config.ts**:
 
 ```typeScript
 
@@ -66,15 +65,16 @@ export const HISTORICALAPI = "SUA-CHAVE-COINRANKING"
 
 ```
 
-
 Instale as dependências:
+
 ```
 npm install
 ```
 
 Execute a aplicação:
+
 ```
-npm run start 
+npm run start
 ```
 
 </details>
@@ -82,16 +82,18 @@ npm run start
 <details><summary> <h2>Instruções para rodar com Docker🐋 </h2></summary>
 
 No terminal, clone o projeto:
+
 ```
-git clone 
+git clone
 ```
 
 Crie um diretório na raiz chamado config com um arquivo ts chamado config
+
 ```
 /config > config.ts
 ```
 
-Crie as chaves na  [CryptoCompare](https://min-api.cryptocompare.com/) e na [Coinranking](https://developers.coinranking.com/api) e as defina no **config.ts**:
+Crie as chaves na [CryptoCompare](https://min-api.cryptocompare.com/) e na [Coinranking](https://developers.coinranking.com/api) e as defina no **config.ts**:
 
 ```typeScript
 
@@ -101,8 +103,8 @@ export const HISTORICALAPI = "SUA-CHAVE-COINRANKING"
 
 ```
 
-
 Crie a imagem :
+
 ```
 docker build -t crypto-app .
 ```
@@ -114,9 +116,10 @@ docker run -p 4201:4200 angular-docker
 ```
 
 Acesse a aplicação na **porta 4201**
+
 </details>
 
-----
+---
 
 #### Author 👷
 

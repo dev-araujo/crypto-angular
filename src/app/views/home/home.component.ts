@@ -1,6 +1,7 @@
+import { Component, SimpleChanges } from '@angular/core';
+
 import { BannerComponent } from '../../shared/layout/banner/banner.component';
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
 import { CryptoService } from '../../service/general/crypto.service';
 import { SidebarDetailsComponent } from '../../shared/components/sidebar-details/sidebar-details.component';
 import { TableComponent } from '../../shared/components/table/table.component';
@@ -19,7 +20,7 @@ import { TableComponent } from '../../shared/components/table/table.component';
       <app-sidebar-details
         [isVisible]="isVisible"
         (close)="close($event)"
-        [info]="info"
+        [uuid]="info"
         [signal]="signalSymbol"
       ></app-sidebar-details>
       <app-table (emitDetails)="open($event)" [hidden]="isVisible"></app-table>
@@ -31,12 +32,10 @@ export class HomeComponent {
   info: any;
   signalSymbol = 'R$';
 
-  ngOnInit(): void {}
-
   open(event: any) {
-    this.isVisible = event?.toggle;
-    this.info = event?.info;
+    this.info = event?.uuid;
     this.signalSymbol = event?.signal;
+    this.isVisible = event?.toggle;
   }
 
   close(event: boolean) {

@@ -6,31 +6,41 @@ import {
   inject,
   output,
 } from '@angular/core';
-import { CurrencyPipe, NgStyle, PercentPipe } from '@angular/common';
+import { CurrencyPipe, NgFor, NgStyle, PercentPipe } from '@angular/common';
 
+import { CryptoService } from '../../../service/general/crypto.service';
 import { PercentageHelper } from '../utils/percentageHelper';
 import { SidebarModule } from 'primeng/sidebar';
 
 @Component({
   selector: 'app-sidebar-details',
   standalone: true,
-  imports: [SidebarModule, CurrencyPipe, NgStyle, PercentPipe],
+  imports: [SidebarModule, CurrencyPipe, NgStyle, PercentPipe, NgFor],
   templateUrl: './sidebar-details.component.html',
   styleUrl: './sidebar-details.component.scss',
 })
 export class SidebarDetailsComponent {
   @Input() isVisible = false;
-  @Input() info: any;
+  @Input() uuid: any;
   @Input() signal: any;
   close = output<boolean>();
+  coinDetails: any;
   percentageStyle = PercentageHelper;
 
-  private cdr = inject(ChangeDetectorRef);
+  constructor(private cdr: ChangeDetectorRef, private service: CryptoService) {}
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['info']) {
+    if (changes['uuid']) {
+      this.getDetails();
       this.cdr.detectChanges();
     }
+  }
+
+  getDetails() {
+    this.service.getDetails(this.uuid).subscribe((res: any) => {
+      console.log(res);
+      this.coinDetails = res?.data?.coin;
+    });
   }
 
   hidden() {
