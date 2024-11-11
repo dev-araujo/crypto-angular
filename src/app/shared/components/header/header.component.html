@@ -20,14 +20,27 @@
       <p *ngIf="">Você não está conectado</p>
       <p-button (click)="connect()">Conecte-se</p-button>
       }@else{
-      <p-button (click)="disconnect()" *ngIf="account">Desconectar</p-button>
+
+      <section>
+        <p-button (click)="disconnect()" *ngIf="account">Desconectar</p-button>
+        <figure>
+          <p-button (onClick)="op.toggle($event)" class="transparent-button">
+            <img src="https://api.dicebear.com/9.x/identicon/svg?seed={{account}}" />
+          </p-button>
+
+        </figure>
+        <p-overlayPanel #op class="panel">
+          <span>{{account.substring(0,12) }}...</span>
+
+          <i (click)="clipping(account)" [class]="iconCopy" style="font-size: 1rem;cursor:pointer"></i>
+
+        </p-overlayPanel>
+      </section>
       }
 
 
     </div>
 
+
   </section>
 </header>
-
-
-<!-- <p-button label="Search" icon="pi pi-check" [loading]="loading" (onClick)="load()" /> -->
