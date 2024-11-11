@@ -40,12 +40,10 @@ export class AuthService {
         this.account = accounts[0];
         return this.account;
       } catch (error) {
-        console.error('Erro ao conectar à MetaMask:', error);
-        return null;
+        return `Erro ao conectar à MetaMask:${error}`;
       }
     } else {
-      console.error('MetaMask não está disponível.');
-      return null;
+      return 'Alerta: MetaMask não está disponível.';
     }
   }
 

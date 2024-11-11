@@ -1,4 +1,4 @@
-import { Router, RouterLink, RouterModule } from '@angular/router';
+import { RouterLink, RouterModule } from '@angular/router';
 
 import { AuthService } from '../../../service/auth/auth.service';
 import { ButtonModule } from 'primeng/button';
@@ -7,8 +7,12 @@ import { Currency } from '../../../models/shared.model';
 import { DropdownModule } from 'primeng/dropdown';
 import { FormsModule } from '@angular/forms';
 import { InputTextModule } from 'primeng/inputtext';
+import { MessageService } from 'primeng/api';
 import { NgIf } from '@angular/common';
+import { RippleModule } from 'primeng/ripple';
 import { StateService } from '../../../service/state/state.service';
+import { StatusConnection } from '../utils/status-connection';
+import { ToastModule } from 'primeng/toast';
 import { TooltipModule } from 'primeng/tooltip';
 
 @Component({
@@ -23,7 +27,10 @@ import { TooltipModule } from 'primeng/tooltip';
     RouterModule,
     NgIf,
     ButtonModule,
+    RippleModule,
+    ToastModule,
   ],
+  providers: [MessageService],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',
 })
@@ -37,7 +44,8 @@ export class HeaderComponent {
 
   constructor(
     private stateService: StateService,
-    private authService: AuthService
+    private authService: AuthService,
+    private messageService: MessageService
   ) {}
 
   getFiat(event: Currency): void {
@@ -59,7 +67,13 @@ export class HeaderComponent {
   account: string | null = null;
 
   async connect() {
-    this.account = await this.authService.connect();
+    let status = await this.authService.connect();
+
+    const checking = StatusConnection.checking(status, this.messageService);
+
+    if (checking) {
+      this.account = status;
+    }
   }
 
   disconnect() {
