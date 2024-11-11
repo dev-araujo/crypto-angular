@@ -1,7 +1,7 @@
 import { MessageService } from 'primeng/api';
 
-export class StatusConnection {
-  private static showWarn(messageService: MessageService, msg: string) {
+export class HandleStatus {
+  static showWarn(messageService: MessageService, msg: string) {
     messageService.add({
       severity: 'warn',
       summary: 'Aviso',
@@ -9,10 +9,18 @@ export class StatusConnection {
     });
   }
 
-  private static showError(messageService: MessageService, msg: string) {
+  static showError(messageService: MessageService, msg: any) {
     messageService.add({
       severity: 'error',
       summary: 'Erro',
+      detail: msg,
+    });
+  }
+
+  static showSuccess(messageService: MessageService, msg: any, title: string) {
+    messageService.add({
+      severity: 'success',
+      summary: title,
       detail: msg,
     });
   }
