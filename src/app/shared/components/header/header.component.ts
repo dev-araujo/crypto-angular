@@ -48,12 +48,19 @@ export class HeaderComponent {
   find = '';
 
   iconCopy = 'pi-clone clone pi';
+  account: string | any = null;
 
   constructor(
     private stateService: StateService,
     private authService: AuthService,
     private messageService: MessageService
   ) {}
+
+  ngOnInit(): void {
+    this.account = this.authService.isConnected()
+      ? localStorage.getItem('account')
+      : null;
+  }
 
   getFiat(event: Currency): void {
     this.stateService.sharedFiat(event);
@@ -70,8 +77,6 @@ export class HeaderComponent {
       this.stateService.sharedSearch(this.find);
     }
   }
-
-  account: string | null = null;
 
   async connect() {
     let status = await this.authService.connect();

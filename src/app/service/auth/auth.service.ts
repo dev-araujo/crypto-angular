@@ -7,7 +7,8 @@ import detectEthereumProvider from '@metamask/detect-provider';
 })
 export class AuthService {
   private provider: any;
-  public account: string | null = null;
+  public account: string | any = null;
+  private localStorageAccount = 'account';
 
   constructor() {
     this.initProvider();
@@ -38,6 +39,8 @@ export class AuthService {
           method: 'eth_requestAccounts',
         });
         this.account = accounts[0];
+        localStorage.setItem(this.localStorageAccount, this.account);
+
         return this.account;
       } catch (error) {
         return `Erro ao conectar à MetaMask:${error}`;
@@ -48,10 +51,12 @@ export class AuthService {
   }
 
   public disconnect() {
+    localStorage.removeItem(this.localStorageAccount);
     this.account = null;
   }
 
   public isConnected(): boolean {
-    return !!this.account;
+    const account = localStorage.getItem(this.localStorageAccount);
+    return !!account;
   }
 }
