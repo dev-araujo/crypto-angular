@@ -1,6 +1,6 @@
-import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { Currency } from '../../models/shared.model';
+import { Injectable } from '@angular/core';
 
 @Injectable({
   providedIn: 'root',
@@ -11,9 +11,11 @@ export class StateService {
     code: '',
   });
   private readonly searchingSubject = new BehaviorSubject<string>('');
+  private readonly connectionSubject = new BehaviorSubject<boolean>(false);
 
   readonly fiat$ = this.fiatSubject.asObservable();
   readonly searching$ = this.searchingSubject.asObservable();
+  readonly connection$ = this.connectionSubject.asObservable();
 
   sharedFiat(fiat: Currency): void {
     this.fiatSubject.next(fiat);
@@ -21,5 +23,9 @@ export class StateService {
 
   sharedSearch(query: string): void {
     this.searchingSubject.next(query);
+  }
+
+  sharedWalletClick(connect: boolean): void {
+    this.connectionSubject.next(connect);
   }
 }

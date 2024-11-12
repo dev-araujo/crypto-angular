@@ -12,9 +12,15 @@
     <ng-template pTemplate="body" let-coin>
       <tr class="table__rows">
         <td>
-          <section class="table__rows__coin" [routerLink]="['charts',coin.symbol, coin.name]">
-            <img [src]="coin?.iconUrl+'?size=30x30'" [srcset]="coin?.iconUrl+'?size=30x30 1x,'" />
-            <div class="table__rows__coin__text">
+
+          <section class="table__rows__coin">
+
+            @if (isConnected) { <i [class]="coin?.favorite ? 'pi pi-heart-fill' :'pi pi-heart'"
+              (click)="handleFavorites(coin)"></i> }
+
+            <img [src]="coin?.iconUrl+'?size=30x30'" [srcset]="coin?.iconUrl+'?size=30x30 1x,'"
+              [routerLink]="['charts',coin.symbol, coin.name]" />
+            <div class="table__rows__coin__text" [routerLink]="['charts',coin.symbol, coin.name]">
               <h4>{{ coin.name }}</h4>
               <p>{{ coin.symbol }}</p>
             </div>

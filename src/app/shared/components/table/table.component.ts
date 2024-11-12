@@ -1,14 +1,16 @@
-import { CoinList, Currency } from '../../../models/shared.model';
-import { Component, Input, Output, SimpleChanges, output } from '@angular/core';
 import {
+  AsyncPipe,
   CurrencyPipe,
   NgClass,
   NgIf,
   NgStyle,
   PercentPipe,
 } from '@angular/common';
+import { CoinList, Currency } from '../../../models/shared.model';
+import { Component, Input, Output, SimpleChanges, output } from '@angular/core';
 import { PaginatorModule, PaginatorState } from 'primeng/paginator';
 
+import { AuthService } from '../../../service/auth/auth.service';
 import { ButtonModule } from 'primeng/button';
 import { CryptoService } from '../../../service/general/crypto.service';
 import { PercentageHelper } from '../utils/percentageHelper';
@@ -48,10 +50,15 @@ export class TableComponent {
   currencySymbol = 'R$';
   searching: string = '';
   percentageStyle = PercentageHelper;
+  favoriteList: any = {
+    account: null,
+    favoriteList: [],
+  };
 
   constructor(
     private service: CryptoService,
-    private stateService: StateService
+    private stateService: StateService,
+    private authService: AuthService
   ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -61,9 +68,24 @@ export class TableComponent {
   }
 
   ngOnInit(): void {
+    this.listenWalletAction();
+    this.loadFavoriteList();
+
     this.getTrending(this.fiat, this.start);
     this.getFiat();
     this.getSearch();
+  }
+
+  get isConnected() {
+    return this.authService.isConnected();
+  }
+
+  listenWalletAction() {
+    this.stateService.connection$.subscribe((connected: boolean) => {
+      if (connected) {
+        this.loadFavoriteList();
+      }
+    });
   }
 
   getDetails(coin: any, currencySymbol: string) {
@@ -101,10 +123,51 @@ export class TableComponent {
       .pipe(take(1))
       .subscribe((res: CoinList) => {
         this.coinList = res.data.coins;
-        this.coinList.forEach((res: any) => {
-          res.isFavorite = false;
-        });
+        this.updateFavoriteStatus();
       });
+  }
+
+  handleFavorites(coin: any) {
+    if (coin?.favorite) {
+      coin.favorite = false;
+      this.favoriteList.favoriteList = this.favoriteList.favoriteList.filter(
+        (item: any) => item.uuid !== coin.uuid
+      );
+    } else {
+      this.favoriteList.favoriteList.push(coin);
+      coin.favorite = true;
+    }
+    this.saveFavoriteList();
+  }
+
+  loadFavoriteList() {
+    const account = localStorage.getItem('account');
+    if (account) {
+      this.favoriteList.account = account;
+      const storedList = localStorage.getItem(`favoriteList_${account}`);
+      if (storedList) {
+        this.favoriteList.favoriteList = JSON.parse(storedList);
+      } else {
+        this.favoriteList.favoriteList = [];
+      }
+    }
+  }
+
+  saveFavoriteList() {
+    if (this.favoriteList.account) {
+      localStorage.setItem(
+        `favoriteList_${this.favoriteList.account}`,
+        JSON.stringify(this.favoriteList.favoriteList)
+      );
+    }
+  }
+
+  updateFavoriteStatus() {
+    this.coinList.forEach((coin: any) => {
+      coin.favorite = this.favoriteList.favoriteList.some(
+        (fav: any) => fav.uuid === coin.uuid
+      );
+    });
   }
 
   onPageChange(event: PaginatorState): void {

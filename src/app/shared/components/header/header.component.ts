@@ -85,12 +85,14 @@ export class HeaderComponent {
 
     if (checking) {
       this.account = status;
+      this.stateService.sharedWalletClick(true);
     }
   }
 
   disconnect() {
     this.authService.disconnect();
     this.account = null;
+    this.stateService.sharedWalletClick(false);
   }
 
   clipping(text: string) {
