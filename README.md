@@ -22,7 +22,7 @@
 <details><summary> <h2>🦊Tela depois de o usuário se conectar com a metamask🦊</h2></summary>
 
 
-![image](https://github.com/user-attachments/assets/6294a3ae-02f8-4a3a-abb0-549f48500c28)
+![image](https://github.com/user-attachments/assets/34b6b967-4966-4c36-84a6-847a18197d34)
 </details>
 
 ## Processo
