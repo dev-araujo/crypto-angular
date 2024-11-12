@@ -19,6 +19,12 @@
 
 </h1>
 
+<details><summary> <h2>🦊Tela depois de o usuário se conectar com a metamask🦊</h2></summary>
+
+
+![image](https://github.com/user-attachments/assets/6294a3ae-02f8-4a3a-abb0-549f48500c28)
+</details>
+
 ## Processo
 
 - [x] Exibir listagem dos tokens correntes
@@ -26,7 +32,9 @@
 - [x] Exibir detalhes à respeito de cada token
 - [x] Possibilidade de alternar entre o valor da cotação em dolar e em real brasileiro
 - [x] Possibilidade de conexão com a metamask
-- [ ] Uma vez conectado com a metamask possibilitar a criação de uma 'lista de favoritos' onde se pode conferir a cotação e detalhes mais facilmente dos tokens favoritados
+
+
+🏃  Uma vez conectado com a metamask possibilitar a criação de uma 'lista de favoritos' onde se pode conferir a cotação e detalhes mais facilmente dos tokens favoritados
 - [ ] layout para celular
 - [ ] Refazer layout da tela de detalhes
 
