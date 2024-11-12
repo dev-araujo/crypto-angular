@@ -2,6 +2,11 @@
   width: 26rem;
 }
 
+::ng-deep .loading .p-skeleton {
+  margin-bottom: 14px !important;
+  margin-left: 4px !important;
+}
+
 .info-sidebar {
   &__title {
     font-family: "EB Garamond", serif;
@@ -30,5 +35,10 @@
   img {
     width: 40px;
     height: 40px;
+  }
+
+  .no-data {
+    display: flex;
+    align-items: center;
   }
 }

@@ -3,19 +3,33 @@ import {
   Component,
   Input,
   SimpleChanges,
-  inject,
   output,
 } from '@angular/core';
-import { CurrencyPipe, NgFor, NgStyle, PercentPipe } from '@angular/common';
+import {
+  CurrencyPipe,
+  NgFor,
+  NgIf,
+  NgStyle,
+  PercentPipe,
+} from '@angular/common';
 
 import { CryptoService } from '../../../service/general/crypto.service';
 import { PercentageHelper } from '../utils/percentageHelper';
 import { SidebarModule } from 'primeng/sidebar';
+import { SkeletonModule } from 'primeng/skeleton';
 
 @Component({
   selector: 'app-sidebar-details',
   standalone: true,
-  imports: [SidebarModule, CurrencyPipe, NgStyle, PercentPipe, NgFor],
+  imports: [
+    SidebarModule,
+    CurrencyPipe,
+    NgStyle,
+    PercentPipe,
+    NgIf,
+    SkeletonModule,
+    NgFor,
+  ],
   templateUrl: './sidebar-details.component.html',
   styleUrl: './sidebar-details.component.scss',
 })
@@ -37,8 +51,8 @@ export class SidebarDetailsComponent {
   }
 
   getDetails() {
+    this.coinDetails = null;
     this.service.getDetails(this.uuid).subscribe((res: any) => {
-      console.log(res);
       this.coinDetails = res?.data?.coin;
     });
   }
