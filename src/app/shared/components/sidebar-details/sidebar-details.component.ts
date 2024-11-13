@@ -21,15 +21,7 @@ import { SkeletonModule } from 'primeng/skeleton';
 @Component({
   selector: 'app-sidebar-details',
   standalone: true,
-  imports: [
-    SidebarModule,
-    CurrencyPipe,
-    NgStyle,
-    PercentPipe,
-    NgIf,
-    SkeletonModule,
-    NgFor,
-  ],
+  imports: [SidebarModule, CurrencyPipe, NgStyle, PercentPipe, SkeletonModule],
   templateUrl: './sidebar-details.component.html',
   styleUrl: './sidebar-details.component.scss',
 })
@@ -44,7 +36,7 @@ export class SidebarDetailsComponent {
   constructor(private cdr: ChangeDetectorRef, private service: CryptoService) {}
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['uuid']) {
+    if (changes['uuid'] && this.uuid) {
       this.getDetails();
       this.cdr.detectChanges();
     }

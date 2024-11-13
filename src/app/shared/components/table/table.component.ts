@@ -25,8 +25,6 @@ import { take } from 'rxjs';
   standalone: true,
   imports: [
     NgStyle,
-    NgClass,
-    NgIf,
     TableModule,
     ButtonModule,
     PaginatorModule,
@@ -99,20 +97,24 @@ export class TableComponent {
 
   getFiat(): void {
     this.stateService.fiat$.subscribe((fiat: Currency) => {
-      this.fiat = fiat.code;
-      this.getTrending(this.fiat, this.start, this.rows, this.searching);
-      this.currencySymbol = changeCurrencySymbol(fiat.name);
+      if (this.fiat !== fiat.code) {
+        this.fiat = fiat.code;
+        this.getTrending(this.fiat, this.start, this.rows, this.searching);
+        this.currencySymbol = changeCurrencySymbol(fiat.name);
+      }
     });
   }
 
   getSearch(): void {
     this.stateService.searching$.subscribe((searching: string) => {
-      this.searching = searching;
+      if (searching) {
+        this.searching = searching;
 
-      if (searching !== '') {
-        this.getTrending(this.fiat, 0, 10, this.searching);
-      } else {
-        this.getTrending(this.fiat, this.start);
+        if (searching !== '') {
+          this.getTrending(this.fiat, 0, 10, this.searching);
+        } else {
+          this.getTrending(this.fiat, this.start);
+        }
       }
     });
   }
