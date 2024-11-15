@@ -29,8 +29,13 @@
       <span class="label">Mudança (24h):</span>
 
       <span class="content" [ngStyle]="styleHelper.upAndDownStyle(coinDetails?.change)">
-        <i [class]="coinDetails?.change?.startsWith('-') ?  'pi pi-arrow-down-right':'pi pi-arrow-up-right'"></i>
-        {{coinDetails?.change| percent}}
+
+        @if(coinDetails.change){
+        <i [ngClass]="styleHelper.iconArrows(coinDetails.change)"></i>
+        <span>{{ coinDetails.change | percent }}</span>
+        }@else {
+        {{ noData }}
+        }
       </span>
 
     </div>
@@ -38,8 +43,7 @@
       <span class="label">Posição:</span><span class="content">{{coinDetails?.rank}}</span>
     </div>
     <div>
-      <span class="label">Baixo volume:</span><span class="content">{{coinDetails?.lowVolume ? '😭 Sim':'🤑
-        Não'}}</span>
+      <span class="label">Baixo volume:</span><span class="content">{{coinDetails?.lowVolume |lowVolume}}</span>
     </div>
     <div>
       <span class="label">Volume (24h):</span><span class="content">{{coinDetails?.['24hVolume']| currency :

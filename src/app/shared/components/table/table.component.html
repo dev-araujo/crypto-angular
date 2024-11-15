@@ -27,7 +27,7 @@
         </td>
 
         <td>
-          {{coin?.price? (coin.price | currency : currencySymbol : "symbol" : "1.8-8"): noData}}
+          {{ coin?.price | coinPrice : currencySymbol : noData }}
         </td>
 
         <td [ngStyle]="styleHelper.upAndDownStyle(coin.change)">

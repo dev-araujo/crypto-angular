@@ -7,6 +7,7 @@ import {
 } from '@angular/core';
 import {
   CurrencyPipe,
+  NgClass,
   NgFor,
   NgIf,
   NgStyle,
@@ -14,6 +15,7 @@ import {
 } from '@angular/common';
 
 import { CryptoService } from '../../../service/general/crypto.service';
+import { LowVolumePipe } from '../../pipes/lowVolumePipe';
 import { SidebarModule } from 'primeng/sidebar';
 import { SkeletonModule } from 'primeng/skeleton';
 import { StyleHelper } from '../../utils/styleHelper';
@@ -21,7 +23,15 @@ import { StyleHelper } from '../../utils/styleHelper';
 @Component({
   selector: 'app-sidebar-details',
   standalone: true,
-  imports: [SidebarModule, CurrencyPipe, NgStyle, PercentPipe, SkeletonModule],
+  imports: [
+    SidebarModule,
+    CurrencyPipe,
+    NgStyle,
+    PercentPipe,
+    SkeletonModule,
+    NgClass,
+    LowVolumePipe,
+  ],
   templateUrl: './sidebar-details.component.html',
   styleUrl: './sidebar-details.component.scss',
 })
@@ -32,6 +42,7 @@ export class SidebarDetailsComponent {
   close = output<boolean>();
   coinDetails: any;
   styleHelper = StyleHelper;
+  noData = '-';
   constructor(private cdr: ChangeDetectorRef, private service: CryptoService) {}
 
   ngOnChanges(changes: SimpleChanges): void {

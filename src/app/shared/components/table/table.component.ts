@@ -2,12 +2,13 @@ import { CoinList, Currency } from '../../../models/shared.model';
 import { Component, Input, SimpleChanges, output } from '@angular/core';
 import { CurrencyPipe, NgClass, NgStyle, PercentPipe } from '@angular/common';
 import { PaginatorModule, PaginatorState } from 'primeng/paginator';
-import { Router, RouterLink } from '@angular/router';
 
 import { AuthService } from '../../../service/auth/auth.service';
 import { ButtonModule } from 'primeng/button';
+import { CoinPricePipe } from '../../pipes/coinPricePipe';
 import { CryptoService } from '../../../service/general/crypto.service';
 import { IconUrlPipe } from '../../pipes/iconUrlPipe';
+import { Router } from '@angular/router';
 import { StateService } from '../../../service/state/state.service';
 import { StyleHelper } from '../../utils/styleHelper';
 import { TableModule } from 'primeng/table';
@@ -23,10 +24,9 @@ import { take } from 'rxjs';
     ButtonModule,
     PaginatorModule,
     PercentPipe,
-    RouterLink,
     NgClass,
     IconUrlPipe,
-    CurrencyPipe,
+    CoinPricePipe,
   ],
 
   templateUrl: './table.component.html',
