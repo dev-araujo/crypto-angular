@@ -28,7 +28,7 @@
     <div>
       <span class="label">Mudança (24h):</span>
 
-      <span class="content" [ngStyle]="percentageStyle.getChangeCellStyle(coinDetails?.change)">
+      <span class="content" [ngStyle]="styleHelper.upAndDownStyle(coinDetails?.change)">
         <i [class]="coinDetails?.change?.startsWith('-') ?  'pi pi-arrow-down-right':'pi pi-arrow-up-right'"></i>
         {{coinDetails?.change| percent}}
       </span>

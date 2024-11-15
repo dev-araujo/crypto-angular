@@ -14,9 +14,9 @@ import {
 } from '@angular/common';
 
 import { CryptoService } from '../../../service/general/crypto.service';
-import { PercentageHelper } from '../utils/percentageHelper';
 import { SidebarModule } from 'primeng/sidebar';
 import { SkeletonModule } from 'primeng/skeleton';
+import { StyleHelper } from '../../utils/styleHelper';
 
 @Component({
   selector: 'app-sidebar-details',
@@ -31,8 +31,7 @@ export class SidebarDetailsComponent {
   @Input() signal: any;
   close = output<boolean>();
   coinDetails: any;
-  percentageStyle = PercentageHelper;
-
+  styleHelper = StyleHelper;
   constructor(private cdr: ChangeDetectorRef, private service: CryptoService) {}
 
   ngOnChanges(changes: SimpleChanges): void {

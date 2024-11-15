@@ -3,43 +3,46 @@
     [tableStyle]="{ 'min-width': '50rem' }">
     <ng-template pTemplate="header">
       <tr>
-        <th style="width:20%">Cripto</th>
-        <th style="width:20%">Preço</th>
-        <th style="width:20%">24h</th>
-        <th style="width:20%">Ação</th>
+        <th style="width: 20%">Cripto</th>
+        <th style="width: 20%">Preço</th>
+        <th style="width: 20%">24h</th>
+        <th style="width: 20%">Ação</th>
       </tr>
     </ng-template>
+
     <ng-template pTemplate="body" let-coin>
       <tr class="table__rows">
         <td>
-
           <section class="table__rows__coin">
+            @if (isConnected) {<i [ngClass]="styleHelper.iconFavorite(coin?.favorite)"
+              (click)="handleFavorites(coin)"></i>}
 
-            @if (isConnected) { <i [class]="coin?.favorite ? 'pi pi-heart-fill' :'pi pi-heart'"
-              (click)="handleFavorites(coin)"></i> }
+            <img [src]="coin.iconUrl | iconUrl" (click)="goChart(coin.symbol, coin.name)" />
 
-            <img [src]="coin?.iconUrl+'?size=30x30'" [srcset]="coin?.iconUrl+'?size=30x30 1x,'"
-              [routerLink]="['charts',coin.symbol, coin.name]" />
-            <div class="table__rows__coin__text" [routerLink]="['charts',coin.symbol, coin.name]">
+            <div class="table__rows__coin__text" (click)="goChart(coin.symbol, coin.name)">
               <h4>{{ coin.name }}</h4>
               <p>{{ coin.symbol }}</p>
             </div>
           </section>
         </td>
 
-        <td>{{ coin?.price ? (coin.price | currency : currencySymbol : 'symbol' : '1.8-8'):'-'}}</td>
+        <td>
+          {{coin?.price? (coin.price | currency : currencySymbol : "symbol" : "1.8-8"): noData}}
+        </td>
 
-        <td [ngStyle]="percentageStyle.getChangeCellStyle(coin.change)">
-          <i [class]="coin.change?.startsWith('-') ?  'pi pi-arrow-down-right':'pi pi-arrow-up-right'"></i>
-
-          <span>{{coin.change| percent}}</span>
+        <td [ngStyle]="styleHelper.upAndDownStyle(coin.change)">
+          @if(coin.change){
+          <i [ngClass]="styleHelper.iconArrows(coin.change)"></i>
+          <span>{{ coin.change | percent }}</span>
+          }@else {
+          {{ noData }}
+          }
         </td>
         <td class="table__rows__details">
-          <p (click)="getDetails(coin,currencySymbol)">Detalhes</p>
+          <p (click)="getDetails(coin, currencySymbol)">Detalhes</p>
         </td>
       </tr>
     </ng-template>
-
   </p-table>
   @if (searching === ''){
   <div>
@@ -47,5 +50,4 @@
       [rowsPerPageOptions]="[10, 20, 30]"></p-paginator>
   </div>
   }
-
 </div>

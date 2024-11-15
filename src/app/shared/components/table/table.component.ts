@@ -1,23 +1,17 @@
-import {
-  AsyncPipe,
-  CurrencyPipe,
-  NgClass,
-  NgIf,
-  NgStyle,
-  PercentPipe,
-} from '@angular/common';
 import { CoinList, Currency } from '../../../models/shared.model';
-import { Component, Input, Output, SimpleChanges, output } from '@angular/core';
+import { Component, Input, SimpleChanges, output } from '@angular/core';
+import { CurrencyPipe, NgClass, NgStyle, PercentPipe } from '@angular/common';
 import { PaginatorModule, PaginatorState } from 'primeng/paginator';
+import { Router, RouterLink } from '@angular/router';
 
 import { AuthService } from '../../../service/auth/auth.service';
 import { ButtonModule } from 'primeng/button';
 import { CryptoService } from '../../../service/general/crypto.service';
-import { PercentageHelper } from '../utils/percentageHelper';
-import { RouterLink } from '@angular/router';
+import { IconUrlPipe } from '../../pipes/iconUrlPipe';
 import { StateService } from '../../../service/state/state.service';
+import { StyleHelper } from '../../utils/styleHelper';
 import { TableModule } from 'primeng/table';
-import { changeCurrencySymbol } from '../utils/currencyViewHelper';
+import { changeCurrencySymbol } from '../../utils/currencyViewHelper';
 import { take } from 'rxjs';
 
 @Component({
@@ -28,10 +22,13 @@ import { take } from 'rxjs';
     TableModule,
     ButtonModule,
     PaginatorModule,
-    CurrencyPipe,
     PercentPipe,
     RouterLink,
+    NgClass,
+    IconUrlPipe,
+    CurrencyPipe,
   ],
+
   templateUrl: './table.component.html',
   styleUrl: './table.component.scss',
 })
@@ -47,17 +44,24 @@ export class TableComponent {
   fiat = 'n5fpnvMGNsOS';
   currencySymbol = 'R$';
   searching: string = '';
-  percentageStyle = PercentageHelper;
   favoriteList: any = {
     account: null,
     favoriteList: [],
   };
+  noData = '-';
+
+  styleHelper = StyleHelper;
 
   constructor(
     private service: CryptoService,
     private stateService: StateService,
-    private authService: AuthService
+    private authService: AuthService,
+    private router: Router
   ) {}
+
+  get isConnected() {
+    return this.authService.isConnected();
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['hidden']) {
@@ -74,8 +78,8 @@ export class TableComponent {
     this.getSearch();
   }
 
-  get isConnected() {
-    return this.authService.isConnected();
+  goChart(symbol: string, name: string) {
+    this.router.navigate(['charts', symbol, name]);
   }
 
   listenWalletAction() {

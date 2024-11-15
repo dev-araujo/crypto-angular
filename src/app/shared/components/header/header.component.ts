@@ -8,7 +8,7 @@ import { Component } from '@angular/core';
 import { Currency } from '../../../models/shared.model';
 import { DropdownModule } from 'primeng/dropdown';
 import { FormsModule } from '@angular/forms';
-import { HandleStatus } from '../utils/status-connection';
+import { HandleStatus } from '../../utils/status-connection';
 import { InputTextModule } from 'primeng/inputtext';
 import { MessageService } from 'primeng/api';
 import { NgIf } from '@angular/common';
