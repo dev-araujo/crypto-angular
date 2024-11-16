@@ -7,6 +7,8 @@ import detectEthereumProvider from '@metamask/detect-provider';
 })
 export class AuthService {
   private provider: any;
+  private isLocalStorageAvailable = typeof localStorage !== 'undefined';
+
   public account: string | any = null;
   private localStorageAccount = 'account';
 
@@ -17,9 +19,9 @@ export class AuthService {
   private async initProvider() {
     this.provider = await detectEthereumProvider();
     if (this.provider) {
-      this.provider.on(
+      this.provider?.on(
         'accountsChanged',
-        this.handleAccountsChanged.bind(this)
+        this.handleAccountsChanged?.bind(this)
       );
     } else {
       console.error(
@@ -39,7 +41,9 @@ export class AuthService {
           method: 'eth_requestAccounts',
         });
         this.account = accounts[0];
-        localStorage.setItem(this.localStorageAccount, this.account);
+        if (this.isLocalStorageAvailable) {
+          localStorage.setItem(this.localStorageAccount, this.account);
+        }
 
         return this.account;
       } catch (error) {
@@ -51,12 +55,17 @@ export class AuthService {
   }
 
   public disconnect() {
-    localStorage.removeItem(this.localStorageAccount);
+    if (this.isLocalStorageAvailable) {
+      localStorage.removeItem(this.localStorageAccount);
+    }
     this.account = null;
   }
 
   public isConnected(): boolean {
-    const account = localStorage.getItem(this.localStorageAccount);
-    return !!account;
+    if (this.isLocalStorageAvailable) {
+      const account = localStorage.getItem(this.localStorageAccount);
+      return !!account;
+    }
+    return false;
   }
 }

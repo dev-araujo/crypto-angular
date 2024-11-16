@@ -49,6 +49,7 @@ export class HeaderComponent {
 
   iconCopy = 'pi-clone clone pi';
   account: string | any = null;
+  private isLocalStorageAvailable = typeof localStorage !== 'undefined';
 
   constructor(
     private stateService: StateService,
@@ -57,24 +58,27 @@ export class HeaderComponent {
   ) {}
 
   ngOnInit(): void {
-    this.account = this.authService.isConnected()
-      ? localStorage.getItem('account')
-      : null;
+    if (this.isLocalStorageAvailable) {
+      this.account = this.authService.isConnected()
+        ? localStorage.getItem('account')
+        : null;
+    }
   }
 
   getFiat(event: Currency): void {
     this.stateService.sharedFiat(event);
   }
 
-  search(): void {
-    if (this.find !== '') {
-      this.stateService.sharedSearch(this.find);
+  search(event?: Event): void {
+    if (event) {
+      event.preventDefault();
     }
+    this.stateService.sharedSearch(this.find);
   }
 
-  clear(): void {
-    if (this.find === '') {
-      this.stateService.sharedSearch(this.find);
+  onInputChange(): void {
+    if (!this.find) {
+      this.stateService.sharedSearch('');
     }
   }
 

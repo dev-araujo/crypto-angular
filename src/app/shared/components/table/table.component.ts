@@ -49,6 +49,7 @@ export class TableComponent {
     favoriteList: [],
   };
   noData = '-';
+  private isLocalStorageAvailable = typeof localStorage !== 'undefined';
 
   styleHelper = StyleHelper;
 
@@ -111,14 +112,11 @@ export class TableComponent {
 
   getSearch(): void {
     this.stateService.searching$.subscribe((searching: string) => {
+      this.searching = searching;
       if (searching) {
-        this.searching = searching;
-
-        if (searching !== '') {
-          this.getTrending(this.fiat, 0, 10, this.searching);
-        } else {
-          this.getTrending(this.fiat, this.start);
-        }
+        this.getTrending(this.fiat, 0, 10, this.searching);
+      } else {
+        this.getTrending(this.fiat, this.start);
       }
     });
   }
@@ -147,20 +145,22 @@ export class TableComponent {
   }
 
   loadFavoriteList() {
-    const account = localStorage.getItem('account');
-    if (account) {
-      this.favoriteList.account = account;
-      const storedList = localStorage.getItem(`favoriteList_${account}`);
-      if (storedList) {
-        this.favoriteList.favoriteList = JSON.parse(storedList);
-      } else {
-        this.favoriteList.favoriteList = [];
+    if (this.isLocalStorageAvailable) {
+      const account = localStorage.getItem('account');
+      if (account) {
+        this.favoriteList.account = account;
+        const storedList = localStorage.getItem(`favoriteList_${account}`);
+        if (storedList) {
+          this.favoriteList.favoriteList = JSON.parse(storedList);
+        } else {
+          this.favoriteList.favoriteList = [];
+        }
       }
     }
   }
 
   saveFavoriteList() {
-    if (this.favoriteList.account) {
+    if (this.favoriteList.account && this.isLocalStorageAvailable) {
       localStorage.setItem(
         `favoriteList_${this.favoriteList.account}`,
         JSON.stringify(this.favoriteList.favoriteList)
