@@ -3,6 +3,7 @@ import { delay, of } from 'rxjs';
 
 import { AuthService } from '../../../service/auth/auth.service';
 import { AvatarModule } from 'primeng/avatar';
+import { AvatarPipe } from '../../pipes/avatarPipe';
 import { ButtonModule } from 'primeng/button';
 import { Component } from '@angular/core';
 import { Currency } from '../../../models/shared.model';
@@ -34,6 +35,7 @@ import { TooltipModule } from 'primeng/tooltip';
     ToastModule,
     OverlayPanelModule,
     AvatarModule,
+    AvatarPipe,
   ],
   providers: [MessageService],
   templateUrl: './header.component.html',
@@ -48,7 +50,9 @@ export class HeaderComponent {
   find = '';
 
   iconCopy = 'pi-clone clone pi';
-  account: string | any = null;
+  account!: string | null;
+  shortAccount!: string | null;
+
   private isLocalStorageAvailable = typeof localStorage !== 'undefined';
 
   constructor(
@@ -89,6 +93,7 @@ export class HeaderComponent {
 
     if (checking) {
       this.account = status;
+      this.shortAccount = (status ?? '').substring(0, 12);
       this.stateService.sharedWalletClick(true);
     }
   }

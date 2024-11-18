@@ -1,31 +1,34 @@
-import { NgIf } from '@angular/common';
 import {
+  AfterViewChecked,
+  AfterViewInit,
+  ChangeDetectorRef,
   Component,
   ElementRef,
-  ViewChild,
-  AfterViewInit,
   OnInit,
-  AfterViewChecked,
-  ChangeDetectorRef,
+  ViewChild,
 } from '@angular/core';
-import { Router, RouterModule } from '@angular/router';
-import { ChartService } from '../service/chart.service';
 import { Currency, HistoricalData } from '../../../../models/shared.model';
+import { Router, RouterModule } from '@angular/router';
+
+import Chart from 'chart.js/auto';
+import { ChartService } from '../service/chart.service';
+import { HandleStatus } from '../../../utils/status-connection';
+import { MessageService } from 'primeng/api';
+import { NgIf } from '@angular/common';
+import { NoGraphicComponent } from '../../../layout/no-graphic/no-graphic.component';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { StyleClassModule } from 'primeng/styleclass';
-import { NoGraphicComponent } from '../../../layout/no-graphic/no-graphic.component';
-import Chart from 'chart.js/auto';
 
 @Component({
   selector: 'app-graphic',
   standalone: true,
   imports: [
-    NgIf,
     RouterModule,
     ProgressSpinnerModule,
     StyleClassModule,
     NoGraphicComponent,
   ],
+  providers: [MessageService],
   templateUrl: './graphic.component.html',
   styleUrls: ['./graphic.component.scss'],
 })
@@ -44,7 +47,8 @@ export class GraphicComponent
   constructor(
     private router: Router,
     private chartService: ChartService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private messageService: MessageService
   ) {
     const urlSegments = this.router.url.split('/');
     this.id = urlSegments[urlSegments.length - 2];
@@ -85,7 +89,6 @@ export class GraphicComponent
 
   getChart(fiat = this.fiat): void {
     if (!this.chartContainer) {
-      console.error('Unable to find chartContainer element');
       return;
     }
 
@@ -96,6 +99,12 @@ export class GraphicComponent
 
         if (this.hasChart && this.chartContainer) {
           this.destroyChart();
+
+          const existingCanvas =
+            this.chartContainer.nativeElement.querySelector('canvas');
+          if (existingCanvas) {
+            existingCanvas.remove();
+          }
           const canvas = document.createElement('canvas');
           this.chartContainer.nativeElement.appendChild(canvas);
           const context = canvas.getContext('2d');
@@ -123,10 +132,16 @@ export class GraphicComponent
             };
             this.chart = this.chartService.createChart(context, data);
           } else {
-            console.error('Unable to get 2D context for canvas');
+            HandleStatus.showError(
+              this.messageService,
+              'Algum erro inesperado ocorreu :('
+            );
           }
         } else {
-          console.warn('No data available to create chart.');
+          HandleStatus.showWarn(
+            this.messageService,
+            'Não há dados suficientes para gerar o gráfico'
+          );
           this.hasChart = false;
         }
       });

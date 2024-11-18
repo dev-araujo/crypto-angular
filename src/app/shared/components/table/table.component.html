@@ -15,14 +15,21 @@
         <td>
           <section class="table__rows__coin">
             @if (isConnected) {<i [ngClass]="styleHelper.iconFavorite(coin?.favorite)"
-              (click)="handleFavorites(coin)"></i>}
+              (click)="handleFavorites(coin)"></i>
+            }
 
-            <img [src]="coin.iconUrl | iconUrl" (click)="goChart(coin.symbol, coin.name)" />
+            <span [routerLink]="['charts',coin.symbol, coin.name]">
+              <img [src]="coin.iconUrl | iconUrl" />
 
-            <div class="table__rows__coin__text" (click)="goChart(coin.symbol, coin.name)">
-              <h4>{{ coin.name }}</h4>
-              <p>{{ coin.symbol }}</p>
-            </div>
+              <div class="table__rows__coin__text">
+                <h4>{{ coin.name }}</h4>
+                <p>{{ coin.symbol }}</p>
+              </div>
+            </span>
+
+
+
+
           </section>
         </td>
 

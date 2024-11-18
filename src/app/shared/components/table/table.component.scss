@@ -8,6 +8,11 @@
       display: flex;
       align-items: center;
 
+      span {
+        display: flex;
+        align-items: center;
+      }
+
       .pi-heart {
         cursor: pointer;
       }
