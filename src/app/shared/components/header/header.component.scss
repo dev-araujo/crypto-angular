@@ -1,11 +1,19 @@
 @import "../../../../styles/mixins.scss";
 @import "../../../../styles/colors.scss";
 
-:host ::ng-deep .transparent-button .p-button {
-  background: transparent !important;
-  border: none !important;
-  padding: 0 !important;
-  box-shadow: none !important;
+:host ::ng-deep {
+  .transparent-button .p-button {
+    background: transparent !important;
+    border: none !important;
+    padding: 0 !important;
+    box-shadow: none !important;
+  }
+  .favorite-list .p-button:focus {
+    box-shadow: none !important;
+  }
+  .favorite-list .pi {
+    font-size: 24px !important;
+  }
 }
 
 .header {
@@ -52,6 +60,10 @@
 
     .connection {
       margin-left: 1rem;
+
+      .favorite-list {
+        margin-left: 1rem;
+      }
 
       figure {
         border-radius: 100%;

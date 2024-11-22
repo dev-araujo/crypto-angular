@@ -29,7 +29,6 @@ import { TooltipModule } from 'primeng/tooltip';
     FormsModule,
     RouterLink,
     RouterModule,
-    NgIf,
     ButtonModule,
     RippleModule,
     ToastModule,

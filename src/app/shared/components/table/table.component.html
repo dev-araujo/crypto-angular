@@ -14,8 +14,8 @@
       <tr class="table__rows">
         <td>
           <section class="table__rows__coin">
-            @if (isConnected) {<i [ngClass]="styleHelper.iconFavorite(coin?.favorite)"
-              (click)="handleFavorites(coin)"></i>
+            @if (isConnected) {
+            <i [ngClass]="styleHelper.iconFavorite(coin?.favorite)" (click)="handleFavorites(coin)"></i>
             }
 
             <span [routerLink]="['charts',coin.symbol, coin.name]">
