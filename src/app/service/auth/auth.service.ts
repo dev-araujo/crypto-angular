@@ -31,7 +31,9 @@ export class AuthService {
   }
 
   private handleAccountsChanged(accounts: string[]) {
-    this.account = accounts.length > 0 ? accounts[0] : null;
+    if (accounts) {
+      this.account = accounts[0];
+    }
   }
 
   public async connect(): Promise<string | null> {
