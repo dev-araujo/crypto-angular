@@ -109,7 +109,8 @@ export class TableComponent {
     return this.favoriteList.favoriteList
       .map((coin: any) => coin.uuid)
       .map((uuid: string) => `uuids[]=${uuid}`)
-      .join('&');
+      .join('&')
+      .trim();
   }
 
   listenWalletAction() {

@@ -37,7 +37,7 @@ export class CryptoService implements ICryptoApiService {
       },
     };
 
-    const endpoint = `${this.baseUrl}coins?referenceCurrencyUuid=${currency}&orderBy=price&limit=${rows}&offset=${offset}&search=${search}${favorites}`;
+    const endpoint = `${this.baseUrl}coins?referenceCurrencyUuid=${currency}&orderBy=price&limit=${rows}&offset=${offset}&search=${search}&${favorites}`;
 
     return this.http.get<CoinList>(endpoint, options).pipe(
       catchError((error: HttpErrorResponse) => {
