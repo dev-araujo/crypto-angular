@@ -27,7 +27,8 @@ export class CryptoService implements ICryptoApiService {
     currency: string,
     offset = 0,
     rows = 10,
-    search = ''
+    search = '',
+    favorites = ''
   ): Observable<CoinList> {
     const options = {
       headers: {
@@ -36,7 +37,7 @@ export class CryptoService implements ICryptoApiService {
       },
     };
 
-    const endpoint = `${this.baseUrl}coins?referenceCurrencyUuid=${currency}&orderBy=price&limit=${rows}&offset=${offset}&search=${search}`;
+    const endpoint = `${this.baseUrl}coins?referenceCurrencyUuid=${currency}&orderBy=price&limit=${rows}&offset=${offset}&search=${search}${favorites}`;
 
     return this.http.get<CoinList>(endpoint, options).pipe(
       catchError((error: HttpErrorResponse) => {

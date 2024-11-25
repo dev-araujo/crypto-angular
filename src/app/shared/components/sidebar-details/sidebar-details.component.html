@@ -54,13 +54,13 @@
         'BTC '}}</span>
     </div>
 
-    <div>
+    <div class="container-links">
       <span class="label">Links:</span>
 
       @for (link of coinDetails?.links; track link.name ) {
       <div>
         <a class="content" target="_blank" rel="noopener noreferrer" [href]="link?.url"
-          class="content">{{link?.url}}</a>
+          class="content">{{link?.name}}</a>
       </div>
       }
 

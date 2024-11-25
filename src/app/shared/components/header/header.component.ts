@@ -48,9 +48,18 @@ export class HeaderComponent {
   fiat = this.currency[1];
   find = '';
 
+  favoriteStatus = {
+    true: 'pi pi-heart-fill',
+    false: 'pi pi-heart',
+  };
+
   iconCopy = 'pi-clone clone pi';
+  iconHeart: any = this.favoriteStatus['false'];
+
   account!: string | null;
   shortAccount!: string | null;
+
+  isFavoriteActive = false;
 
   private isLocalStorageAvailable = typeof localStorage !== 'undefined';
 
@@ -66,6 +75,13 @@ export class HeaderComponent {
         ? localStorage.getItem('account')
         : null;
     }
+  }
+
+  favorites() {
+    this.isFavoriteActive = !this.isFavoriteActive;
+    this.iconHeart =
+      this.favoriteStatus[this.isFavoriteActive ? 'true' : 'false'];
+    this.stateService.sharedFavoritesClicked(this.isFavoriteActive);
   }
 
   getFiat(event: Currency): void {
@@ -101,6 +117,7 @@ export class HeaderComponent {
     this.authService.disconnect();
     this.account = null;
     this.stateService.sharedWalletClick(false);
+    this.favorites();
   }
 
   clipping(text: string) {

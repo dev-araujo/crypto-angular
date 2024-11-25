@@ -9,6 +9,7 @@ import {
 import { NgClass, NgStyle, PercentPipe } from '@angular/common';
 import { PaginatorModule, PaginatorState } from 'primeng/paginator';
 import { Router, RouterLink } from '@angular/router';
+import { Subject, take } from 'rxjs';
 
 import { AuthService } from '../../../service/auth/auth.service';
 import { ButtonModule } from 'primeng/button';
@@ -19,7 +20,6 @@ import { StateService } from '../../../service/state/state.service';
 import { StyleHelper } from '../../utils/styleHelper';
 import { TableModule } from 'primeng/table';
 import { changeCurrencySymbol } from '../../utils/currencyViewHelper';
-import { take } from 'rxjs';
 
 @Component({
   selector: 'app-table',
@@ -56,6 +56,7 @@ export class TableComponent {
     favoriteList: [],
   };
   noData = '-';
+  favoriteQuery = '';
   private isLocalStorageAvailable = typeof localStorage !== 'undefined';
 
   styleHelper = StyleHelper;
@@ -63,12 +64,18 @@ export class TableComponent {
   constructor(
     private service: CryptoService,
     private stateService: StateService,
-    private authService: AuthService,
-    private router: Router
+    private authService: AuthService
   ) {}
+
+  private destroy$ = new Subject<void>();
 
   get isConnected() {
     return this.authService.isConnected();
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -84,6 +91,25 @@ export class TableComponent {
     this.getTrending(this.fiat, this.start);
     this.getFiat();
     this.getSearch();
+    this.listenClickedFavorites();
+  }
+
+  listenClickedFavorites() {
+    this.stateService.favorites$.subscribe((clicked: boolean) => {
+      if (clicked) {
+        this.favoriteQuery = this.handleFavoriteParamaters();
+      } else {
+        this.favoriteQuery = '';
+      }
+      this.getTrending(this.fiat, this.start);
+    });
+  }
+
+  handleFavoriteParamaters() {
+    return this.favoriteList.favoriteList
+      .map((coin: any) => coin.uuid)
+      .map((uuid: string) => `uuids[]=${uuid}`)
+      .join('&');
   }
 
   listenWalletAction() {
@@ -126,7 +152,7 @@ export class TableComponent {
 
   getTrending(fiat: string, offset: number, rows = 10, find = ''): void {
     this.service
-      .getTrendingTop(fiat, offset, rows, find)
+      .getTrendingTop(fiat, offset, rows, find, this.favoriteQuery)
       .pipe(take(1))
       .subscribe((res: CoinList) => {
         this.coinList = res.data.coins;
