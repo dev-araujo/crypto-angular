@@ -1,6 +1,8 @@
 @import "../../../../styles/mixins.scss";
 @import "../../../../styles/colors.scss";
 
+// 860
+
 :host ::ng-deep {
   .transparent-button .p-button {
     background: transparent !important;
@@ -83,13 +85,17 @@
         align-items: center;
         justify-content: center;
       }
+      @media (max-width: 480px) {
+        display: none;
+      }
     }
 
-    @media (max-width: 600px) {
+    @media (max-width: 1000px) {
       width: 100vw;
       justify-content: center;
     }
-    @media (max-width: 375px) {
+    @media (max-width: 1000px) {
+      width: 100vw;
       justify-content: center;
     }
   }
