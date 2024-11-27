@@ -96,12 +96,15 @@ export class TableComponent {
 
   listenClickedFavorites() {
     this.stateService.favorites$.subscribe((clicked: boolean) => {
+      let rows = 10;
       if (clicked) {
+        rows = 50;
         this.favoriteQuery = this.handleFavoriteParamaters();
       } else {
+        rows = 10;
         this.favoriteQuery = '';
       }
-      this.getTrending(this.fiat, this.start, 50);
+      this.getTrending(this.fiat, this.start, rows);
     });
   }
 
