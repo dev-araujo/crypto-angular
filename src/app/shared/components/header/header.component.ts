@@ -115,9 +115,13 @@ export class HeaderComponent {
 
   disconnect() {
     this.authService.disconnect();
+    HandleStatus.showWarn(this.messageService, 'Desconectado');
+
     this.account = null;
     this.stateService.sharedWalletClick(false);
-    this.favorites();
+    this.isFavoriteActive = false;
+    this.iconHeart =
+      this.favoriteStatus[this.isFavoriteActive ? 'true' : 'false'];
   }
 
   clipping(text: string) {

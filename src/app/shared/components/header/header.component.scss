@@ -1,7 +1,7 @@
 @import "../../../../styles/mixins.scss";
 @import "../../../../styles/colors.scss";
 
-// 860
+$pivot-size: 820px;
 
 :host ::ng-deep {
   .transparent-button .p-button {
@@ -17,6 +17,44 @@
     font-size: 24px !important;
   }
 }
+.menu {
+  @media (min-width: $pivot-size) {
+    display: none;
+  }
+  section {
+    img {
+      width: 4rem;
+      cursor: pointer;
+    }
+    position: absolute;
+    right: 6px;
+    top: 6px;
+  }
+
+  .avatar {
+    border-radius: 100%;
+    border: solid 4px #5fa379;
+
+    padding: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    position: relative;
+    top: -65px;
+    right: -33px;
+
+    img {
+      width: 2rem;
+    }
+  }
+
+  .favorite-list {
+    position: absolute;
+    top: 186px;
+    right: -10px;
+  }
+}
 
 .header {
   animation: fadeInAnimation ease 2s;
@@ -28,7 +66,7 @@
   @include centralizeV;
   justify-content: space-between;
 
-  @media (max-width: 1000px) {
+  @media (max-width: $pivot-size) {
     flex-direction: column;
     height: 16rem;
   }
@@ -39,6 +77,7 @@
     cursor: pointer;
 
     &__title {
+      white-space: nowrap;
       font-size: 32px;
       background: linear-gradient(
         to right,
@@ -60,6 +99,10 @@
     @include centralizeV;
     justify-content: end;
 
+    .inputs {
+      display: flex;
+    }
+
     .connection {
       margin-left: 1rem;
 
@@ -67,10 +110,10 @@
         margin-left: 1rem;
       }
 
-      figure {
+      .avatar {
         border-radius: 100%;
         border: solid 4px #5fa379;
-        border: radius;
+
         padding: 8px;
         display: flex;
         align-items: center;
@@ -85,18 +128,18 @@
         align-items: center;
         justify-content: center;
       }
-      @media (max-width: 480px) {
+    }
+
+    .hidden {
+      @media (max-width: $pivot-size) {
         display: none;
       }
     }
 
-    @media (max-width: 1000px) {
+    @media (max-width: $pivot-size) {
       width: 100vw;
       justify-content: center;
-    }
-    @media (max-width: 1000px) {
-      width: 100vw;
-      justify-content: center;
+      flex-wrap: wrap;
     }
   }
 
@@ -112,6 +155,10 @@
       width: 200px;
       box-sizing: border-box;
       margin-right: 1rem;
+
+      @media (max-width: 400px) {
+        width: 141px;
+      }
     }
 
     &__icon {

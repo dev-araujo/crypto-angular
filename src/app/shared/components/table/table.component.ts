@@ -101,7 +101,7 @@ export class TableComponent {
       } else {
         this.favoriteQuery = '';
       }
-      this.getTrending(this.fiat, this.start);
+      this.getTrending(this.fiat, this.start, 50);
     });
   }
 
