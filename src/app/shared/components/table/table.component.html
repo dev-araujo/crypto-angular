@@ -1,6 +1,12 @@
 <div class="table">
-  <p-table [value]="coinList" [paginator]="false" [showCurrentPageReport]="true" responsiveLayout="stack"
-    [breakpoint]="'960px'" [tableStyle]="{'min-width': '40rem'}">
+  <p-table
+    [value]="coinList"
+    [paginator]="false"
+    [showCurrentPageReport]="true"
+    responsiveLayout="stack"
+    [breakpoint]="'960px'"
+    [tableStyle]="{ 'min-width': '40rem' }"
+  >
     <ng-template pTemplate="header">
       <tr>
         <th style="width: 20%">Cripto</th>
@@ -15,10 +21,13 @@
         <td>
           <section class="table__rows__coin">
             @if (isConnected) {
-            <i [ngClass]="styleHelper.iconFavorite(coin?.favorite)" (click)="handleFavorites(coin)"></i>
+            <i
+              [ngClass]="styleHelper.iconFavorite(coin?.favorite)"
+              (click)="handleFavorites(coin)"
+            ></i>
             }
 
-            <span [routerLink]="['charts',coin.symbol, coin.name]">
+            <span [routerLink]="['charts', coin.symbol, coin.name]">
               <img [src]="coin.iconUrl | iconUrl" />
 
               <div class="table__rows__coin__text">
@@ -26,21 +35,19 @@
                 <p>{{ coin.symbol }}</p>
               </div>
             </span>
-
-
-
-
           </section>
         </td>
 
         <td>
-          {{ coin?.price | coinPrice : currencySymbol : noData }}
+          <span class="price">{{ coin?.price | coinPrice : currencySymbol : noData }}</span>
         </td>
 
         <td [ngStyle]="styleHelper.upAndDownStyle(coin.change)">
           @if(coin.change){
-          <i [ngClass]="styleHelper.iconArrows(coin.change)"></i>
-          <span>{{ coin.change | percent }}</span>
+          <div>
+            <i [ngClass]="styleHelper.iconArrows(coin.change)"></i>
+            <span>{{ coin.change | percent }}</span>
+          </div>
           }@else {
           {{ noData }}
           }
@@ -53,8 +60,13 @@
   </p-table>
   @if (!searching && !favoriteQuery){
   <div>
-    <p-paginator (onPageChange)="onPageChange($event)" [first]="start" [rows]="rows" [totalRecords]="5000"
-      [rowsPerPageOptions]="[10, 20, 30]"></p-paginator>
+    <p-paginator
+      (onPageChange)="onPageChange($event)"
+      [first]="start"
+      [rows]="rows"
+      [totalRecords]="5000"
+      [rowsPerPageOptions]="[10, 20, 30]"
+    ></p-paginator>
   </div>
   }
 </div>

@@ -1,6 +1,7 @@
 import {
   ChangeDetectorRef,
   Component,
+  HostListener,
   Input,
   SimpleChanges,
   output,
@@ -43,7 +44,24 @@ export class SidebarDetailsComponent {
   coinDetails: any;
   styleHelper = StyleHelper;
   noData = '-';
-  constructor(private cdr: ChangeDetectorRef, private service: CryptoService) {}
+
+  isMobile=false
+  position='right'
+
+
+  constructor(private cdr: ChangeDetectorRef, private service: CryptoService) {
+    this.checkWindowSize(); // Verifica o tamanho da janela na inicialização
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any) {
+    this.checkWindowSize();
+  }
+
+  checkWindowSize() {
+    this.isMobile = window.innerWidth <= 820;
+    this.position = this.isMobile ? 'bottom' : 'right';
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['uuid'] && this.uuid) {

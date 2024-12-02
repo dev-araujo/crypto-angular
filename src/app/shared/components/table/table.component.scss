@@ -1,8 +1,16 @@
+
+$pivot-size:820px;
+
 .table {
   animation: fadeInAnimation ease 3s;
   animation-iteration-count: 1;
   animation-fill-mode: forwards;
   &__rows {
+    .price{
+      font-size:1.2rem;
+      font-weight: 500;
+
+    }
     &__coin {
       width: 330px;
       display: flex;
@@ -26,7 +34,10 @@
         height: 26px;
         margin-left: 1rem;
         cursor: pointer;
+
+
       }
+
 
       &__text {
         margin-left: 1rem;

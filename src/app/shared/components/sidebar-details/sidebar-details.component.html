@@ -1,4 +1,4 @@
-<p-sidebar class="info-sidebar" [(visible)]="isVisible" position="right" (onHide)="hidden()">
+<p-sidebar class="info-sidebar" [(visible)]="isVisible" [position]="position" [fullScreen]="isMobile" (onHide)="hidden()">
   @if (coinDetails) {
 
   <h3 class="info-sidebar__title">{{ coinDetails?.name }} <img [src]="coinDetails?.iconUrl" /></h3>

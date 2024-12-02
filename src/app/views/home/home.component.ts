@@ -22,6 +22,7 @@ import { TableComponent } from '../../shared/components/table/table.component';
         (close)="close($event)"
         [uuid]="info"
         [signal]="signalSymbol"
+
       ></app-sidebar-details>
       <app-table (emitDetails)="open($event)" [hidden]="isVisible"></app-table>
     </div>`,
