@@ -27,7 +27,7 @@
             ></i>
             }
 
-            <span [routerLink]="['charts', coin.symbol, coin.name]">
+            <span [routerLink]="['charts', coin.symbol, coin.name]" pTooltip="clique para ver o gráfico" tooltipPosition="left">
               <img [src]="coin.iconUrl | iconUrl" />
 
               <div class="table__rows__coin__text">

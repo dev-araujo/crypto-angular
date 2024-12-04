@@ -98,7 +98,6 @@ export class TableComponent {
 
   listenClickedFavorites() {
     this.stateService.favorites$.subscribe((clicked: boolean) => {
-      console.log(clicked)
       let rows = 10;
       if (clicked) {
         rows = 50;
