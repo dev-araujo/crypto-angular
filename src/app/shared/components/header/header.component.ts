@@ -115,10 +115,11 @@ export class HeaderComponent {
 
   disconnect() {
     this.authService.disconnect();
+    this.stateService.sharedWalletClick(false);
+
     HandleStatus.showWarn(this.messageService, 'Desconectado');
 
     this.account = null;
-    this.stateService.sharedWalletClick(false);
     this.isFavoriteActive = false;
     this.iconHeart =
       this.favoriteStatus[this.isFavoriteActive ? 'true' : 'false'];

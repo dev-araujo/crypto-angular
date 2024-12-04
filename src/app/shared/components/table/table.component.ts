@@ -19,6 +19,7 @@ import { IconUrlPipe } from '../../pipes/iconUrlPipe';
 import { StateService } from '../../../service/state/state.service';
 import { StyleHelper } from '../../utils/styleHelper';
 import { TableModule } from 'primeng/table';
+import { TooltipModule } from 'primeng/tooltip';
 import { changeCurrencySymbol } from '../../utils/currencyViewHelper';
 
 @Component({
@@ -34,6 +35,7 @@ import { changeCurrencySymbol } from '../../utils/currencyViewHelper';
     IconUrlPipe,
     CoinPricePipe,
     RouterLink,
+    TooltipModule
   ],
 
   templateUrl: './table.component.html',
@@ -96,6 +98,7 @@ export class TableComponent {
 
   listenClickedFavorites() {
     this.stateService.favorites$.subscribe((clicked: boolean) => {
+      console.log(clicked)
       let rows = 10;
       if (clicked) {
         rows = 50;
