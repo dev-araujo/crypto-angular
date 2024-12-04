@@ -1,7 +1,16 @@
 
 $pivot-size:820px;
 
+:host ::ng-deep{
+  @media (max-width: $pivot-size) {
+    .p-datatable>.p-datatable-wrapper{
+      overflow: hidden !important;
+    }
+  }
+}
+
 .table {
+
   animation: fadeInAnimation ease 3s;
   animation-iteration-count: 1;
   animation-fill-mode: forwards;
@@ -23,10 +32,19 @@ $pivot-size:820px;
 
       .pi-heart {
         cursor: pointer;
+
+
       }
 
       .pi-heart-fill {
         color: rgb(255, 64, 64);
+
+      }
+
+      @media (max-width: $pivot-size) {
+        .pi{
+          font-size:2rem !important;
+        }
       }
 
       img {
@@ -34,6 +52,11 @@ $pivot-size:820px;
         height: 26px;
         margin-left: 1rem;
         cursor: pointer;
+
+        @media (max-width: $pivot-size) {
+          width:3rem;
+          height:3rem;
+        }
 
 
       }
