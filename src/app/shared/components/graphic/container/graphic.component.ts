@@ -69,11 +69,7 @@ export class GraphicComponent
 
   getImage(): void {
     this.chartService.getSymbol(this.id).subscribe((res: string) => {
-      this.image = res;
-      setTimeout(() => {
-        this.cdr.detectChanges();
-        this.getChart();
-      }, 0);
+      this.image =  res?? res;
     });
   }
 
@@ -97,19 +93,24 @@ export class GraphicComponent
       .subscribe((res: HistoricalData) => {
         this.hasChart = res.response !== 'Error';
 
-        if (this.hasChart && this.chartContainer) {
-          this.destroyChart();
-
-          const existingCanvas =
+        const existingCanvas =
             this.chartContainer.nativeElement.querySelector('canvas');
+
           if (existingCanvas) {
             existingCanvas.remove();
           }
+
+        if (this.hasChart && this.chartContainer) {
+          this.destroyChart();
+
+
           const canvas = document.createElement('canvas');
           this.chartContainer.nativeElement.appendChild(canvas);
           const context = canvas.getContext('2d');
 
           if (context) {
+            const closePrices = res.data.map((obj) => parseFloat(obj.close))
+
             const data = {
               labels: res.data.map((dataPoint) => {
                 const date = new Date(dataPoint.time);
@@ -120,7 +121,7 @@ export class GraphicComponent
               }),
               datasets: [
                 {
-                  data: res.data.map((obj) => parseFloat(obj.close)),
+                  data: closePrices,
                   borderWidth: 1,
                   borderColor: '#2f8542',
                   fill: true,
