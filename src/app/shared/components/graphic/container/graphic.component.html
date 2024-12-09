@@ -8,6 +8,7 @@
         </p-progressSpinner>
         }
         <p>{{ coin }}</p>
+        <p class="current-price">{{currentPrice | coinPrice : currencySymbol : noData}}</p>
     </header>
 
     @if (hasChart){

@@ -52,7 +52,7 @@
     </div>
 
     <div class="connection">
-      @if (!account){
+      @if (!account || router.url.includes('charts') ){
       <p-button class="hidden" (click)="connect()" label="Conecte-se" />
       }@else{
 

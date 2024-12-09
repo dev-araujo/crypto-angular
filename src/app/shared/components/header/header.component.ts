@@ -1,4 +1,4 @@
-import { RouterLink, RouterModule } from '@angular/router';
+import {Router, RouterLink, RouterModule} from '@angular/router';
 import { delay, of } from 'rxjs';
 
 import { AuthService } from '../../../service/auth/auth.service';
@@ -12,7 +12,6 @@ import { FormsModule } from '@angular/forms';
 import { HandleStatus } from '../../utils/status-connection';
 import { InputTextModule } from 'primeng/inputtext';
 import { MessageService } from 'primeng/api';
-import { NgIf } from '@angular/common';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { RippleModule } from 'primeng/ripple';
 import { StateService } from '../../../service/state/state.service';
@@ -52,22 +51,22 @@ export class HeaderComponent {
     true: 'pi pi-heart-fill',
     false: 'pi pi-heart',
   };
-
   iconCopy = 'pi-clone clone pi';
   iconHeart: any = this.favoriteStatus['false'];
-
   account!: string | null;
   shortAccount!: string | null;
-
   isFavoriteActive = false;
+
 
   private isLocalStorageAvailable = typeof localStorage !== 'undefined';
 
   constructor(
     private stateService: StateService,
     private authService: AuthService,
-    private messageService: MessageService
-  ) {}
+    private messageService: MessageService,
+    public router :Router
+  ) {
+  }
 
   ngOnInit(): void {
     if (this.isLocalStorageAvailable) {

@@ -12,12 +12,14 @@ import { Router, RouterModule } from '@angular/router';
 
 import Chart from 'chart.js/auto';
 import { ChartService } from '../service/chart.service';
+import { CoinPricePipe } from '../../../pipes/coinPricePipe';
 import { HandleStatus } from '../../../utils/status-connection';
 import { MessageService } from 'primeng/api';
 import { NgIf } from '@angular/common';
 import { NoGraphicComponent } from '../../../layout/no-graphic/no-graphic.component';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { StyleClassModule } from 'primeng/styleclass';
+import { changeCurrencySymbol } from '../../../utils/currencyViewHelper';
 
 @Component({
   selector: 'app-graphic',
@@ -27,6 +29,7 @@ import { StyleClassModule } from 'primeng/styleclass';
     ProgressSpinnerModule,
     StyleClassModule,
     NoGraphicComponent,
+    CoinPricePipe
   ],
   providers: [MessageService],
   templateUrl: './graphic.component.html',
@@ -43,6 +46,9 @@ export class GraphicComponent
   image: string | null = null;
   hasChart = true;
   fiat: string = '';
+  currencySymbol = 'R$'
+  currentPrice:number|any
+  noData = '-';
 
   constructor(
     private router: Router,
@@ -84,6 +90,7 @@ export class GraphicComponent
   }
 
   getChart(fiat = this.fiat): void {
+    this.currencySymbol = changeCurrencySymbol(fiat);
     if (!this.chartContainer) {
       return;
     }
@@ -110,6 +117,7 @@ export class GraphicComponent
 
           if (context) {
             const closePrices = res.data.map((obj) => parseFloat(obj.close))
+            this.currentPrice = closePrices[closePrices.length-1]
 
             const data = {
               labels: res.data.map((dataPoint) => {
