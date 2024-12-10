@@ -34,7 +34,7 @@
 </menu>
 
 <header class="header">
-  <section class="header__logo" routerLink="/">
+  <section class="header__logo" routerLink="/" (click)="goHome()">
     <img src="../../../../assets/logo.png" alt="logo: crypto Angular" />
     <h1 class="header__logo__title">Cripto Angular</h1>
   </section>
@@ -43,7 +43,7 @@
     <div class="inputs">
       <form class="search" (ngSubmit)="search($event)">
         <input pInputText type="text" placeholder="Pesquisar" name="find" [(ngModel)]="find"
-          (ngModelChange)="onInputChange()" class="search__input" />
+          (ngModelChange)="onInputChange()" [disabled]="router.url.includes('charts')"  class="search__input" />
         <span class="search__icon pi pi-search" (click)="search()"></span>
       </form>
 

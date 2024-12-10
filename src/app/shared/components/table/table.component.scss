@@ -66,6 +66,13 @@ $pivot-size:820px;
         margin-left: 1rem;
         line-height: 6px;
         cursor: pointer;
+        @media (max-width: $pivot-size) {
+          h4{
+            line-height: 16px;
+
+          }
+        }
+
       }
     }
 

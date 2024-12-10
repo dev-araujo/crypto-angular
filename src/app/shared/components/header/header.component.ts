@@ -76,6 +76,11 @@ export class HeaderComponent {
     }
   }
 
+  goHome(){
+    this.find = ''
+    this.stateService.sharedSearch(this.find);
+  }
+
   favorites() {
     this.isFavoriteActive = !this.isFavoriteActive;
     this.iconHeart =
