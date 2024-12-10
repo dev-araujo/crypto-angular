@@ -85,7 +85,17 @@ $pivot-size:820px;
         font-weight: 600;
         background: rgba(45, 160, 141, 0.137);
         cursor: pointer;
+
+        @media (max-width: $pivot-size) {
+
+           padding:14px;
+           width:60%;
+           text-align: center;
+
+        }
       }
+
+
     }
   }
 }
