@@ -35,8 +35,9 @@
 
 - [x] Uma vez conectado com a metamask possibilitar a criação de uma 'lista de favoritos' onde se pode conferir a cotação e detalhes mais facilmente dos tokens favoritados
 
-- 🏃 layout para celular
-- [ ] Refazer layout da tela de detalhes
+- [x] layout para celular
+
+- 🏃 Refazer layout da tela de detalhes
 
 ## Feito com 🔨
 
