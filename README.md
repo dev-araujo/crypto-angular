@@ -121,7 +121,7 @@ docker build -t crypto-app .
 Execute o container:
 
 ```
-docker run -p 4201:4200 angular-docker
+docker run -p 4201:4200 crypto-app
 ```
 
 Acesse a aplicação na **porta 4201**
