@@ -99,14 +99,20 @@ export class TableComponent {
   listenClickedFavorites() {
     this.stateService.favorites$.subscribe((clicked: boolean) => {
       let rows = 10;
+      let start = 0
       if (clicked) {
+        start = 0
         rows = 50;
         this.favoriteQuery = this.handleFavoriteParamaters();
+
       } else {
+        start = this.start
         rows = 10;
         this.favoriteQuery = '';
+
       }
-      this.getTrending(this.fiat, this.start, rows);
+      this.getTrending(this.fiat, start, rows);
+
     });
   }
 
@@ -184,7 +190,7 @@ export class TableComponent {
       const account = localStorage.getItem('account');
       if (account) {
         this.favoriteList.account = account;
-        const storedList = localStorage.getItem(`favoriteList_${account}`);
+        const storedList = localStorage.getItem(`favoriteList`);
         if (storedList) {
           this.favoriteList.favoriteList = JSON.parse(storedList);
         } else {
@@ -197,7 +203,7 @@ export class TableComponent {
   saveFavoriteList() {
     if (this.favoriteList.account && this.isLocalStorageAvailable) {
       localStorage.setItem(
-        `favoriteList_${this.favoriteList.account}`,
+        `favoriteList`,
         JSON.stringify(this.favoriteList.favoriteList)
       );
     }
