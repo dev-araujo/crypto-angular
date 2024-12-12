@@ -38,6 +38,7 @@
 - [x] layout para celular
 
 - 🏃 Refazer layout da tela de detalhes
+- [ ] loading de carregamento
 
 ## Feito com 🔨
 
