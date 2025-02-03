@@ -25,19 +25,14 @@
 
 </details>
 
-## Processo
+## Features
 
-- [x] Exibir listagem dos tokens correntes
-- [x] Exibir gráficos dos tokens de acordo com a cotação
-- [x] Exibir detalhes à respeito de cada token
+- [x] Listagem dos tokens correntes
+- [x] Gráficos dos tokens de acordo com a cotação
+- [x] Detalhes à respeito de cada token
 - [x] Possibilidade de alternar entre o valor da cotação em dolar e em real brasileiro
 - [x] Possibilidade de conexão com a metamask
-
-- [x] Uma vez conectado com a metamask possibilitar a criação de uma 'lista de favoritos' onde se pode conferir a cotação e detalhes mais facilmente dos tokens favoritados
-
-- [x] layout para celular
-
-- 🏃 Refazer layout da tela de detalhes
+- [x] Uma vez conectado com a metamask possibilita a criação de uma 'lista de favoritos' onde se pode conferir a cotação e detalhes mais facilmente dos tokens favoritados
 
 ## Feito com 🔨
 
