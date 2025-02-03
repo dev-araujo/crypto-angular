@@ -1,24 +1,21 @@
+$pivot-size: 820px;
 
-$pivot-size:820px;
-
-:host ::ng-deep{
+:host ::ng-deep {
   @media (max-width: $pivot-size) {
-    .p-datatable>.p-datatable-wrapper{
+    .p-datatable > .p-datatable-wrapper {
       overflow: hidden !important;
     }
   }
 }
 
 .table {
-
   animation: fadeInAnimation ease 3s;
   animation-iteration-count: 1;
   animation-fill-mode: forwards;
   &__rows {
-    .price{
-      font-size:1.2rem;
+    .price {
+      font-size: 1.2rem;
       font-weight: 500;
-
     }
     &__coin {
       width: 330px;
@@ -32,18 +29,15 @@ $pivot-size:820px;
 
       .pi-heart {
         cursor: pointer;
-
-
       }
 
       .pi-heart-fill {
         color: rgb(255, 64, 64);
-
       }
 
       @media (max-width: $pivot-size) {
-        .pi{
-          font-size:2rem !important;
+        .pi {
+          font-size: 2rem !important;
         }
       }
 
@@ -54,25 +48,20 @@ $pivot-size:820px;
         cursor: pointer;
 
         @media (max-width: $pivot-size) {
-          width:3rem;
-          height:3rem;
+          width: 3rem;
+          height: 3rem;
         }
-
-
       }
-
 
       &__text {
         margin-left: 1rem;
         line-height: 6px;
         cursor: pointer;
         @media (max-width: $pivot-size) {
-          h4{
+          h4 {
             line-height: 16px;
-
           }
         }
-
       }
     }
 
@@ -87,15 +76,11 @@ $pivot-size:820px;
         cursor: pointer;
 
         @media (max-width: $pivot-size) {
-
-           padding:14px;
-           width:60%;
-           text-align: center;
-
+          padding: 14px;
+          width: 50%;
+          text-align: center;
         }
       }
-
-
     }
   }
 }

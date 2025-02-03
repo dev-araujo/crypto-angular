@@ -1,8 +1,7 @@
-import { Component, SimpleChanges } from '@angular/core';
+import { Component, signal } from '@angular/core';
 
 import { BannerComponent } from '../../shared/layout/banner/banner.component';
 import { CommonModule } from '@angular/common';
-import { CryptoService } from '../../service/general/crypto.service';
 import { SidebarDetailsComponent } from '../../shared/components/sidebar-details/sidebar-details.component';
 import { TableComponent } from '../../shared/components/table/table.component';
 
@@ -15,27 +14,28 @@ import { TableComponent } from '../../shared/components/table/table.component';
     BannerComponent,
     SidebarDetailsComponent,
   ],
-  template: `<app-banner></app-banner>
+  template: `
+    <app-banner></app-banner>
     <div class="home">
       <app-sidebar-details
         [isVisible]="isVisible"
         (close)="close($event)"
-        [uuid]="info"
-        [signal]="signalSymbol"
-
+        [uuid]="info()"
+        [signal]="signalSymbol()"
       ></app-sidebar-details>
       <app-table (emitDetails)="open($event)" [hidden]="isVisible"></app-table>
-    </div>`,
+    </div>
+  `,
   styleUrl: './home.component.scss',
 })
 export class HomeComponent {
   isVisible = false;
-  info: any;
-  signalSymbol = 'R$';
+  info = signal<any>(null);
+  signalSymbol = signal<string>('R$');
 
   open(event: any) {
-    this.info = event?.uuid;
-    this.signalSymbol = event?.signal;
+    this.info.set(event?.uuid);
+    this.signalSymbol.set(event?.signal);
     this.isVisible = event?.toggle;
   }
 

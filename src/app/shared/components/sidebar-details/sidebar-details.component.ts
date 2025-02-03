@@ -1,19 +1,12 @@
 import {
-  ChangeDetectorRef,
   Component,
   HostListener,
-  Input,
-  SimpleChanges,
+  effect,
+  input,
   output,
+  signal,
 } from '@angular/core';
-import {
-  CurrencyPipe,
-  NgClass,
-  NgFor,
-  NgIf,
-  NgStyle,
-  PercentPipe,
-} from '@angular/common';
+import { CurrencyPipe, NgClass, NgStyle, PercentPipe } from '@angular/common';
 
 import { CryptoService } from '../../../service/general/crypto.service';
 import { LowVolumePipe } from '../../pipes/lowVolumePipe';
@@ -37,20 +30,29 @@ import { StyleHelper } from '../../utils/styleHelper';
   styleUrl: './sidebar-details.component.scss',
 })
 export class SidebarDetailsComponent {
-  @Input() isVisible = false;
-  @Input() uuid: any;
-  @Input() signal: any;
+  isVisible = input<boolean>(false);
+  uuid = input<any>(null);
+  signal = input<any>(null);
+
   close = output<boolean>();
-  coinDetails: any;
+  coinDetails = signal<any>(null);
   styleHelper = StyleHelper;
   noData = '-';
+  isMobile = signal(false);
+  position = signal('right');
 
-  isMobile=false
-  position='right'
+  constructor(private service: CryptoService) {
+    this.checkWindowSize();
 
-
-  constructor(private cdr: ChangeDetectorRef, private service: CryptoService) {
-    this.checkWindowSize(); // Verifica o tamanho da janela na inicialização
+    effect(
+      () => {
+        const currentUuid = this.uuid();
+        if (currentUuid) {
+          this.getDetails(currentUuid);
+        }
+      },
+      { allowSignalWrites: true }
+    );
   }
 
   @HostListener('window:resize', ['$event'])
@@ -59,21 +61,15 @@ export class SidebarDetailsComponent {
   }
 
   checkWindowSize() {
-    this.isMobile = window.innerWidth <= 820;
-    this.position = this.isMobile ? 'bottom' : 'right';
+    const isMobile = window.innerWidth <= 820;
+    this.isMobile.set(isMobile);
+    this.position.set(isMobile ? 'bottom' : 'right');
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes['uuid'] && this.uuid) {
-      this.getDetails();
-      this.cdr.detectChanges();
-    }
-  }
-
-  getDetails() {
-    this.coinDetails = null;
-    this.service.getDetails(this.uuid).subscribe((res: any) => {
-      this.coinDetails = res?.data?.coin;
+  getDetails(uuid: string) {
+    this.coinDetails.set(null);
+    this.service.getDetails(uuid).subscribe((res: any) => {
+      this.coinDetails.set(res?.data?.coin);
     });
   }
 
