@@ -8,7 +8,14 @@
 
 #### Um projeto para listar informações sobre crypto.
 
-## Resultado
+- [x] Listagem dos tokens correntes
+- [x] Gráficos dos tokens de acordo com a cotação
+- [x] Detalhes à respeito de cada token
+- [x] Possibilidade de alternar entre o valor da cotação em dolar e em real brasileiro
+- [x] Possibilidade de conexão com a metamask
+- [x] Uma vez conectado com a metamask possibilita a criação de uma 'lista de favoritos' onde se pode conferir a cotação e detalhes mais facilmente dos tokens favoritados
+ 
+## ✨ Resultado
 
 - O resultado pode ser conferido :arrow_right: [**AQUI**](https://crypto-angular.vercel.app/)
 <h1 align="center">
@@ -19,24 +26,13 @@
 
 </h1>
 
-<details><summary> <h2>🦊Tela depois de o usuário se conectar com a metamask🦊</h2></summary>
-
-![image](https://github.com/user-attachments/assets/34b6b967-4966-4c36-84a6-847a18197d34)
-
-</details>
-
-## Features
-
-- [x] Listagem dos tokens correntes
-- [x] Gráficos dos tokens de acordo com a cotação
-- [x] Detalhes à respeito de cada token
-- [x] Possibilidade de alternar entre o valor da cotação em dolar e em real brasileiro
-- [x] Possibilidade de conexão com a metamask
-- [x] Uma vez conectado com a metamask possibilita a criação de uma 'lista de favoritos' onde se pode conferir a cotação e detalhes mais facilmente dos tokens favoritados
 
 ## Feito com 🔨
 
 - **Angular +2**
+- **PrimeNG**
+- **ChartJS**
+- **metamask/detect-provider**
 
 ### Consumindo as APIs:
 
