@@ -1,27 +1,23 @@
-import {
-  ACCESSTOKEN,
-  ACCESSTOKENBACKUP,
-  HISTORICALAPI,
-} from '../../../../config/config';
 import { CoinList, HistoricalData } from '../../models/shared.model';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { Injectable, inject } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 
 import { ICryptoApiService } from '../../models/crypto-api.model';
-import { Injectable } from '@angular/core';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CryptoService implements ICryptoApiService {
-  private readonly baseUrl = 'https://api.coinranking.com/v2/';
-  private readonly historicalBaseUrl = 'https://min-api.cryptocompare.com/';
-  private readonly symbolUrl = 'https://data-api.cryptocompare.com';
+  private readonly _apiUrl = environment.url.baseUrl;
+  private readonly _apiHistorial = environment.url.historicalBaseUrl;
+  private readonly _apiSymbol = environment.url.symbolUrl;
+  private readonly _currentAccessToken = environment.tokens.ACCESSTOKEN;
+  private readonly _historicalAccessToken = environment.tokens.HISTORICALAPI;
 
-  private currentAccessToken = ACCESSTOKEN;
-
-  constructor(private readonly http: HttpClient) {}
+  http = inject(HttpClient);
 
   getTrendingTop(
     currency: string,
@@ -33,26 +29,15 @@ export class CryptoService implements ICryptoApiService {
     const options = {
       headers: {
         'Content-Type': 'application/json',
-        'x-access-token': this.currentAccessToken,
+        'x-access-token': this._currentAccessToken,
       },
     };
-
-    const endpoint = `${this.baseUrl}coins?referenceCurrencyUuid=${currency}&orderBy=price&limit=${rows}&offset=${offset}&search=${search}&${favorites}`;
-
-    return this.http.get<CoinList>(endpoint, options).pipe(
-      catchError((error: HttpErrorResponse) => {
-        if (error.status === 429) {
-          this.currentAccessToken = ACCESSTOKENBACKUP;
-          options.headers['x-access-token'] = this.currentAccessToken;
-          return this.http.get<CoinList>(endpoint, options);
-        }
-        return throwError(error);
-      })
-    );
+    const endpoint = `${this._apiUrl}coins?referenceCurrencyUuid=${currency}&orderBy=price&limit=${rows}&offset=${offset}&search=${search}&${favorites}`;
+    return this.http.get<CoinList>(endpoint, options);
   }
 
   getSymbol(symbol: string): Observable<string> {
-    const endpoint = `${this.symbolUrl}/asset/v1/data/by/symbol?asset_symbol=${symbol}&api_key=${HISTORICALAPI}`;
+    const endpoint = `${this._apiSymbol}/asset/v1/data/by/symbol?asset_symbol=${symbol}&api_key=${this._historicalAccessToken}`;
 
     return this.http
       .get<any>(endpoint)
@@ -63,10 +48,10 @@ export class CryptoService implements ICryptoApiService {
     const options = {
       headers: {
         'Content-Type': 'application/json',
-        'x-access-token': this.currentAccessToken,
+        'x-access-token': this._currentAccessToken,
       },
     };
-    const endpoint = `${this.baseUrl}coin/${uuid}`;
+    const endpoint = `${this._apiUrl}coin/${uuid}`;
 
     return this.http.get<any>(endpoint, options);
   }
@@ -76,7 +61,7 @@ export class CryptoService implements ICryptoApiService {
     period: string = 'day',
     currency = 'BRL'
   ): Observable<HistoricalData> {
-    const endpoint = `${this.historicalBaseUrl}data/v2/histo${period}?fsym=${coin}&tsym=${currency}&limit=200&aggregate=2&aggregatePredictableTimePeriods=false&api_key=${HISTORICALAPI}`;
+    const endpoint = `${this._apiHistorial}data/v2/histo${period}?fsym=${coin}&tsym=${currency}&limit=200&aggregate=2&aggregatePredictableTimePeriods=false&api_key=${this._historicalAccessToken}`;
     return this.http.get<any>(endpoint).pipe(
       map((res) => {
         return {

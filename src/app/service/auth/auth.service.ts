@@ -1,12 +1,12 @@
-// src/app/services/metamask-auth.service.ts
 import { Injectable } from '@angular/core';
+import { MetaMaskEthereumProvider } from './auth.interface';
 import detectEthereumProvider from '@metamask/detect-provider';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  private provider: any;
+  private provider: MetaMaskEthereumProvider | any;
   private isLocalStorageAvailable = typeof localStorage !== 'undefined';
 
   public account: string | any = null;
