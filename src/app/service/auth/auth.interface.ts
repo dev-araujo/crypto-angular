@@ -12,4 +12,5 @@ export interface MetaMaskEthereumProvider {
     listener: (...args: any[]) => void
   ): this;
   removeAllListeners(event?: string | symbol): this;
+  request(args: { method: string; params?: any[] }): Promise<any>;
 }

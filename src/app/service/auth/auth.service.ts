@@ -1,71 +1,72 @@
 import { Injectable } from '@angular/core';
 import { MetaMaskEthereumProvider } from './auth.interface';
 import detectEthereumProvider from '@metamask/detect-provider';
+import { messages } from './messages';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  private provider: MetaMaskEthereumProvider | any;
-  private isLocalStorageAvailable = typeof localStorage !== 'undefined';
-
+  private _provider: MetaMaskEthereumProvider | undefined | null;
+  private _isLocalStorageAvailable = typeof localStorage !== 'undefined';
+  private _localStorageAccount = 'account';
   public account: string | any = null;
-  private localStorageAccount = 'account';
 
   constructor() {
     this.initProvider();
   }
 
-  private async initProvider() {
-    this.provider = await detectEthereumProvider();
-    if (this.provider) {
-      this.provider?.on(
+  private async initProvider(): Promise<void> {
+    this._provider = await detectEthereumProvider();
+
+    if (!this._provider) {
+      console.error(messages['notFound']);
+    } else {
+      this._provider?.on(
         'accountsChanged',
         this.handleAccountsChanged?.bind(this)
-      );
-    } else {
-      console.error(
-        'MetaMask não foi encontrado. Por favor, instale a extensão.'
       );
     }
   }
 
-  private handleAccountsChanged(accounts: string[]) {
+  private handleAccountsChanged(accounts: string[]): void {
     if (accounts) {
       this.account = accounts[0];
     }
   }
 
   public async connect(): Promise<string | null> {
-    if (this.provider) {
+    if (!this._provider) {
+      console.warn(messages['notAvailable']);
+      return messages['notAvailable'];
+    } else {
       try {
-        const accounts = await this.provider.request({
+        const accounts = await this._provider.request({
           method: 'eth_requestAccounts',
         });
         this.account = accounts[0];
-        if (this.isLocalStorageAvailable) {
-          localStorage.setItem(this.localStorageAccount, this.account);
+        if (this._isLocalStorageAvailable) {
+          localStorage.setItem(this._localStorageAccount, this.account);
         }
 
         return this.account;
       } catch (error) {
-        return `Erro ao conectar à MetaMask:${error}`;
+        console.error(messages.error(error));
+        return messages.error(error);
       }
-    } else {
-      return 'Alerta: MetaMask não está disponível.';
     }
   }
 
-  public disconnect() {
-    if (this.isLocalStorageAvailable) {
-      localStorage.removeItem(this.localStorageAccount);
+  public disconnect(): void {
+    if (this._isLocalStorageAvailable) {
+      localStorage.removeItem(this._localStorageAccount);
     }
     this.account = null;
   }
 
   public isConnected(): boolean {
-    if (this.isLocalStorageAvailable) {
-      const account = localStorage.getItem(this.localStorageAccount);
+    if (this._isLocalStorageAvailable) {
+      const account = localStorage.getItem(this._localStorageAccount);
       return !!account;
     }
     return false;
