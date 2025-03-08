@@ -50,22 +50,28 @@ Por ser um projeto realizado com **Angular**, há a necessidade do **NodeJS**. C
 No terminal, clone o projeto:
 
 ```
-git clone
+git clone https://github.com/dev-araujo/crypto-angular.git
 ```
 
-Crie um diretório na raiz chamado config com um arquivo ts chamado config
-
-```
-/config > config.ts
-```
-
-Crie as chaves na [CryptoCompare](https://min-api.cryptocompare.com/) e na [Coinranking](https://developers.coinranking.com/api) e as defina no **config.ts**:
+Crie as chaves na [CryptoCompare](https://min-api.cryptocompare.com/) e na [Coinranking](https://developers.coinranking.com/api) e crie o arquivo `environment.ts` no diretório `environment` :
 
 ```typeScript
 
-export const ACCESSTOKEN = "SUA-CHAVE-CRYPTOCOMPARE"
-export const ACCESSTOKENBACKUP ="SUA-CHAVE-CRYPTOCOMPARE"
-export const HISTORICALAPI = "SUA-CHAVE-COINRANKING"
+export const environment = {
+  production: true,
+
+  url: {
+    baseUrl: 'https://api.coinranking.com/v2/',
+    historicalBaseUrl: 'https://min-api.cryptocompare.com/',
+    symbolUrl: 'https://data-api.cryptocompare.com',
+  },
+  tokens: {
+    HISTORICALAPI:
+     "SUA-CHAVE-COINRANKING",
+    ACCESSTOKEN: 'SUA-CHAVE-CRYPTOCOMPARE',
+  },
+};
+
 
 ```
 
@@ -88,22 +94,28 @@ npm run start
 No terminal, clone o projeto:
 
 ```
-git clone
+git clone https://github.com/dev-araujo/crypto-angular.git
 ```
 
-Crie um diretório na raiz chamado config com um arquivo ts chamado config
-
-```
-/config > config.ts
-```
-
-Crie as chaves na [CryptoCompare](https://min-api.cryptocompare.com/) e na [Coinranking](https://developers.coinranking.com/api) e as defina no **config.ts**:
+Crie as chaves na [CryptoCompare](https://min-api.cryptocompare.com/) e na [Coinranking](https://developers.coinranking.com/api) e crie o arquivo `environment.ts` no diretório `environment` :
 
 ```typeScript
 
-export const ACCESSTOKEN = "SUA-CHAVE-CRYPTOCOMPARE"
-export const ACCESSTOKENBACKUP ="SUA-CHAVE-CRYPTOCOMPARE"
-export const HISTORICALAPI = "SUA-CHAVE-COINRANKING"
+export const environment = {
+  production: true,
+
+  url: {
+    baseUrl: 'https://api.coinranking.com/v2/',
+    historicalBaseUrl: 'https://min-api.cryptocompare.com/',
+    symbolUrl: 'https://data-api.cryptocompare.com',
+  },
+  tokens: {
+    HISTORICALAPI:
+     "SUA-CHAVE-COINRANKING",
+    ACCESSTOKEN: 'SUA-CHAVE-CRYPTOCOMPARE',
+  },
+};
+
 
 ```
 
