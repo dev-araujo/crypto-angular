@@ -1,10 +1,3 @@
-// shared.model.ts
-export interface Currency {
-  name: string;
-  code: string;
-}
-
-// API return interfaces
 export interface CoinList {
   status: string;
   data: Data;
@@ -39,22 +32,4 @@ export interface Coin {
   sparkline: string[];
   coinrankingUrl: string;
   '24hVolume': string;
-}
-
-// Historical data interfaces
-export interface HistoricalData {
-  response: string;
-  data: HistoricalObj[];
-}
-
-export interface HistoricalObj {
-  time: number;
-  high: number;
-  low: number;
-  open: number;
-  volumefrom: number;
-  volumeto: number;
-  close: number | any;
-  conversionType: string;
-  conversionSymbol: string;
 }

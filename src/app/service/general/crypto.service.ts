@@ -1,8 +1,9 @@
-import { CoinList, HistoricalData } from '../../models/shared.model';
 import { Injectable, inject } from '@angular/core';
 
 import { ApiEndpoints } from './utils/apiEndpoints';
 import { ApiOptions } from './utils/apiOptions';
+import { CoinList } from './interfaces/crypto-table.interface';
+import { HistoricalData } from './interfaces/crypto-historical.interface';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';

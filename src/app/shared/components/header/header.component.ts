@@ -1,4 +1,4 @@
-import {Router, RouterLink, RouterModule} from '@angular/router';
+import { Router, RouterLink, RouterModule } from '@angular/router';
 import { delay, of } from 'rxjs';
 
 import { AuthService } from '../../../service/auth/auth.service';
@@ -6,7 +6,7 @@ import { AvatarModule } from 'primeng/avatar';
 import { AvatarPipe } from '../../pipes/avatarPipe';
 import { ButtonModule } from 'primeng/button';
 import { Component } from '@angular/core';
-import { Currency } from '../../../models/shared.model';
+import { Currency } from '../../interfaces/coin.interface';
 import { DropdownModule } from 'primeng/dropdown';
 import { FormsModule } from '@angular/forms';
 import { HandleStatus } from '../../utils/status-connection';
@@ -57,16 +57,14 @@ export class HeaderComponent {
   shortAccount!: string | null;
   isFavoriteActive = false;
 
-
   private isLocalStorageAvailable = typeof localStorage !== 'undefined';
 
   constructor(
     private stateService: StateService,
     private authService: AuthService,
     private messageService: MessageService,
-    public router :Router
-  ) {
-  }
+    public router: Router
+  ) {}
 
   ngOnInit(): void {
     if (this.isLocalStorageAvailable) {
@@ -76,8 +74,8 @@ export class HeaderComponent {
     }
   }
 
-  goHome(){
-    this.find = ''
+  goHome() {
+    this.find = '';
     this.stateService.sharedSearch(this.find);
   }
 

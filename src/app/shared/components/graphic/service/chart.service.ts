@@ -1,7 +1,7 @@
-import { Currency, HistoricalData } from '../../../../models/shared.model';
-
 import Chart from 'chart.js/auto';
 import { CryptoService } from '../../../../service/general/crypto.service';
+import { Currency } from '../../../interfaces/coin.interface';
+import { HistoricalData } from '../../../../service/general/interfaces/crypto-historical.interface';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { StateService } from '../../../../service/state/state.service';

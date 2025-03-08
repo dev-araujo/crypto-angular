@@ -7,13 +7,14 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
-import { Currency, HistoricalData } from '../../../../models/shared.model';
 import { Router, RouterModule } from '@angular/router';
 
 import Chart from 'chart.js/auto';
 import { ChartService } from '../service/chart.service';
 import { CoinPricePipe } from '../../../pipes/coinPricePipe';
+import { Currency } from '../../../interfaces/coin.interface';
 import { HandleStatus } from '../../../utils/status-connection';
+import { HistoricalData } from '../../../../service/general/interfaces/crypto-historical.interface';
 import { MessageService } from 'primeng/api';
 import { NgIf } from '@angular/common';
 import { NoGraphicComponent } from '../../../layout/no-graphic/no-graphic.component';
@@ -29,7 +30,7 @@ import { changeCurrencySymbol } from '../../../utils/currencyViewHelper';
     ProgressSpinnerModule,
     StyleClassModule,
     NoGraphicComponent,
-    CoinPricePipe
+    CoinPricePipe,
   ],
   providers: [MessageService],
   templateUrl: './graphic.component.html',
@@ -46,8 +47,8 @@ export class GraphicComponent
   image: string | null = null;
   hasChart = true;
   fiat: string = '';
-  currencySymbol = 'R$'
-  currentPrice:number|any
+  currencySymbol = 'R$';
+  currentPrice: number | any;
   noData = '-';
 
   constructor(
@@ -75,7 +76,7 @@ export class GraphicComponent
 
   getImage(): void {
     this.chartService.getSymbol(this.id).subscribe((res: string) => {
-      this.image =  res?? res;
+      this.image = res ?? res;
     });
   }
 
@@ -101,32 +102,35 @@ export class GraphicComponent
         this.hasChart = res.response !== 'Error';
 
         const existingCanvas =
-            this.chartContainer.nativeElement.querySelector('canvas');
+          this.chartContainer.nativeElement.querySelector('canvas');
 
-          if (existingCanvas) {
-            existingCanvas.remove();
-          }
+        if (existingCanvas) {
+          existingCanvas.remove();
+        }
 
         if (this.hasChart && this.chartContainer) {
           this.destroyChart();
-
 
           const canvas = document.createElement('canvas');
           this.chartContainer.nativeElement.appendChild(canvas);
           const context = canvas.getContext('2d');
 
           if (context) {
-            const closePrices = res.data.map((obj) => parseFloat(obj.close))
-            this.currentPrice = closePrices[closePrices.length-1]
+            const closePrices = res.data.map((obj: { close: string }) =>
+              parseFloat(obj.close)
+            );
+            this.currentPrice = closePrices[closePrices.length - 1];
 
             const data = {
-              labels: res.data.map((dataPoint) => {
-                const date = new Date(dataPoint.time);
-                return `${date.getHours().toString().padStart(2, '0')}:${date
-                  .getMinutes()
-                  .toString()
-                  .padStart(2, '0')}`;
-              }),
+              labels: res.data.map(
+                (dataPoint: { time: string | number | Date }) => {
+                  const date = new Date(dataPoint.time);
+                  return `${date.getHours().toString().padStart(2, '0')}:${date
+                    .getMinutes()
+                    .toString()
+                    .padStart(2, '0')}`;
+                }
+              ),
               datasets: [
                 {
                   data: closePrices,

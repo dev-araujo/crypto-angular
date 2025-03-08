@@ -1,11 +1,4 @@
-import { CoinList, Currency } from '../../../models/shared.model';
-import {
-  Component,
-  Input,
-  SimpleChanges,
-  ViewContainerRef,
-  output,
-} from '@angular/core';
+import { Component, Input, SimpleChanges, output } from '@angular/core';
 import { NgClass, NgStyle, PercentPipe } from '@angular/common';
 import { PaginatorModule, PaginatorState } from 'primeng/paginator';
 import { Router, RouterLink } from '@angular/router';
@@ -13,8 +6,10 @@ import { Subject, take } from 'rxjs';
 
 import { AuthService } from '../../../service/auth/auth.service';
 import { ButtonModule } from 'primeng/button';
+import { CoinList } from '../../../service/general/interfaces/crypto-table.interface';
 import { CoinPricePipe } from '../../pipes/coinPricePipe';
 import { CryptoService } from '../../../service/general/crypto.service';
+import { Currency } from '../../interfaces/coin.interface';
 import { IconUrlPipe } from '../../pipes/iconUrlPipe';
 import { StateService } from '../../../service/state/state.service';
 import { StyleHelper } from '../../utils/styleHelper';
@@ -35,7 +30,7 @@ import { changeCurrencySymbol } from '../../utils/currencyViewHelper';
     IconUrlPipe,
     CoinPricePipe,
     RouterLink,
-    TooltipModule
+    TooltipModule,
   ],
 
   templateUrl: './table.component.html',
@@ -99,20 +94,17 @@ export class TableComponent {
   listenClickedFavorites() {
     this.stateService.favorites$.subscribe((clicked: boolean) => {
       let rows = 10;
-      let start = 0
+      let start = 0;
       if (clicked) {
-        start = 0
+        start = 0;
         rows = 50;
         this.favoriteQuery = this.handleFavoriteParamaters();
-
       } else {
-        start = this.start
+        start = this.start;
         rows = 10;
         this.favoriteQuery = '';
-
       }
       this.getTrending(this.fiat, start, rows);
-
     });
   }
 
