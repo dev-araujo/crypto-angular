@@ -12,11 +12,17 @@ $pivot-size: 820px;
   animation: fadeInAnimation ease 3s;
   animation-iteration-count: 1;
   animation-fill-mode: forwards;
+
   &__rows {
     .price {
       font-size: 1.2rem;
       font-weight: 500;
     }
+
+    &__block-coin:hover {
+      border-left: 4px solid #2f8542;
+    }
+
     &__coin {
       width: 330px;
       display: flex;

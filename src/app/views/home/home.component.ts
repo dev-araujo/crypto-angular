@@ -1,9 +1,10 @@
-import { Component, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 
 import { BannerComponent } from '../../shared/layout/banner/banner.component';
 import { CommonModule } from '@angular/common';
 import { SidebarDetailsComponent } from '../../shared/components/sidebar-details/sidebar-details.component';
 import { TableComponent } from '../../shared/components/table/table.component';
+import { StateService } from '../../service/state/state.service';
 
 @Component({
   selector: 'app-home',
@@ -29,6 +30,7 @@ import { TableComponent } from '../../shared/components/table/table.component';
   styleUrl: './home.component.scss',
 })
 export class HomeComponent {
+  stateService = inject(StateService);
   isVisible = false;
   info = signal<any>(null);
   signalSymbol = signal<string>('R$');
@@ -37,11 +39,17 @@ export class HomeComponent {
     this.info.set(event?.uuid);
     this.signalSymbol.set(event?.signal);
     this.isVisible = event?.toggle;
+    this.sharingStatusDetails(this.isVisible);
   }
 
   close(event: boolean) {
     if (event) {
       this.isVisible = false;
+      this.sharingStatusDetails(this.isVisible);
     }
+  }
+
+  private sharingStatusDetails(isVisible: boolean): void {
+    this.stateService.sharedDetailsOpen(isVisible);
   }
 }

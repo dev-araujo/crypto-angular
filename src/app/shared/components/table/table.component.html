@@ -18,7 +18,7 @@
 
     <ng-template pTemplate="body" let-coin>
       <tr class="table__rows">
-        <td>
+        <td class="table__rows__block-coin">
           <section class="table__rows__coin">
             @if (isConnected) {
             <i
@@ -27,7 +27,11 @@
             ></i>
             }
 
-            <span [routerLink]="['charts', coin.symbol, coin.name]" pTooltip="clique para ver o gráfico" tooltipPosition="left">
+            <span
+              [routerLink]="['charts', coin.symbol, coin.name]"
+              pTooltip="clique para ver o gráfico"
+              tooltipPosition="left"
+            >
               <img [src]="coin.iconUrl | iconUrl" />
 
               <div class="table__rows__coin__text">
@@ -39,7 +43,9 @@
         </td>
 
         <td>
-          <span class="price">{{ coin?.price | coinPrice : currencySymbol : noData }}</span>
+          <span class="price">{{
+            coin?.price | coinPrice : currencySymbol : noData
+          }}</span>
         </td>
 
         <td [ngStyle]="styleHelper.upAndDownStyle(coin.change)">

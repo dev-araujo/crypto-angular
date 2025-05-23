@@ -1,8 +1,11 @@
 import { Routes } from '@angular/router';
 import { HomeComponent } from './views/home/home.component';
-import { ChartComponent } from './views/chart/chart.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
-  { path: 'charts/:id/:coin', component: ChartComponent },
+  {
+    path: 'charts/:id/:coin',
+    loadComponent: () =>
+      import('./views/chart/chart.component').then((m) => m.ChartComponent),
+  },
 ];
