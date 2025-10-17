@@ -1,0 +1,138 @@
+$header-height: 6rem;
+$logo-font-size: clamp(1.5rem, 4vw, 2rem);
+$gradient-start: #456e55;
+$gradient-mid: #5fa379;
+$gradient-end: #56a375;
+$input-border-color: #ccc;
+$input-focus-color: #3498db;
+$icon-color: #666;
+
+@keyframes fadeInAnimation {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.header {
+  display: flex;
+  flex-wrap: wrap; 
+  justify-content: space-between;
+  align-items: center;
+  gap: 2rem; 
+  height: auto; 
+  min-height: $header-height;
+  padding: 1rem 2rem;
+  animation: fadeInAnimation 1.5s ease-out backwards;
+}
+
+.header__logo {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem; 
+  text-decoration: none; 
+  color: inherit; 
+
+  img {
+    width: 60px; 
+    height: auto;
+  }
+
+  &__title {
+    font-size: $logo-font-size;
+    white-space: nowrap;
+    background: linear-gradient(to right, $gradient-start 0%, $gradient-mid 38%, $gradient-end 100%);
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+}
+
+.header__actions {
+  display: flex;
+  flex-wrap: wrap; 
+  align-items: center;
+  justify-content: flex-end;
+  gap: 1rem; 
+}
+
+.search {
+  position: relative;
+  display: flex;
+  align-items: center;
+
+  &__input {
+    padding: 0.75rem 2.5rem 0.75rem 1rem; 
+    border: 1px solid $input-border-color;
+    border-radius: 8px; 
+    outline: none;
+    font-size: 1rem;
+    width: 220px;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+
+    &:focus-visible {
+      border-color: $input-focus-color;
+      box-shadow: 0 0 0 3px rgba($input-focus-color, 0.2);
+    }
+  }
+
+  &__button {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    padding: 0.5rem;
+    cursor: pointer;
+    color: $icon-color;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: background-color 0.3s ease;
+
+    &:hover {
+      background-color: #f0f0f0;
+    }
+
+    &:focus-visible {
+      outline: 2px solid $input-focus-color;
+      outline-offset: 2px;
+    }
+
+    .pi {
+      font-size: 1.2rem;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .header {
+    flex-direction: column; 
+    justify-content: center;
+    padding: 1.5rem;
+  }
+
+  .header__actions {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .search {
+    flex-grow: 1; 
+
+    &__input {
+      width: 100%;
+    }
+  }
+}
+
+
+@media(max-width: 480px) 
+{
+  .p-select{
+    width:100% !important;
+  }
+}
