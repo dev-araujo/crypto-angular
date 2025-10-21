@@ -6,6 +6,6 @@ import { Component } from '@angular/core';
   templateUrl: './chart.html',
   styleUrl: './chart.scss'
 })
-export class Chart {
+export class ChartComponent {
 
 }

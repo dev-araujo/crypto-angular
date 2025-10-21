@@ -1,13 +1,13 @@
 import { Component } from '@angular/core';
 import { HeaderComponent } from './components/header/header';
-import { Banner } from './components/banner/banner';
+import { BannerComponent } from './components/banner/banner';
 
 @Component({
   selector: 'app-layout',
-  imports: [HeaderComponent, Banner],
+  imports: [HeaderComponent, BannerComponent],
   templateUrl: './layout.html',
   styleUrl: './layout.scss'
 })
-export class Layout {
+export class LayoutComponent {
 
 }

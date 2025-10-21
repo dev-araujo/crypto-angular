@@ -1,0 +1,77 @@
+:host ::ng-deep .p-datatable .p-datatable-thead > tr > th {
+  background: #f9fafb;
+  color: #374151;
+  border-bottom: 2px solid #e5e7eb;
+  font-weight: 600;
+  text-align: left;
+}
+
+:host ::ng-deep .p-datatable .p-datatable-tbody > tr {
+  background-color: #ffffff;
+  color: #111827;
+}
+
+:host ::ng-deep .p-datatable .p-datatable-tbody > tr:hover {
+  background-color: #f3f4f6;
+}
+
+:host ::ng-deep .p-datatable .p-datatable-tbody > tr > td {
+  border: none;
+  border-bottom: 1px solid #e5e7eb;
+  padding: 1rem;
+  vertical-align: middle;
+}
+
+.coin-cell {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+
+  img {
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+  }
+}
+
+.coin-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.coin-name {
+  font-weight: 500;
+  color: #111827;
+}
+
+.coin-symbol {
+  font-size: 0.875rem;
+  color: #6b7280;
+}
+
+.details-link {
+  color: #22c55e;
+  font-weight: 500;
+  text-decoration: none;
+  cursor: pointer;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.text-red-500 {
+  color: #ef4444;
+}
+
+.text-green-500 {
+  color: #22c55e;
+}
+
+.mr-2 {
+  margin-right: 0.5rem;
+}
+
+img {
+  vertical-align: middle;
+}

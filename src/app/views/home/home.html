@@ -1,1 +1,8 @@
-<p>home works!</p>
+<app-table 
+  [coins]="coins" 
+  [loading]="loading" 
+  [error]="error"
+  [totalRecords]="totalRecords"
+  [rows]="limit"
+  (onPageChange)="onPageChange($event)"
+></app-table>

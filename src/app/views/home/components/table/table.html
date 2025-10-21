@@ -1,0 +1,52 @@
+<div class="card">
+  @if (error) {
+  <div class="p-4 text-center text-red-500">{{ error }}</div>
+  } @else {
+  @if (currencyCode$ | async; as currencyCode) {
+  <p-table  [scrollable]="true" scrollHeight="420px" [value]="coins" [loading]="loading" [tableStyle]="{ 'min-width': '50rem' }" [paginator]="totalRecords > rows"
+    [rows]="rows" [totalRecords]="totalRecords" (onLazyLoad)="onPage($event)" [rowsPerPageOptions]="[10, 25, 50]"
+    [showCurrentPageReport]="true" currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} moedas"
+    [lazy]="true">
+    <ng-template pTemplate="header">
+      <tr>
+        <th>Cripto</th>
+        <th>Preço</th>
+        <th>24h</th>
+        <th>Ação</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-coin>
+      <tr>
+        <td>
+          <div class="coin-cell">
+            <img [src]="coin.iconUrl" [alt]="coin.name" width="24" class="mr-2" />
+            <div class="coin-info">
+              <span class="coin-name">{{ coin.name }}</span>
+              <span class="coin-symbol">{{ coin.symbol }}</span>
+            </div>
+          </div>
+        </td>
+        <td>
+          {{ coin.price | currency: currencyCode : 'symbol' : '1.2-8' }}
+        </td>
+        <td>
+          <span [ngClass]="{ 'text-red-500': coin.change < 0, 'text-green-500': coin.change >= 0 }">
+            {{ coin.change | number: '1.2-2' }}%
+          </span>
+        </td>
+        <td>
+          <a [routerLink]="['/charts', coin.uuid, coin.name]" class="details-link">
+            Detalhes
+          </a>
+        </td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="emptymessage">
+      <tr>
+        <td colspan="4" class="text-center">Nenhum dado de criptomoeda encontrado.</td>
+      </tr>
+    </ng-template>
+  </p-table>
+  }
+  }
+</div>

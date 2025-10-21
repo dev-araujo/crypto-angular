@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { Router, RouterLink, RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 
 import { AvatarModule } from 'primeng/avatar';
 import { ButtonModule } from 'primeng/button';
@@ -9,6 +9,7 @@ import { RippleModule } from 'primeng/ripple';
 import { ToastModule } from 'primeng/toast';
 import { TooltipModule } from 'primeng/tooltip';
 import { SelectModule } from 'primeng/select';
+import { CryptoService } from '../../../services/crypto.service'; 
 
 @Component({
   selector: 'app-header',
@@ -32,27 +33,32 @@ export class HeaderComponent {
     { name: 'BRL', code: 'n5fpnvMGNsOS' },
   ];
 
-  fiat = this.currency[1];
+  fiat = this.currency[1]; 
   find = '';
 
-  router = inject(Router)
+  router = inject(Router);
+  private cryptoService = inject(CryptoService); 
 
-  goHome(event:any): void {
+  goHome(event: any): void {
+    event.preventDefault(); 
     this.find = '';
-    this.search();
+    this.cryptoService.setSearchTerm(''); 
+    this.router.navigate(['/']); 
   }
 
   getFiat(event: any): void {
-    console.log('Moeda alterada para:', event);
+    if (event.value && event.value.code) {
+      this.cryptoService.setCurrency(event.value.name, event.value.code); 
+    }
   }
 
   search(): void {
-    console.log('Buscando por:', this.find);
+    this.cryptoService.setSearchTerm(this.find); 
   }
 
   onInputChange(): void {
     if (!this.find) {
-      this.search();
+      this.search(); 
     }
   }
 }
