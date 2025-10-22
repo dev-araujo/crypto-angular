@@ -15,7 +15,9 @@ export class CryptoService {
   private currencyUuid$ = new BehaviorSubject<string>('n5fpnvMGNsOS');
   public currencyCode$ = new BehaviorSubject<string>('BRL');
   private searchTerm$ = new BehaviorSubject<string>('');
-  private offset$ = new BehaviorSubject<number>(0);
+
+  public offset$ = new BehaviorSubject<number>(0);
+
   public limit$ = new BehaviorSubject<number>(10);
 
   public loading$ = new BehaviorSubject<boolean>(true);
@@ -46,8 +48,6 @@ export class CryptoService {
     limit: number,
     searchTerm: string
   ): Observable<CoinrankingApiResponse> {
-    console.log('Fetching coins with:', { currencyUuid, offset, limit, searchTerm });
-
     let params = new HttpParams()
       .set('referenceCurrencyUuid', currencyUuid)
       .set('limit', limit.toString())

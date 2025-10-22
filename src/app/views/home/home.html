@@ -1,8 +1,10 @@
-<app-table 
-  [coins]="coins" 
-  [loading]="loading" 
-  [error]="error"
-  [totalRecords]="totalRecords"
-  [rows]="limit"
-  (onPageChange)="onPageChange($event)"
-></app-table>
+<section class="home">
+  <app-table 
+    [coins]="coins" 
+    [loading]="(loading$ | async) ?? true" 
+    [error]="error" 
+    [totalRecords]="totalRecords" 
+    [rows]="limit"
+    [offset]="offset"  (onPageChange)="onPageChange($event)">
+  </app-table>
+</section>
