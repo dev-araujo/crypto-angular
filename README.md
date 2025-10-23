@@ -1,140 +1,59 @@
-# Crypto-Angular
+# CryptoAngular
 
-  <img  src="https://img.shields.io/static/v1?label=license&message=MIT&color=5965E0&labelColor=121214" alt="License">
+This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.3.1.
 
-> Em construção
+## Development server
 
-## 💻 Projeto
+To start a local development server, run:
 
-#### Um projeto para listar informações sobre crypto.
-
-- [x] Listagem dos tokens correntes
-- [x] Gráficos dos tokens de acordo com a cotação
-- [x] Detalhes à respeito de cada token
-- [x] Possibilidade de alternar entre o valor da cotação em dolar e em real brasileiro
-- [x] Possibilidade de conexão com a metamask
-- [x] Uma vez conectado com a metamask possibilita a criação de uma 'lista de favoritos' onde se pode conferir a cotação e detalhes mais facilmente dos tokens favoritados
- 
-## ✨ Resultado
-
-- O resultado pode ser conferido :arrow_right: [**AQUI**](https://crypto-angular.vercel.app/)
-<h1 align="center">
-
-![image](https://github.com/user-attachments/assets/9c148fe5-742c-4e80-939b-8fd6d9fd3dcb)
-
-![image](https://github.com/user-attachments/assets/3dece736-22ca-46d7-bd38-02b8cd85abcc)
-
-</h1>
-
-
-## Feito com 🔨
-
-- **Angular +2**
-- **PrimeNG**
-- **ChartJS**
-- **metamask/detect-provider**
-
-### Consumindo as APIs:
-
-- [Coinranking](https://developers.coinranking.com/api)
-- [CryptoCompare](https://min-api.cryptocompare.com/)
-
-<details><summary> <h2>Instruções para rodar local</h2></summary>
-
-Por ser um projeto realizado com **Angular**, há a necessidade do **NodeJS**. Com ele instalado basta seguir os seguintes passos.
-
-No terminal, clone o projeto:
-
-```
-git clone https://github.com/dev-araujo/crypto-angular.git
+```bash
+ng serve
 ```
 
-Crie as chaves na [CryptoCompare](https://min-api.cryptocompare.com/) e na [Coinranking](https://developers.coinranking.com/api) e crie o arquivo `environment.ts` no diretório `environment` :
+Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
 
-```typeScript
+## Code scaffolding
 
-export const environment = {
-  production: true,
+Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
 
-  url: {
-    baseUrl: 'https://api.coinranking.com/v2/',
-    historicalBaseUrl: 'https://min-api.cryptocompare.com/',
-    symbolUrl: 'https://data-api.cryptocompare.com',
-  },
-  tokens: {
-    HISTORICALAPI:
-     "SUA-CHAVE-COINRANKING",
-    ACCESSTOKEN: 'SUA-CHAVE-CRYPTOCOMPARE',
-  },
-};
-
-
+```bash
+ng generate component component-name
 ```
 
-Instale as dependências:
+For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
 
-```
-npm install
-```
-
-Execute a aplicação:
-
-```
-npm run start
+```bash
+ng generate --help
 ```
 
-</details>
+## Building
 
-<details><summary> <h2>Instruções para rodar com Docker🐋 </h2></summary>
+To build the project run:
 
-No terminal, clone o projeto:
-
-```
-git clone https://github.com/dev-araujo/crypto-angular.git
+```bash
+ng build
 ```
 
-Crie as chaves na [CryptoCompare](https://min-api.cryptocompare.com/) e na [Coinranking](https://developers.coinranking.com/api) e crie o arquivo `environment.ts` no diretório `environment` :
+This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
 
-```typeScript
+## Running unit tests
 
-export const environment = {
-  production: true,
+To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
 
-  url: {
-    baseUrl: 'https://api.coinranking.com/v2/',
-    historicalBaseUrl: 'https://min-api.cryptocompare.com/',
-    symbolUrl: 'https://data-api.cryptocompare.com',
-  },
-  tokens: {
-    HISTORICALAPI:
-     "SUA-CHAVE-COINRANKING",
-    ACCESSTOKEN: 'SUA-CHAVE-CRYPTOCOMPARE',
-  },
-};
-
-
+```bash
+ng test
 ```
 
-Crie a imagem :
+## Running end-to-end tests
 
-```
-docker build -t crypto-app .
-```
+For end-to-end (e2e) testing, run:
 
-Execute o container:
-
-```
-docker run -p 4201:4200 crypto-app
+```bash
+ng e2e
 ```
 
-Acesse a aplicação na **porta 4201**
+Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
 
-</details>
+## Additional Resources
 
----
-
-#### Author 👷
-
-<img src="https://user-images.githubusercontent.com/97068163/149033991-781bf8b6-4beb-445a-913c-f05a76a28bfc.png" width="5%" alt="caricatura do autor desse repositório"/>
-
-[![linkedin](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/araujocode/)
+For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.

@@ -1,0 +1,33 @@
+<header class="header" role="banner">
+    <a href="/" class="header__logo" (click)="goHome($event)" aria-label="Página inicial da Cripto Angular">
+        <img src="assets/logo.png" alt="" />
+        <h1 class="header__logo__title">Cripto Angular</h1>
+    </a>
+
+    <div class="header__actions">
+        <form class="search" (ngSubmit)="search()" role="search">
+            <input 
+                pInputText 
+                type="search" 
+                placeholder="Pesquisar por nome..." 
+                name="find" 
+                [(ngModel)]="find"
+                (ngModelChange)="onInputChange()" 
+                class="search__input" 
+                aria-label="Pesquisar por nome da criptomoeda" />
+            <button type="submit" class="search__button" aria-label="Pesquisar">
+                <span class="pi pi-search"></span>
+            </button>
+        </form>
+
+        <p-select 
+            (ngModelChange)="getFiat($event)" 
+            [options]="currency" 
+            [(ngModel)]="fiat" 
+            optionLabel="name"
+            pTooltip="Selecione sua moeda local" 
+            tooltipPosition="left"
+            aria-label="Selecione sua moeda local">
+        </p-select>
+    </div>
+</header>
