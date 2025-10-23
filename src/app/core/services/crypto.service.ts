@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
-import { Observable, BehaviorSubject, switchMap, catchError, of, tap, combineLatest } from 'rxjs';
-import { CoinrankingApiResponse, CoinrankingStats } from '../models/coinranking.model';
+import { Observable, BehaviorSubject, switchMap, catchError, of, tap, combineLatest, map } from 'rxjs';
+import { CoinrankingApiResponse, CoinrankingStats, CoinrankingCoinDetailResponse, CoinrankingCoinHistoryResponse } from '../models/coinranking.model';
 import { environment } from '../../../environments/environment.development';
 
 @Injectable({
@@ -12,7 +12,7 @@ export class CryptoService {
   private readonly baseUrl = environment.url.baseUrl;
   private readonly apiKey = environment.tokens.ACCESSTOKEN;
 
-  private currencyUuid$ = new BehaviorSubject<string>('n5fpnvMGNsOS');
+  public currencyUuid$ = new BehaviorSubject<string>('n5fpnvMGNsOS');
   public currencyCode$ = new BehaviorSubject<string>('BRL');
   private searchTerm$ = new BehaviorSubject<string>('');
 
@@ -42,6 +42,12 @@ export class CryptoService {
     })
   );
 
+  private getHeaders(): HttpHeaders {
+    return new HttpHeaders({
+      'x-access-token': this.apiKey,
+    });
+  }
+
   private fetchCoins(
     currencyUuid: string,
     offset: number,
@@ -59,10 +65,7 @@ export class CryptoService {
       params = params.set('search', searchTerm);
     }
 
-    const headers = new HttpHeaders({
-      'x-access-token': this.apiKey,
-    });
-
+    const headers = this.getHeaders();
     const endpoint = `${this.baseUrl}coins`;
 
     return this.http.get<CoinrankingApiResponse>(endpoint, { headers, params }).pipe(
@@ -78,6 +81,36 @@ export class CryptoService {
         if (response.status === 'success') {
           this.error$.next(null);
         }
+      })
+    );
+  }
+
+  public fetchCoinDetails(uuid: string): Observable<CoinrankingCoinDetailResponse> {
+    const headers = this.getHeaders();
+    const params = new HttpParams().set('referenceCurrencyUuid', this.currencyUuid$.getValue());
+    const endpoint = `${this.baseUrl}coin/${uuid}`;
+
+    return this.http.get<CoinrankingCoinDetailResponse>(endpoint, { headers, params }).pipe(
+      tap((response) => console.log('Coin Details API Status:', response.status)),
+      catchError((err) => {
+        console.error('Coin Details Network Error:', err);
+        return of({ status: 'error', data: { coin: {} as any } } as CoinrankingCoinDetailResponse);
+      })
+    );
+  }
+
+  public fetchCoinHistory(uuid: string, timePeriod: string = '24h'): Observable<CoinrankingCoinHistoryResponse> {
+    const headers = this.getHeaders();
+    const params = new HttpParams()
+      .set('referenceCurrencyUuid', this.currencyUuid$.getValue())
+      .set('timePeriod', timePeriod);
+    const endpoint = `${this.baseUrl}coin/${uuid}/history`;
+
+    return this.http.get<CoinrankingCoinHistoryResponse>(endpoint, { headers, params }).pipe(
+      tap((response) => console.log('Coin History API Status:', response.status)),
+      catchError((err) => {
+        console.error('Coin History Network Error:', err);
+        return of({ status: 'error', data: { change: '0', history: [] } } as CoinrankingCoinHistoryResponse);
       })
     );
   }
@@ -99,5 +132,9 @@ export class CryptoService {
   public setLimit(limit: number): void {
     this.limit$.next(limit);
     this.offset$.next(0);
+  }
+
+  public getCurrencyUuid(): string {
+    return this.currencyUuid$.getValue();
   }
 }

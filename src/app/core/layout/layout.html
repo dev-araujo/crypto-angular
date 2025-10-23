@@ -1,6 +1,8 @@
-<app-header/>
+<app-header />
+@if (showBanner$ | async) {
  <app-banner/>
+}
 
 <section>
-    <ng-content/>
+    <ng-content />
 </section>

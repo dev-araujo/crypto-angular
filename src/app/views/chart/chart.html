@@ -1,1 +1,101 @@
-<p>chart works!</p>
+<section class="coin-detail">
+  @if (loadingDetails$ | async) {
+    <div class="card p-4">
+        <p-skeleton width="100%" height="2rem" class="mb-4"></p-skeleton>
+        <p-skeleton width="100%" height="25rem"></p-skeleton>
+        <div class="grid mt-4">
+            @for (item of [1, 2, 3, 4]; track item) {
+                <div class="col-12 md:col-6 lg:col-3 mb-4">
+                    <p-skeleton height="8rem"></p-skeleton>
+                </div>
+            }
+        </div>
+    </div>
+  } @else if (detailsError$ | async; as error) {
+    <div class="card p-4 text-center text-red-500">{{ error }}</div>
+  } @else if (coinDetails; as coin) {
+    @if (currencyCode$ | async; as currencyCode) {
+        <div class="card p-4">
+            <div class="coin-detail__header">
+                <img [src]="coin.iconUrl" [alt]="coin.name" class="coin-detail__icon" />
+                <h1 class="coin-detail__title">{{ coin.name }} ({{ coin.symbol }})</h1>
+                <p-tag [value]="'Rank ' + coin.rank" [rounded]="true"></p-tag>
+            </div>
+
+            <div class="coin-detail__price-info">
+                <div class="coin-detail__current-price">
+                    Preço: 
+                    <span class="price-value" [style.color]="coin.color">{{ coin.price | currency: currencyCode : 'symbol' : '1.2-8' }}</span>
+                    <span class="change-value"
+                        [ngClass]="{ 'negative': Number(coin.change) < 0, 'positive': Number(coin.change) >= 0 }">
+                        ({{ coin.change | number: '1.2-2' }}%)
+                    </span>
+                </div>
+            </div>
+
+            <div class="coin-detail__chart-section">
+                <div class="flex justify-content-end mb-3">
+                    <p-select 
+                    [options]="timePeriods" 
+                    [(ngModel)]="selectedPeriod" 
+                    optionLabel="name"
+                    (ngModelChange)="onTimePeriodChange($event)" 
+                    placeholder="Selecione o Período">
+                    </p-select>
+                </div>
+
+                @if (loadingHistory$ | async) {
+                    <p-skeleton width="100%" height="25rem"></p-skeleton>
+                } @else if (historyError$ | async; as error) {
+                <div class="text-center text-red-500 pt-4">{{ error }}</div>
+                } @else if (chartData) {
+                <div class="chart-container">
+                    <p-chart type="line" [data]="chartData" [options]="chartOptions"></p-chart>
+                </div>
+                } @else {
+                <div class="text-center text-500 pt-4">Nenhum dado de histórico de preço disponível para este período.</div>
+                }
+            </div>
+
+            <div class="coin-detail__details-grid grid mt-4">
+                <p-card header="Capitalização de Mercado" class="col-12 md:col-6 lg:col-3">
+                    <p>{{ coin.marketCap | currency: currencyCode : 'symbol' }}</p>
+                </p-card>
+
+                <p-card header="Volume (24h)" class="col-12 md:col-6 lg:col-3">
+                    <p>{{ coin['24hVolume'] | currency: currencyCode : 'symbol' }}</p>
+                </p-card>
+
+                <p-card header="All Time High" class="col-12 md:col-6 lg:col-3">
+                    <p>{{ coin.allTimeHigh.price | currency: currencyCode : 'symbol' : '1.2-8' }}</p>
+                    <p class="text-sm text-500 mt-2">({{ coin.allTimeHigh.timestamp * 1000 | date: 'mediumDate' }})</p>
+                </p-card>
+                
+                <p-card header="Oferta Circulante" class="col-12 md:col-6 lg:col-3">
+                    <p>{{ coin.supply.circulating | number }} {{ coin.symbol }}</p>
+                </p-card>
+            </div>
+
+            <div class="coin-detail__description mt-5">
+                <p-panel header="Descrição">
+                    <div class="description-content" [innerHTML]="coin.description"></div>
+                </p-panel>
+            </div>
+
+            <div class="coin-detail__links mt-5">
+                <h3 class="text-xl mb-3">Links</h3>
+                <div class="flex flex-wrap gap-3">
+                    <a *ngFor="let link of coin.links" [href]="link.url" target="_blank" class="p-button p-component">
+                        <span class="pi pi-external-link mr-2"></span>
+                        {{ link.name }} ({{ link.type }})
+                    </a>
+                    <a [href]="coin.websiteUrl" target="_blank" class="p-button p-component" [ngClass]="{'p-button-secondary': !coin.websiteUrl}" [class.p-button-secondary]="!coin.websiteUrl">
+                        <span class="pi pi-globe mr-2"></span>
+                        Website
+                    </a>
+                </div>
+            </div>
+        </div>
+    }
+  }
+</section>

@@ -11,10 +11,12 @@
                 type="search" 
                 placeholder="Pesquisar por nome..." 
                 name="find" 
+               
                 [(ngModel)]="find"
                 (ngModelChange)="onInputChange()" 
                 class="search__input" 
-                aria-label="Pesquisar por nome da criptomoeda" />
+                aria-label="Pesquisar por nome da criptomoeda"
+                [disabled]="(isChartRoute$ | async) ?? false" />
             <button type="submit" class="search__button" aria-label="Pesquisar">
                 <span class="pi pi-search"></span>
             </button>

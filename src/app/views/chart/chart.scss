@@ -1,0 +1,148 @@
+$red-color: #ef4444;
+$green-color: #22c55e;
+$card-padding: 1.5rem; 
+$section-padding: 1rem;
+
+.coin-detail {
+  padding: $section-padding;
+}
+
+.card {
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin-bottom: $section-padding;
+}
+
+.coin-detail__header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap; 
+}
+
+.coin-detail__icon {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: contain;
+}
+
+.coin-detail__title {
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  font-weight: 800;
+  margin: 0;
+  line-height: 1;
+}
+
+.coin-detail__price-info {
+  margin-bottom: 2rem;
+  border-bottom: 1px solid #e5e7eb;
+  padding-bottom: 1.5rem;
+}
+
+.coin-detail__current-price {
+  font-size: 1.2rem;
+  font-weight: 500;
+
+  .price-value {
+    font-size: 2rem;
+    font-weight: 800;
+    margin-left: 0.5rem;
+    display: inline-block;
+  }
+
+  .change-value {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-left: 0.5rem;
+    display: inline-block;
+  }
+
+  .negative {
+    color: $red-color;
+  }
+
+  .positive {
+    color: $green-color;
+  }
+}
+
+.coin-detail__chart-section {
+  .chart-container {
+    height: 30rem; 
+    width: 100%;
+    margin-top: 1rem;
+  }
+}
+
+
+.coin-detail__details-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+
+  .p-card {
+    .p-card-body {
+      padding: 1rem;
+    }
+    .p-card-title {
+      font-size: 1rem;
+      font-weight: 600;
+      color: #6b7280;
+    }
+    p {
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin-top: 0.5rem;
+    }
+  }
+}
+
+.description-content {
+  line-height: 1.6;
+
+  h1, h2, h3, h4 {
+    font-weight: 600;
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  a {
+    word-break: break-all;
+  }
+}
+
+.coin-detail__links {
+  .p-button {
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    white-space: nowrap;
+  }
+}
+
+@media (max-width: 768px) {
+  .coin-detail__current-price {
+    .price-value {
+      font-size: 1.5rem;
+    }
+    .change-value {
+      font-size: 1rem;
+    }
+  }
+
+  .coin-detail__chart-section {
+    .chart-container {
+      height: 20rem;
+    }
+  }
+}
+
+@media (max-width: 576px) {
+  .coin-detail__header {
+    justify-content: center;
+  }
+}
