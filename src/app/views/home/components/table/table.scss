@@ -109,11 +109,16 @@ $card-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 
   .skeleton-wrapper {
     .p-datatable-wrapper {
+      width:100vw;
       min-height: calc(100vh - 250px);
     }
     .p-datatable-tbody > tr {
       opacity: 0.7;
     }
+  }
+
+  .p-paginator{
+    margin-top:1rem;
   }
 }
 

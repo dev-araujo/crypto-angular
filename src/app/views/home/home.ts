@@ -48,7 +48,6 @@ export class HomeComponent implements OnInit, OnDestroy {
       return;
     }
 
-    console.log('Evento de paginação redundante ignorado.');
   }
 
   private _initializeComponent(): void {

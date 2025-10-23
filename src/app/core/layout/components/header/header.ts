@@ -47,8 +47,8 @@ export class HeaderComponent {
   }
 
   getFiat(event: any): void {
-    if (event.value && event.value.code) {
-      this.cryptoService.setCurrency(event.value.name, event.value.code); 
+    if (event) {
+      this.cryptoService.setCurrency(event.name, event.code); 
     }
   }
 

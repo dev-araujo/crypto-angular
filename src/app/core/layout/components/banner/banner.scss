@@ -10,7 +10,7 @@ $font-family-serif: 'EB Garamond', serif;
   align-items: center;
   width: 100%;
   height: auto;
-  min-height: 15rem;
+  max-height: 14rem;
   padding: 1.5rem clamp(1rem, 5vw, 4rem);
   background-color: $banner-background-color;
   font-family: $font-family-serif;
@@ -52,6 +52,8 @@ $font-family-serif: 'EB Garamond', serif;
 
 @media (max-width: 768px) {
   .banner {
+    min-height: 14rem;
+    max-height:none;
     flex-direction: column;
     text-align: center;
     gap: 2rem;

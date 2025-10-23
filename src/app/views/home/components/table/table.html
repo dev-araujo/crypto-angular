@@ -5,7 +5,7 @@
 
   @if (!loading) {
   @if (currencyCode$ | async; as currencyCode) {
-  <p-table [value]="coins"  [paginator]="totalRecords > rows" [rows]="rows" [totalRecords]="totalRecords"
+  <p-table [value]="coins" [scrollable]="true" scrollHeight="500px" [paginator]="totalRecords > rows" [rows]="rows" [totalRecords]="totalRecords"
     [first]="offset" (onLazyLoad)="onPage($event)" [rowsPerPageOptions]="[10, 25, 50]" [showCurrentPageReport]="true"
     currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} moedas" [lazy]="true">
 
@@ -69,20 +69,20 @@
           <tr class="skeleton-row">
             <td data-label="Cripto">
               <div class="crypto-table__coin-cell">
-                <p-skeleton shape="circle" size="24px"></p-skeleton>
+                <p-skeleton shape="circle" size="48px"></p-skeleton>
                 <div class="crypto-table__coin-info">
-                  <p-skeleton width="8rem" height="1rem"></p-skeleton>
+                  <p-skeleton width="12rem" height="1rem"></p-skeleton>
                 </div>
               </div>
             </td>
             <td data-label="Preço">
-              <p-skeleton width="5rem" height="1rem"></p-skeleton>
+              <p-skeleton width="10rem" height="1rem"></p-skeleton>
             </td>
             <td data-label="24h" class="column-24h">
-              <p-skeleton width="3rem" height="1rem"></p-skeleton>
+              <p-skeleton width="10rem" height="1rem"></p-skeleton>
             </td>
             <td data-label="Ação">
-              <p-skeleton width="4rem" height="1rem"></p-skeleton>
+              <p-skeleton width="10rem" height="1rem"></p-skeleton>
             </td>
           </tr>
           }

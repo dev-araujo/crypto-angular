@@ -85,7 +85,6 @@ export class CryptoService {
   public setCurrency(code: string, uuid: string): void {
     this.currencyCode$.next(code);
     this.currencyUuid$.next(uuid);
-    this.offset$.next(0);
   }
 
   public setSearchTerm(term: string): void {
