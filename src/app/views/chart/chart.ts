@@ -5,7 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { Observable, switchMap, map, combineLatest, BehaviorSubject, of, catchError, tap, Subscription, filter } from 'rxjs';
 
 import { ChartModule } from 'primeng/chart';
-import { SelectModule } from 'primeng/select'; 
+import { SelectModule } from 'primeng/select';
 import { CardModule } from 'primeng/card';
 import { SkeletonModule } from 'primeng/skeleton';
 import { TagModule } from 'primeng/tag';
@@ -23,13 +23,13 @@ interface TimePeriod {
   selector: 'app-chart',
   standalone: true,
   imports: [
-    CommonModule, 
-    ChartModule, 
-    SelectModule, 
-    FormsModule, 
-    CardModule, 
-    SkeletonModule, 
-    TagModule, 
+    CommonModule,
+    ChartModule,
+    SelectModule,
+    FormsModule,
+    CardModule,
+    SkeletonModule,
+    TagModule,
     PanelModule,
     DecimalPipe
   ],
@@ -40,13 +40,10 @@ export class ChartComponent implements OnInit, OnDestroy {
   private route = inject(ActivatedRoute);
   private cryptoService = inject(CryptoService);
   private coinUuid$ = new BehaviorSubject<string>('');
-  
-  protected readonly Number = Number; 
-  
-  // Propriedades para armazenar os dados e status, substituindo o uso principal de observables no template
-  public coinDetails: CoinrankingCoinDetail | null = null;
 
-  // Gerenciamento de subscrições
+  protected readonly Number = Number;
+
+  public coinDetails: CoinrankingCoinDetail | null = null;
   private subscriptions = new Subscription();
 
   public timePeriods: TimePeriod[] = [
@@ -56,7 +53,7 @@ export class ChartComponent implements OnInit, OnDestroy {
     { name: '1 ano', code: '1y' },
     { name: '5 anos', code: '5y' },
   ];
-  public selectedPeriod = this.timePeriods[0]; 
+  public selectedPeriod = this.timePeriods[0];
   public currencyCode$: Observable<string> = this.cryptoService.currencyCode$;
 
   public loadingDetails$ = new BehaviorSubject<boolean>(true);
@@ -72,13 +69,12 @@ export class ChartComponent implements OnInit, OnDestroy {
     if (uuid) {
       this.coinUuid$.next(uuid);
     }
-    
-    // Subscrições manuais forçam a chamada imediata das APIs
+
     this._subscribeToDetails();
     this._subscribeToHistory();
     this._setupChartOptions();
   }
-  
+
   ngOnDestroy(): void {
     this.subscriptions.unsubscribe();
   }
@@ -89,9 +85,8 @@ export class ChartComponent implements OnInit, OnDestroy {
       switchMap((uuid) => {
         this.loadingDetails$.next(true);
         this.detailsError$.next(null);
-        
+
         return this.cryptoService.fetchCoinDetails(uuid).pipe(
-          tap((response) => console.log('Coin Details API Status:', response.status)),
           map((response) => {
             this.loadingDetails$.next(false);
             if (response.status === 'success') {
@@ -106,13 +101,12 @@ export class ChartComponent implements OnInit, OnDestroy {
             this.loadingDetails$.next(false);
             this.detailsError$.next('Erro de rede ao carregar detalhes.');
             this.coinDetails = null;
-            console.error('fetchCoinDetails - Network Error:', err);
+            console.error('Erro de rede ao buscar detalhes da moeda:', err);
             return of(null);
           })
         );
       })
     );
-    // Adiciona a subscrição para forçar a execução da chamada da API de detalhes
     this.subscriptions.add(details$.subscribe());
   }
 
@@ -120,12 +114,12 @@ export class ChartComponent implements OnInit, OnDestroy {
     const historyData$ = combineLatest([
       this.coinUuid$.pipe(filter(uuid => !!uuid)),
       this.cryptoService.currencyUuid$.pipe(filter(uuid => !!uuid)),
-      this.loadingDetails$.pipe(filter(loading => !loading)) 
+      this.loadingDetails$.pipe(filter(loading => !loading))
     ]).pipe(
       switchMap(([uuid]) => {
         this.loadingHistory$.next(true);
         this.historyError$.next(null);
-        
+
         return this.cryptoService.fetchCoinHistory(uuid, this.selectedPeriod.code).pipe(
           map((response) => {
             this.loadingHistory$.next(false);
@@ -138,14 +132,13 @@ export class ChartComponent implements OnInit, OnDestroy {
           catchError((err) => {
             this.loadingHistory$.next(false);
             this.historyError$.next('Erro de rede ao carregar histórico.');
-            console.error('fetchCoinHistory - Network Error:', err);
+            console.error('Erro de rede ao buscar histórico da moeda:', err);
             return of(null);
           })
         );
       })
     );
-    
-    // Adiciona a subscrição para forçar a execução da chamada da API de histórico
+
     this.subscriptions.add(historyData$
         .subscribe((data) => {
             this._prepareChartData(data);
@@ -155,13 +148,12 @@ export class ChartComponent implements OnInit, OnDestroy {
 
   onTimePeriodChange(newPeriod: TimePeriod): void {
     this.selectedPeriod = newPeriod;
-    
+
     this.loadingHistory$.next(true);
     this.historyError$.next(null);
     const uuid = this.coinUuid$.getValue();
-    
+
     if (uuid) {
-        // Nova subscrição para a mudança de período, garantindo que o chartData seja atualizado
         this.subscriptions.add(
             this.cryptoService.fetchCoinHistory(uuid, newPeriod.code).pipe(
                 map((response) => {
@@ -188,13 +180,15 @@ export class ChartComponent implements OnInit, OnDestroy {
       return;
     }
 
-    const prices = history.history
-      .map((item) => Number(item.price))
-      .filter(price => !isNaN(price)); 
+    const correctedHistory = [...history.history].reverse();
 
-    const labels = history.history.map((item) => {
+    const prices = correctedHistory
+      .map((item) => Number(item.price))
+      .filter(price => !isNaN(price));
+
+    const labels = correctedHistory.map((item) => {
       const date = new Date(item.timestamp * 1000);
-      switch (this.selectedPeriod.code) { 
+      switch (this.selectedPeriod.code) {
         case '24h':
           return date.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
         case '7d':
@@ -228,18 +222,14 @@ export class ChartComponent implements OnInit, OnDestroy {
   }
 
   private _setupChartOptions(): void {
-    const textColor = 'rgba(0, 0, 0, 0.87)';
     const textColorSecondary = 'rgba(0, 0, 0, 0.54)';
-    const surfaceBorder = 'rgba(0, 0, 0, 0.12)';
 
     this.chartOptions = {
       maintainAspectRatio: false,
       aspectRatio: 0.6,
       plugins: {
         legend: {
-          labels: {
-            color: textColor,
-          },
+          display: false,
         },
       },
       scales: {
@@ -248,15 +238,16 @@ export class ChartComponent implements OnInit, OnDestroy {
             color: textColorSecondary,
           },
           grid: {
-            color: surfaceBorder,
+            display: false,
           },
+           border: {
+            display: false
+          }
         },
         y: {
-          ticks: {
-            color: textColorSecondary,
-          },
+          display: false,
           grid: {
-            color: surfaceBorder,
+            display: false,
           },
         },
       },

@@ -1,7 +1,10 @@
 $red-color: #ef4444;
 $green-color: #22c55e;
-$card-padding: 1.5rem; 
+$card-padding: 1.5rem;
 $section-padding: 1rem;
+$text-primary: #111827;
+$text-secondary: #6b7280;
+$border-color: #e5e7eb;
 
 .coin-detail {
   padding: $section-padding;
@@ -10,8 +13,8 @@ $section-padding: 1rem;
 .card {
   background-color: #ffffff;
   border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   margin-bottom: $section-padding;
+  padding:3rem;
 }
 
 .coin-detail__header {
@@ -19,7 +22,7 @@ $section-padding: 1rem;
   align-items: center;
   gap: 1rem;
   margin-bottom: 1.5rem;
-  flex-wrap: wrap; 
+  flex-wrap: wrap;
 }
 
 .coin-detail__icon {
@@ -34,30 +37,35 @@ $section-padding: 1rem;
   font-weight: 800;
   margin: 0;
   line-height: 1;
+  color: $text-primary;
 }
 
-.coin-detail__price-info {
-  margin-bottom: 2rem;
-  border-bottom: 1px solid #e5e7eb;
+// Seção de Preço
+.coin-detail__price-section {
+  border-bottom: 1px solid $border-color;
   padding-bottom: 1.5rem;
-}
-
-.coin-detail__current-price {
-  font-size: 1.2rem;
-  font-weight: 500;
+  margin-bottom: 1.5rem;
 
   .price-value {
-    font-size: 2rem;
+    font-size: clamp(2.25rem, 5vw, 3rem);
     font-weight: 800;
-    margin-left: 0.5rem;
-    display: inline-block;
+    line-height: 1;
+    display: block;
+    color: $text-primary;
   }
 
   .change-value {
-    font-size: 1.1rem;
+    font-size: 1.25rem;
     font-weight: 600;
-    margin-left: 0.5rem;
-    display: inline-block;
+    margin-top: 0.5rem;
+    display: block;
+
+    span {
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: $text-secondary;
+      margin-left: 0.25rem;
+    }
   }
 
   .negative {
@@ -69,69 +77,108 @@ $section-padding: 1rem;
   }
 }
 
+// Seletor de Período
+.coin-detail__period-selector {
+  margin-bottom: 1rem;
+}
+
+// Seção do Gráfico
 .coin-detail__chart-section {
   .chart-container {
-    height: 30rem; 
+    height: 30rem;
     width: 100%;
     margin-top: 1rem;
   }
 }
 
+// Títulos de Seção
+.section-title {
+  font-size: 1.5rem; // Reduzido para ficar mais parecido com a imagem
+  font-weight: 700;
+  color: $text-primary;
+  margin-top: 2.5rem;
+  margin-bottom: 1.5rem;
+  border-bottom: 1px solid $border-color;
+  padding-bottom: 0.75rem;
+}
 
-.coin-detail__details-grid {
+// --- ATUALIZADO AQUI ---
+
+// Grid de Métricas (incluindo descrição)
+.coin-detail__metrics-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 1rem;
-
-  .p-card {
-    .p-card-body {
-      padding: 1rem;
-    }
-    .p-card-title {
-      font-size: 1rem;
-      font-weight: 600;
-      color: #6b7280;
-    }
-    p {
-      font-size: 1.25rem;
-      font-weight: 700;
-      margin-top: 0.5rem;
-    }
-  }
+  grid-template-columns: 1fr 1fr; // 2 colunas como na imagem
+  gap: 2.5rem;
 }
 
-.description-content {
-  line-height: 1.6;
-
-  h1, h2, h3, h4 {
-    font-weight: 600;
-    margin-top: 1rem;
-    margin-bottom: 0.5rem;
-  }
+.metric-item {
+  display: flex;
+  flex-direction: column;
   
-  a {
-    word-break: break-all;
+  &__title {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: $text-secondary;
+    margin-bottom: 0.25rem;
+    // text-transform: uppercase; // Removido para bater com a imagem
+  }
+
+  &__value {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: $text-primary;
+  }
+
+  // Estilos para o item de descrição
+  &.metric-item--description {
+    .description-content {
+      line-height: 1.6;
+      color: $text-secondary;
+
+      h1, h2, h3, h4 {
+        font-weight: 600;
+        margin-top: 1rem;
+        margin-bottom: 0.5rem;
+        color: $text-primary;
+      }
+      
+      a {
+        word-break: break-all;
+        color: $green-color;
+      }
+    }
   }
 }
 
-.coin-detail__links {
+
+// Grid de Links
+.coin-detail__links-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 0.75rem;
+
   .p-button {
     text-decoration: none;
     display: flex;
     align-items: center;
     justify-content: center;
     white-space: nowrap;
+    color: $green-color; 
+    border-color: $green-color;
+
+    &:hover {
+      background-color: rgba($green-color, 0.05);
+    }
   }
 }
 
+
+// RESPONSIVIDADE
 @media (max-width: 768px) {
-  .coin-detail__current-price {
-    .price-value {
-      font-size: 1.5rem;
-    }
-    .change-value {
-      font-size: 1rem;
-    }
+  // Passa para 1 coluna em tablets e celulares
+  .coin-detail__metrics-grid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
   }
 
   .coin-detail__chart-section {
@@ -144,5 +191,11 @@ $section-padding: 1rem;
 @media (max-width: 576px) {
   .coin-detail__header {
     justify-content: center;
+    text-align: center;
+    gap: 0.5rem;
+    
+    div {
+      width: 100%;
+    }
   }
 }
