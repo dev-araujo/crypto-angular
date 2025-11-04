@@ -1,0 +1,38 @@
+@if (coin && currencyCode) {
+<h2 class="section-title">Detalhes</h2>
+<div class="coin-detail__metrics-grid">
+  
+  <div class="metric-item" pTooltip="Valor total de mercado">
+    <i class="pi pi-wallet metric-item__icon"></i>
+    <span class="metric-item__title">Capitalização de Mercado</span>
+    <span class="metric-item__value">{{ coin.marketCap | currency: currencyCode : 'symbol' }}</span>
+  </div>
+  
+  <div class="metric-item" pTooltip="Maior preço histórico">
+    <i class="pi pi-chart-line metric-item__icon"></i>
+    <span class="metric-item__title">Máxima Histórica (Preço)</span>
+    <span class="metric-item__value">{{ coin.allTimeHigh.price | currency: currencyCode : 'symbol' : '1.2-8' }}</span>
+  </div>
+  
+  <div class="metric-item" pTooltip="Data do maior preço">
+    <i class="pi pi-calendar metric-item__icon"></i>
+    <span class="metric-item__title">Data da Máxima Histórica</span>
+    <span class="metric-item__value">{{ coin.allTimeHigh.timestamp * 1000 | date: 'mediumDate' }}</span>
+  </div>
+
+  <div class="metric-item" pTooltip="Volume negociado em 24h">
+    <i class="pi pi-money-bill metric-item__icon"></i>
+    <span class="metric-item__title">Volume (24h)</span>
+    <span class="metric-item__value">{{ coin['24hVolume'] | currency: currencyCode : 'symbol' }}</span>
+  </div>
+
+  <div class="metric-item" pTooltip="Moedas em circulação">
+    <i class="pi pi-database metric-item__icon"></i>
+    <span class="metric-item__title">Fornecimento Circulante</span>
+    <span class="metric-item__value">{{ coin.supply.circulating | number }} {{ coin.symbol }}</span>
+  </div>
+
+
+
+</div>
+}

@@ -1,0 +1,19 @@
+<h2 class="section-title">Links</h2>
+
+@if ((links && links.length > 0) || websiteUrl) {
+<div class="coin-detail__links-grid">
+  
+  @if (links) {
+    @for (link of links; track link.url) {
+      <a [href]="link.url" target="_blank" pButton [outlined]="true" class="p-button-secondary">
+        <i [class]="getIcon(link.type)"></i>
+        {{ link.name }}
+      </a>
+    }
+  }
+  
+
+</div>
+} @else {
+  <div class="text-center text-500">Nenhum link disponível.</div>
+}

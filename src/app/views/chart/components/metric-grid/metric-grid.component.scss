@@ -1,0 +1,131 @@
+:host {
+  --bg-primary: #ffffff;
+  --bg-secondary: #f9fafb;
+  --text-primary: #111827;
+  --text-secondary: #6b7280;
+  --accent-green: #22c55e;
+  --accent-red: #ef4444;
+  --border-color: #e5e7eb;
+  --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+
+  .dark & {
+    --bg-primary: #111827;
+    --bg-secondary: #1f2937;
+    --text-primary: #f9fafb;
+    --text-secondary: #9ca3af;
+    --accent-green: #4ade80;
+    --accent-red: #f87171;
+    --border-color: #374151;
+    --shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  }
+}
+
+.section-title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin: 3rem 0 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--border-color);
+  color: var(--text-primary);
+}
+
+.coin-detail__metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem; 
+  margin-bottom: 2rem;
+}
+
+.metric-item {
+  padding: 1.5rem;
+  background: var(--bg-secondary); 
+  border-radius: 12px;
+  border: 1px solid var(--border-color); 
+  transition: background-color 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+
+  &:hover {
+    background-color: var(--bg-primary); 
+  }
+
+  &__icon {
+    font-size: 1.8rem;
+    color: var(--accent-green);
+    margin-bottom: 0.75rem;
+  }
+
+  &__title {
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+    margin-bottom: 0.5rem;
+  }
+
+  &__value {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-primary);
+  }
+
+  &--description {
+    grid-column: span 4;
+    padding: 0;
+    border: none; 
+    background: transparent;
+
+    &:hover {
+      background: transparent; 
+    }
+
+    :host ::ng-deep .p-panel {
+      border: 1px solid var(--border-color);
+      background: transparent;
+      border-radius: 12px;
+      overflow: hidden;
+
+      .p-panel-header {
+        background: var(--bg-secondary);
+        border: none;
+        padding: 1.25rem 1.5rem;
+        font-weight: 600;
+        color: var(--text-primary);
+      }
+
+      .p-panel-content {
+        padding: 1.5rem;
+        background: var(--bg-primary);
+        border: none;
+      }
+    }
+
+    .description-content {
+      line-height: 1.7;
+      color: var(--text-secondary);
+
+      a {
+        color: var(--accent-green);
+        text-decoration: underline;
+      }
+    }
+  }
+}
+
+@media (max-width: 1024px) {
+  .coin-detail__metrics-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .metric-item--description {
+    grid-column: span 2;
+  }
+}
+
+@media (max-width: 768px) {
+  .coin-detail__metrics-grid {
+    grid-template-columns: 1fr;
+  }
+  .metric-item--description {
+    grid-column: span 1;
+  }
+}

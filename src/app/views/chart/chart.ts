@@ -2,17 +2,34 @@ import { Component, OnInit, inject, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CommonModule, DecimalPipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Observable, switchMap, map, combineLatest, BehaviorSubject, of, catchError, tap, Subscription, filter } from 'rxjs';
+import {
+  Observable,
+  switchMap,
+  map,
+  combineLatest,
+  BehaviorSubject,
+  of,
+  catchError,
+  Subscription,
+  filter,
+  tap,
+} from 'rxjs';
 
 import { ChartModule } from 'primeng/chart';
-import { SelectModule } from 'primeng/select';
-import { CardModule } from 'primeng/card';
+import { SelectButtonModule } from 'primeng/selectbutton';
 import { SkeletonModule } from 'primeng/skeleton';
 import { TagModule } from 'primeng/tag';
 import { PanelModule } from 'primeng/panel';
+import { TooltipModule } from 'primeng/tooltip';
+import { ButtonModule } from 'primeng/button';
 
 import { CryptoService } from '../../core/services/crypto.service';
 import { CoinrankingCoinDetail, CoinrankingHistory } from '../../core/models/coinranking.model';
+
+import { CoinHeaderComponent } from './components/coin-header/coin-header.component';
+import { MetricGridComponent } from './components/metric-grid/metric-grid.component';
+import { LinksGridComponent } from './components/links-grid/links-grid.component';
+import { createGradient, formatChartLabels } from './utils/chart.utils';
 
 interface TimePeriod {
   name: string;
@@ -24,27 +41,29 @@ interface TimePeriod {
   standalone: true,
   imports: [
     CommonModule,
-    ChartModule,
-    SelectModule,
     FormsModule,
-    CardModule,
+    ChartModule,
+    SelectButtonModule,
     SkeletonModule,
     TagModule,
     PanelModule,
-    DecimalPipe
+    TooltipModule,
+    ButtonModule,
+    CoinHeaderComponent,
+    MetricGridComponent,
+    LinksGridComponent,
   ],
   templateUrl: './chart.html',
-  styleUrl: './chart.scss'
+  styleUrl: './chart.scss',
 })
 export class ChartComponent implements OnInit, OnDestroy {
   private route = inject(ActivatedRoute);
   private cryptoService = inject(CryptoService);
-  private coinUuid$ = new BehaviorSubject<string>('');
-
-  protected readonly Number = Number;
+  private subscriptions = new Subscription();
 
   public coinDetails: CoinrankingCoinDetail | null = null;
-  private subscriptions = new Subscription();
+  public loadingDetails$ = new BehaviorSubject<boolean>(true);
+  public detailsError$ = new BehaviorSubject<string | null>(null);
 
   public timePeriods: TimePeriod[] = [
     { name: '24h', code: '24h' },
@@ -54,22 +73,17 @@ export class ChartComponent implements OnInit, OnDestroy {
     { name: '5 anos', code: '5y' },
   ];
   public selectedPeriod = this.timePeriods[0];
-  public currencyCode$: Observable<string> = this.cryptoService.currencyCode$;
-
-  public loadingDetails$ = new BehaviorSubject<boolean>(true);
-  public loadingHistory$ = new BehaviorSubject<boolean>(true);
-  public detailsError$ = new BehaviorSubject<string | null>(null);
-  public historyError$ = new BehaviorSubject<string | null>(null);
+  private selectedPeriod$ = new BehaviorSubject<TimePeriod>(this.timePeriods[0]);
 
   public chartData: any;
   public chartOptions: any;
+  public loadingHistory$ = new BehaviorSubject<boolean>(true);
+  public historyError$ = new BehaviorSubject<string | null>(null);
+
+  public currencyCode$: Observable<string> = this.cryptoService.currencyCode$;
+  protected readonly Number = Number;
 
   ngOnInit(): void {
-    const uuid = this.route.snapshot.params['uuid'];
-    if (uuid) {
-      this.coinUuid$.next(uuid);
-    }
-
     this._subscribeToDetails();
     this._subscribeToHistory();
     this._setupChartOptions();
@@ -80,98 +94,85 @@ export class ChartComponent implements OnInit, OnDestroy {
   }
 
   private _subscribeToDetails(): void {
-    const details$ = this.coinUuid$.pipe(
-      filter(uuid => !!uuid),
-      switchMap((uuid) => {
-        this.loadingDetails$.next(true);
-        this.detailsError$.next(null);
+    const detailsSub = this.route.paramMap
+      .pipe(
+        map((params) => params.get('uuid')),
+        filter((uuid): uuid is string => !!uuid),
+        tap(() => {
+          this.loadingDetails$.next(true);
+          this.detailsError$.next(null);
+          this.coinDetails = null;
+        }),
+        switchMap((uuid) =>
+          this.cryptoService.fetchCoinDetails(uuid).pipe(
+            catchError((err) => {
+              this.loadingDetails$.next(false);
+              this.detailsError$.next('Erro de rede ao carregar detalhes.');
+              return of(null);
+            })
+          )
+        )
+      )
+      .subscribe((response) => {
+        this.loadingDetails$.next(false);
 
-        return this.cryptoService.fetchCoinDetails(uuid).pipe(
-          map((response) => {
-            this.loadingDetails$.next(false);
-            if (response.status === 'success') {
-              this.coinDetails = response.data.coin;
-              return response.data.coin;
-            }
-            this.detailsError$.next('Falha ao carregar detalhes da criptomoeda. Status: ' + response.status);
-            this.coinDetails = null;
-            return null;
-          }),
-          catchError((err) => {
-            this.loadingDetails$.next(false);
-            this.detailsError$.next('Erro de rede ao carregar detalhes.');
-            this.coinDetails = null;
-            console.error('Erro de rede ao buscar detalhes da moeda:', err);
-            return of(null);
-          })
-        );
-      })
-    );
-    this.subscriptions.add(details$.subscribe());
+        if (!response || response.status !== 'success') {
+          this.coinDetails = null;
+          if (!this.detailsError$.getValue()) {
+            this.detailsError$.next('Falha ao carregar detalhes da criptomoeda.');
+          }
+          return;
+        }
+
+        this.detailsError$.next(null);
+        this.coinDetails = response.data.coin;
+      });
+
+    this.subscriptions.add(detailsSub);
   }
 
   private _subscribeToHistory(): void {
-    const historyData$ = combineLatest([
-      this.coinUuid$.pipe(filter(uuid => !!uuid)),
-      this.cryptoService.currencyUuid$.pipe(filter(uuid => !!uuid)),
-      this.loadingDetails$.pipe(filter(loading => !loading))
-    ]).pipe(
-      switchMap(([uuid]) => {
-        this.loadingHistory$.next(true);
+    const historySub = combineLatest([
+      this.route.paramMap.pipe(map((params) => params.get('uuid'))),
+      this.cryptoService.currencyUuid$,
+      this.selectedPeriod$,
+    ])
+      .pipe(
+        filter(([uuid]) => !!uuid),
+        tap(() => {
+          this.loadingHistory$.next(true);
+          this.historyError$.next(null);
+        }),
+        switchMap(([uuid, currencyUuid, period]) =>
+          this.cryptoService.fetchCoinHistory(uuid!, period.code).pipe(
+            catchError((err) => {
+              this.loadingHistory$.next(false);
+              this.historyError$.next('Erro de rede ao carregar histórico.');
+              return of(null);
+            })
+          )
+        )
+      )
+      .subscribe((response) => {
+        this.loadingHistory$.next(false);
+
+        if (!response || response.status !== 'success') {
+          this.chartData = null;
+          if (!this.historyError$.getValue()) {
+            this.historyError$.next('Falha ao carregar histórico de preços.');
+          }
+          return;
+        }
+
         this.historyError$.next(null);
+        this._prepareChartData(response.data);
+      });
 
-        return this.cryptoService.fetchCoinHistory(uuid, this.selectedPeriod.code).pipe(
-          map((response) => {
-            this.loadingHistory$.next(false);
-            if (response.status === 'success') {
-                return response.data;
-            }
-            this.historyError$.next('Falha ao carregar histórico de preços. Status: ' + response.status);
-            return null;
-          }),
-          catchError((err) => {
-            this.loadingHistory$.next(false);
-            this.historyError$.next('Erro de rede ao carregar histórico.');
-            console.error('Erro de rede ao buscar histórico da moeda:', err);
-            return of(null);
-          })
-        );
-      })
-    );
-
-    this.subscriptions.add(historyData$
-        .subscribe((data) => {
-            this._prepareChartData(data);
-        })
-    );
+    this.subscriptions.add(historySub);
   }
 
   onTimePeriodChange(newPeriod: TimePeriod): void {
-    this.selectedPeriod = newPeriod;
-
-    this.loadingHistory$.next(true);
-    this.historyError$.next(null);
-    const uuid = this.coinUuid$.getValue();
-
-    if (uuid) {
-        this.subscriptions.add(
-            this.cryptoService.fetchCoinHistory(uuid, newPeriod.code).pipe(
-                map((response) => {
-                    this.loadingHistory$.next(false);
-                    if (response.status === 'success') {
-                        return response.data;
-                    }
-                    this.historyError$.next('Falha ao carregar histórico de preços. Status: ' + response.status);
-                    return null;
-                }),
-                catchError((err) => {
-                    this.loadingHistory$.next(false);
-                    this.historyError$.next('Erro de rede ao carregar histórico.');
-                    return of(null);
-                })
-            ).subscribe((data) => this._prepareChartData(data))
-        );
-    }
+    this.selectedPeriod$.next(newPeriod);
   }
 
   private _prepareChartData(history: CoinrankingHistory | null): void {
@@ -181,29 +182,14 @@ export class ChartComponent implements OnInit, OnDestroy {
     }
 
     const correctedHistory = [...history.history].reverse();
-
     const prices = correctedHistory
       .map((item) => Number(item.price))
-      .filter(price => !isNaN(price));
+      .filter((price) => !isNaN(price));
 
-    const labels = correctedHistory.map((item) => {
-      const date = new Date(item.timestamp * 1000);
-      switch (this.selectedPeriod.code) {
-        case '24h':
-          return date.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
-        case '7d':
-        case '30d':
-          return date.toLocaleDateString('pt-BR', { month: 'short', day: 'numeric' });
-        case '1y':
-        case '5y':
-          return date.toLocaleDateString('pt-BR', { year: 'numeric', month: 'short' });
-        default:
-          return date.toLocaleDateString('pt-BR');
-      }
-    });
+    const labels = formatChartLabels(correctedHistory, this.selectedPeriod$.getValue().code);
 
     const isNegative = Number(history.change) < 0;
-    const color = isNegative ? '#ef4444' : '#22c55e';
+    const color = isNegative ? '#f87171' : '#4ade80';
 
     this.chartData = {
       labels: labels,
@@ -211,45 +197,46 @@ export class ChartComponent implements OnInit, OnDestroy {
         {
           label: 'Preço',
           data: prices,
-          fill: false,
+          fill: true,
           borderColor: color,
+          backgroundColor: createGradient(color),
           tension: 0.4,
           pointRadius: 0,
-          borderWidth: 2,
+          borderWidth: 2.5,
         },
       ],
     };
   }
 
   private _setupChartOptions(): void {
-    const textColorSecondary = 'rgba(0, 0, 0, 0.54)';
-
     this.chartOptions = {
       maintainAspectRatio: false,
-      aspectRatio: 0.6,
+      aspectRatio: 0.8,
       plugins: {
-        legend: {
-          display: false,
+        legend: { display: false },
+        tooltip: {
+          backgroundColor: 'rgba(0, 0, 0, 0.8)',
+          titleColor: '#fff',
+          bodyColor: '#fff',
+          borderColor: 'var(--accent-green)',
+          borderWidth: 1,
         },
       },
       scales: {
         x: {
-          ticks: {
-            color: textColorSecondary,
-          },
-          grid: {
-            display: false,
-          },
-           border: {
-            display: false
-          }
+          ticks: { color: 'var(--text-secondary)' },
+          grid: { display: false },
+          border: { display: false },
         },
         y: {
-          display: false,
-          grid: {
-            display: false,
-          },
+          ticks: { color: 'var(--text-secondary)' },
+          grid: { color: 'rgba(0, 0, 0, 0.05)' },
+          border: { display: false },
         },
+      },
+      interaction: {
+        intersect: false,
+        mode: 'index',
       },
     };
   }

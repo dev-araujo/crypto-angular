@@ -1,0 +1,19 @@
+@if (coin && currencyCode) {
+<div class="coin-detail__header">
+  <img [src]="coin.iconUrl" [alt]="coin.name" class="coin-detail__icon" />
+  <div>
+    <h1 class="coin-detail__title">{{ coin.name }} ({{ coin.symbol }})</h1>
+  </div>
+  <p-tag [value]="'Rank ' + coin.rank" [rounded]="true"></p-tag>
+</div>
+
+<div class="coin-detail__price-section">
+  <div class="price-value" [style.color]="coin.color">
+    {{ coin.price | currency: currencyCode : 'symbol' : '1.2-8' }}
+  </div>
+  <div class="change-value" [ngClass]="{ 'negative': Number(coin.change) < 0, 'positive': Number(coin.change) >= 0 }">
+    <i class="pi" [ngClass]="{'pi-arrow-up': Number(coin.change) >= 0, 'pi-arrow-down': Number(coin.change) < 0}"></i>
+    {{ coin.change | number: '1.2-2' }}% <span>24h</span>
+  </div>
+</div>
+}

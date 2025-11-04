@@ -1,0 +1,56 @@
+:host {
+  --bg-primary: #ffffff;
+  --bg-secondary: #f9fafb;
+  --text-primary: #111827;
+  --text-secondary: #6b7280;
+  --accent-green: #22c55e;
+  --border-color: #e5e7eb;
+
+  .dark & {
+    --bg-primary: #111827;
+    --bg-secondary: #1f2937;
+    --text-primary: #f9fafb;
+    --text-secondary: #9ca3af;
+    --accent-green: #4ade80;
+    --border-color: #374151;
+  }
+}
+
+.section-title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin: 3rem 0 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--border-color);
+  color: var(--text-primary);
+}
+
+.coin-detail__links-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.25rem;
+
+  :host ::ng-deep .p-button {
+    border-color: var(--border-color);
+    color: var(--text-secondary);
+    font-weight: 600;
+    transition: all 0.2s;
+    justify-content: center;
+
+    &:hover {
+      background: var(--bg-secondary);
+      color: var(--text-primary);
+      border-color: var(--accent-green); 
+    }
+
+    .pi, [class*="bx"] {
+      font-size: 1.2rem;
+    }
+  }
+}
+
+@media (max-width: 576px) {
+  .coin-detail__links-grid {
+    grid-template-columns: 1fr;
+  }
+}
