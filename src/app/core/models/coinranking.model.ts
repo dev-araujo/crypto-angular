@@ -99,3 +99,8 @@ export interface CoinrankingCoinHistoryResponse {
   status: string;
   data: CoinrankingHistory;
 }
+
+export interface TimePeriod {
+  name: string;
+  code: string;
+}

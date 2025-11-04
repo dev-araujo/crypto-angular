@@ -1,6 +1,6 @@
 import { Component, OnInit, inject, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { CommonModule, DecimalPipe } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import {
   Observable,
@@ -24,17 +24,13 @@ import { TooltipModule } from 'primeng/tooltip';
 import { ButtonModule } from 'primeng/button';
 
 import { CryptoService } from '../../core/services/crypto.service';
-import { CoinrankingCoinDetail, CoinrankingHistory } from '../../core/models/coinranking.model';
+import { CoinrankingCoinDetail, CoinrankingHistory, TimePeriod } from '../../core/models/coinranking.model';
 
 import { CoinHeaderComponent } from './components/coin-header/coin-header.component';
 import { MetricGridComponent } from './components/metric-grid/metric-grid.component';
 import { LinksGridComponent } from './components/links-grid/links-grid.component';
 import { createGradient, formatChartLabels } from './utils/chart.utils';
-
-interface TimePeriod {
-  name: string;
-  code: string;
-}
+import { TIME_PERIODS } from './constants/time-period.constant';
 
 @Component({
   selector: 'app-chart',
@@ -65,13 +61,7 @@ export class ChartComponent implements OnInit, OnDestroy {
   public loadingDetails$ = new BehaviorSubject<boolean>(true);
   public detailsError$ = new BehaviorSubject<string | null>(null);
 
-  public timePeriods: TimePeriod[] = [
-    { name: '24h', code: '24h' },
-    { name: '7 dias', code: '7d' },
-    { name: '30 dias', code: '30d' },
-    { name: '1 ano', code: '1y' },
-    { name: '5 anos', code: '5y' },
-  ];
+  public timePeriods = TIME_PERIODS;
   public selectedPeriod = this.timePeriods[0];
   private selectedPeriod$ = new BehaviorSubject<TimePeriod>(this.timePeriods[0]);
 
